@@ -1,0 +1,1045 @@
+diff --git a/include/vulkan/vulkan_ohos.h b/include/vulkan/vulkan_ohos.h
+index 9a8efa5e3b6..6957716dbb4 100644
+--- a/include/vulkan/vulkan_ohos.h
++++ b/include/vulkan/vulkan_ohos.h
+@@ -123,6 +123,50 @@ VKAPI_ATTR VkResult VKAPI_CALL vkCreateSurfaceOHOS(
+ #endif
+ #endif
+ 
++
++/* VK_OHOS_native_buffer: in the registry but marked disabled, so Khronos leaves it out of this header. Added for
++ * HarmonyOS's swapchain layer (asteroids port); definitions from vk.xml. */
++#define VK_OHOS_native_buffer 1
++struct OHBufferHandle;
++#define VK_OHOS_NATIVE_BUFFER_SPEC_VERSION 1
++#define VK_OHOS_NATIVE_BUFFER_EXTENSION_NAME "VK_OHOS_native_buffer"
++#define VK_STRUCTURE_TYPE_NATIVE_BUFFER_OHOS ((VkStructureType)1000453001)
++#define VK_STRUCTURE_TYPE_SWAPCHAIN_IMAGE_CREATE_INFO_OHOS ((VkStructureType)1000453002)
++#define VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PRESENTATION_PROPERTIES_OHOS ((VkStructureType)1000453003)
++
++typedef enum VkSwapchainImageUsageFlagBitsOHOS {
++    VK_SWAPCHAIN_IMAGE_USAGE_SHARED_BIT_OHOS = 0x00000001,
++    VK_SWAPCHAIN_IMAGE_USAGE_FLAG_BITS_MAX_ENUM_OHOS = 0x7FFFFFFF
++} VkSwapchainImageUsageFlagBitsOHOS;
++typedef VkFlags VkSwapchainImageUsageFlagsOHOS;
++typedef struct VkNativeBufferOHOS {
++    VkStructureType            sType;
++    const void*                pNext;
++    struct OHBufferHandle*     handle;
++} VkNativeBufferOHOS;
++
++typedef struct VkSwapchainImageCreateInfoOHOS {
++    VkStructureType                   sType;
++    const void*                       pNext;
++    VkSwapchainImageUsageFlagsOHOS    usage;
++} VkSwapchainImageCreateInfoOHOS;
++
++typedef struct VkPhysicalDevicePresentationPropertiesOHOS {
++    VkStructureType    sType;
++    void*              pNext;
++    VkBool32           sharedImage;
++} VkPhysicalDevicePresentationPropertiesOHOS;
++
++typedef VkResult (VKAPI_PTR *PFN_vkGetSwapchainGrallocUsageOHOS)(VkDevice device, VkFormat format, VkImageUsageFlags imageUsage, uint64_t* grallocUsage);
++typedef VkResult (VKAPI_PTR *PFN_vkAcquireImageOHOS)(VkDevice device, VkImage image, int32_t nativeFenceFd, VkSemaphore semaphore, VkFence fence);
++typedef VkResult (VKAPI_PTR *PFN_vkQueueSignalReleaseImageOHOS)(VkQueue queue, uint32_t waitSemaphoreCount, const VkSemaphore* pWaitSemaphores, VkImage image, int32_t* pNativeFenceFd);
++
++#ifndef VK_NO_PROTOTYPES
++VKAPI_ATTR VkResult VKAPI_CALL vkGetSwapchainGrallocUsageOHOS(VkDevice device, VkFormat format, VkImageUsageFlags imageUsage, uint64_t* grallocUsage);
++VKAPI_ATTR VkResult VKAPI_CALL vkAcquireImageOHOS(VkDevice device, VkImage image, int32_t nativeFenceFd, VkSemaphore semaphore, VkFence fence);
++VKAPI_ATTR VkResult VKAPI_CALL vkQueueSignalReleaseImageOHOS(VkQueue queue, uint32_t waitSemaphoreCount, const VkSemaphore* pWaitSemaphores, VkImage image, int32_t* pNativeFenceFd);
++#endif
++
+ #ifdef __cplusplus
+ }
+ #endif
+diff --git a/src/freedreno/common/freedreno_devices.py b/src/freedreno/common/freedreno_devices.py
+index 7d3406a647c..eaab89ed782 100644
+--- a/src/freedreno/common/freedreno_devices.py
++++ b/src/freedreno/common/freedreno_devices.py
+@@ -1481,6 +1481,12 @@ add_gpus([
+             gmem_vpc_attr_buf_size = 16384,
+             gmem_vpc_pos_buf_size = 12288,
+             gmem_vpc_bv_pos_buf_size = 20480,
++            # a8xx_gen1's sysmem caches and VPC buffers take 608 KiB, past this
++            # GPU's 576 KiB of GMEM: the depth CCU offset, laid out last from the
++            # top, wrapped below zero and depth tests in sysmem passes read
++            # garbage. Half the color cache, as a7xx's 64 KiB, fits them.
++            sysmem_ccu_color_cache_fraction = CCUColorCacheFraction.HALF.value,
++            sysmem_per_ccu_color_cache_size = 64 * 1024,
+             # This is possibly also needed for a830 (and all of a8xx),
+             # move to a8xx_base if confirmed needed for a830.
+             has_fs_tex_prefetch = False,
+diff --git a/src/freedreno/vulkan/meson.build b/src/freedreno/vulkan/meson.build
+index b0197103975..689088ae3cb 100644
+--- a/src/freedreno/vulkan/meson.build
++++ b/src/freedreno/vulkan/meson.build
+@@ -42,6 +42,7 @@ libtu_files = files(
+   'tu_cs_breadcrumbs.cc',
+   'tu_cs.cc',
+   'tu_device.cc',
++  'tu_ohos.cc',
+   'tu_descriptor_set.cc',
+   'tu_dynamic_rendering.cc',
+   'tu_event.cc',
+diff --git a/src/freedreno/vulkan/tu_device.cc b/src/freedreno/vulkan/tu_device.cc
+index f9fb8e800b9..3631b70238a 100644
+--- a/src/freedreno/vulkan/tu_device.cc
++++ b/src/freedreno/vulkan/tu_device.cc
+@@ -1,3 +1,5 @@
++#include <map>
++#include <mutex>
+ /*
+  * Copyright © 2016 Red Hat.
+  * Copyright © 2016 Bas Nieuwenhuizen
+@@ -438,6 +440,8 @@ get_device_extensions(const struct tu_physical_device *device,
+          device->has_iova_align,
+       .VALVE_fragment_density_map_layered = true,
+       .VALVE_mutable_descriptor_type = true,
++      .OHOS_external_memory = true,
++      .OHOS_native_buffer = true,
+    } };
+ }
+ 
+@@ -3665,12 +3669,72 @@ tu_memory_get_ref(struct tu_device_memory *mem)
+    return mem;
+ }
+ 
++/* Live native-buffer imports, for tu_ohos_release_orphans. */
++static std::mutex ohos_imports_lock;
++static std::map<tu_device_memory *, tu_device *> ohos_imports;
++static unsigned ohos_imports_since_scan;
++
++/* References to the dma-buf behind fd (fdinfo "count"), or -1. */
++static long
++tu_dmabuf_refs(int fd)
++{
++   char path[48], line[96];
++   long count = -1;
++   snprintf(path, sizeof(path), "/proc/self/fdinfo/%d", fd);
++   FILE *f = fopen(path, "re");
++   while (f && fgets(line, sizeof(line), f))
++      if (sscanf(line, "count: %ld", &count) == 1)
++         break;
++   if (f)
++      fclose(f);
++   return count;
++}
++
++/* Drops the BO of each import whose dma-buf only this import's fd and KGSL still hold. Called with
++ * ohos_imports_lock held. Re-imports share a BO, so thousands of imports have only a couple of hundred BOs: each BO's
++ * count is read once (reading fdinfo for every import took tens of milliseconds inside render_service's frame). */
++static unsigned
++tu_ohos_release_orphans(void)
++{
++   unsigned released = 0;
++   std::map<tu_bo *, long> bo_refs;
++   for (auto it = ohos_imports.begin(); it != ohos_imports.end();) {
++      tu_device_memory *mem = it->first;
++      long refs = -1;
++      if (mem->bo && mem->bo->shared_fd >= 0) {
++         auto known = bo_refs.find(mem->bo);
++         refs = known != bo_refs.end() ? known->second : (bo_refs[mem->bo] = tu_dmabuf_refs(mem->bo->shared_fd));
++      }
++      if (refs > 0 && refs <= 2) {
++         tu_bo_finish(it->second, mem->bo);
++         mem->bo = NULL;
++         it = ohos_imports.erase(it);
++         released++;
++      } else {
++         ++it;
++      }
++   }
++   return released;
++}
++
+ static void
+ _tu_destroy_memory(struct tu_device *device,
+                   struct tu_device_memory *mem)
+ {
++   if (mem->ohos_import) {
++      /* After this, a concurrent release no longer sees mem; if one already ran, mem->bo is NULL. */
++      std::lock_guard<std::mutex> guard(ohos_imports_lock);
++      ohos_imports.erase(mem);
++   }
++   if (mem->ohos_import) {
++      static unsigned frees;
++      unsigned n = p_atomic_inc_return(&frees);
++      if (n % 64 == 0)
++         fprintf(stderr, "SHENG_OHOS_FREE n=%u\n", n);
++   }
+    if (mem->bo) {
+-      p_atomic_add(&device->physical_device->heap.used, -mem->bo->size);
++      if (!mem->ohos_import)
++         p_atomic_add(&device->physical_device->heap.used, -mem->bo->size);
+       tu_bo_finish(device, mem->bo);
+    }
+ 
+@@ -3712,13 +3776,14 @@ tu_memory_emit_report(struct tu_device *device,
+       return;
+    }
+ 
+-   /* Lazy memory may or may not have a BO at any given time, so it must
+-    * not depend on mem->bo. Use the memory object itself for the id and
+-    * the requested size, so the alloc and free reports always match.
++   /* Lazy memory may or may not have a BO at any given time, and a released
++    * native-buffer import has none, so neither may depend on mem->bo. Use the
++    * memory object itself for the id and the requested size, so the alloc and
++    * free reports always match.
+     */
+    const uint64_t mem_obj_id =
+-      mem->lazy ? reinterpret_cast<uintptr_t>(mem) : mem->bo->unique_id;
+-   const VkDeviceSize size = mem->lazy ? mem->vk.size : mem->bo->size;
++      mem->lazy || !mem->bo ? reinterpret_cast<uintptr_t>(mem) : mem->bo->unique_id;
++   const VkDeviceSize size = mem->lazy || !mem->bo ? mem->vk.size : mem->bo->size;
+ 
+    vk_device_memory_report_emit(
+       &device->vk, result, is_alloc, mem->vk.import_handle_type != 0,
+@@ -3727,7 +3792,7 @@ tu_memory_emit_report(struct tu_device *device,
+ }
+ 
+ VKAPI_ATTR VkResult VKAPI_CALL
+-tu_AllocateMemory(VkDevice _device,
++sheng_observed_tu_AllocateMemory(VkDevice _device,
+                   const VkMemoryAllocateInfo *pAllocateInfo,
+                   const VkAllocationCallbacks *pAllocator,
+                   VkDeviceMemory *pMem)
+@@ -3776,7 +3841,41 @@ tu_AllocateMemory(VkDevice _device,
+                            BUFFER_DEVICE_ADDRESS_ALIGNMENT_ALLOCATE_INFO_VALVE);
+    uint64_t alignment = align_info ? align_info->alignment : 0;
+ 
+-   if (fd_info && fd_info->handleType) {
++   const VkImportNativeBufferInfoOHOS *ohos =
++      vk_find_struct_const(pAllocateInfo->pNext, IMPORT_NATIVE_BUFFER_INFO_OHOS);
++   if (ohos) {
++      const auto *h = OH_NativeBuffer_GetBufferHandle(ohos->buffer);
++      const bool blob = tu_ohos_valid_blob_handle(h);
++      const auto *dedicated = vk_find_struct_const(pAllocateInfo->pNext, MEMORY_DEDICATED_ALLOCATE_INFO);
++      const uint64_t blob_min = blob ? (uint64_t(h->width)+63)&~uint64_t(63) : 0;
++      const bool valid_size = blob ?
++         (pAllocateInfo->allocationSize >= blob_min && pAllocateInfo->allocationSize <= uint64_t(h->size) &&
++          (!dedicated || dedicated->image == VK_NULL_HANDLE)) :
++         (tu_ohos_valid_handle(h) && pAllocateInfo->allocationSize >= uint64_t(h->size));
++      if (!valid_size) {
++         vk_device_memory_destroy(&device->vk, pAllocator, &mem->vk);
++         return VK_ERROR_INVALID_EXTERNAL_HANDLE;
++      }
++      result = tu_bo_init_dmabuf(device, &mem->bo, h->size, 0, TU_BO_ALLOC_NO_FLAGS, h->fd);
++      if (result == VK_SUCCESS && blob && mem->bo->size < uint64_t(h->size)) {
++         tu_bo_finish(device, mem->bo);
++         result = VK_ERROR_INVALID_EXTERNAL_HANDLE;
++      }
++      if (result == VK_SUCCESS) {
++         if (blob) {
++            static unsigned blobs = 0;
++            unsigned n = __atomic_add_fetch(&blobs, 1, __ATOMIC_RELAXED);
++            if(n<=12 || n%256==0)fprintf(stderr,"SHENG_BLOB_IMPORT n=%u bytes=%d requested=%llu backing=%llu\n",n,h->width,(unsigned long long)pAllocateInfo->allocationSize,(unsigned long long)mem->bo->size);
++         }
++         mem->ohos_handle = *h;
++         mem->ohos_import = true;
++         static unsigned imports;
++         unsigned n = p_atomic_inc_return(&imports);
++         if (n % 64 == 0)
++            fprintf(stderr, "SHENG_OHOS_IMPORT n=%u\n", n);
++         mem->vk.import_handle_type = VK_EXTERNAL_MEMORY_HANDLE_TYPE_OH_NATIVE_BUFFER_BIT_OHOS;
++      }
++   } else if (fd_info && fd_info->handleType) {
+       assert(fd_info->handleType ==
+                 VK_EXTERNAL_MEMORY_HANDLE_TYPE_OPAQUE_FD_BIT ||
+              fd_info->handleType ==
+@@ -3840,8 +3939,10 @@ tu_AllocateMemory(VkDevice _device,
+                                name);
+    }
+ 
+-   if (result == VK_SUCCESS && !mem->lazy) {
++   if (result == VK_SUCCESS && !mem->lazy && !mem->ohos_import) {
+       result = tu_add_to_heap(device, mem->bo);
++   }
++   if (result == VK_SUCCESS && !mem->lazy) {
+       mem->iova = mem->bo->iova;
+    }
+ 
+@@ -3856,6 +3957,15 @@ tu_AllocateMemory(VkDevice _device,
+    if (dedicate_info) {
+       mem->image = tu_image_from_handle(dedicate_info->image);
+    } else {
++   if (ohos) {
++      if (OH_NativeBuffer_Reference(ohos->buffer) != 0) {
++         p_atomic_add(&mem_heap->used, -mem->bo->size);
++         tu_bo_finish(device, mem->bo);
++         vk_device_memory_destroy(&device->vk, pAllocator, &mem->vk);
++         return VK_ERROR_INVALID_EXTERNAL_HANDLE;
++      }
++      mem->ohos_buffer = ohos->buffer;
++   }
+       mem->image = NULL;
+    }
+ 
+@@ -3898,6 +4008,7 @@ tu_AllocateMemory(VkDevice _device,
+ 
+    *pMem = tu_device_memory_to_handle(mem);
+ 
++   if (mem->ohos_buffer) OH_NativeBuffer_Unreference(mem->ohos_buffer);
+    return VK_SUCCESS;
+ }
+ 
+@@ -4751,3 +4862,45 @@ tu_SetDebugUtilsObjectNameEXT(
+ 
+    return result;
+ }
++
++
++VKAPI_ATTR VkResult VKAPI_CALL
++tu_AllocateMemory(VkDevice handle, const VkMemoryAllocateInfo *info,
++                  const VkAllocationCallbacks *alloc, VkDeviceMemory *memory)
++{
++   VK_FROM_HANDLE(tu_device, device, handle);
++   VkResult result = sheng_observed_tu_AllocateMemory(handle, info, alloc, memory);
++   if (result == VK_SUCCESS && vk_find_struct_const(info->pNext, IMPORT_NATIVE_BUFFER_INFO_OHOS)) {
++      std::lock_guard<std::mutex> guard(ohos_imports_lock);
++      ohos_imports[tu_device_memory_from_handle(*memory)] = device;
++      static uint64_t last_scan;
++      uint64_t now = os_time_get_nano();
++      if (++ohos_imports_since_scan >= 16 && now - last_scan >= 250000000) {
++         ohos_imports_since_scan = 0;
++         last_scan = now;
++         unsigned released = tu_ohos_release_orphans();
++         static unsigned total, scans;
++         if (released || ++scans % 64 == 0)
++            fprintf(stderr, "SHENG_OHOS_RELEASE released=%u total=%u live=%zu scan_us=%llu\n", released,
++                    total += released, ohos_imports.size(),
++                    (unsigned long long)((os_time_get_nano() - now) / 1000));
++      }
++   }
++   static unsigned calls = 0, failures = 0;
++   unsigned n = __atomic_add_fetch(&calls, 1, __ATOMIC_RELAXED);
++   if (n <= 12 || n % 64 == 0 || (result != VK_SUCCESS && __atomic_add_fetch(&failures, 1, __ATOMIC_RELAXED) <= 32)) {
++      const auto *native = vk_find_struct_const(info->pNext, IMPORT_NATIVE_BUFFER_INFO_OHOS);
++      const auto *h = native ? OH_NativeBuffer_GetBufferHandle(native->buffer) : nullptr;
++      fprintf(stderr, "SHENG_ALLOC n=%u result=%d requested=%llu type=%u heap_used=%llu heap_size=%llu native=%p fd=%d native_size=%d\n",
++              n, result, (unsigned long long)info->allocationSize, info->memoryTypeIndex,
++              (unsigned long long)p_atomic_read(&device->physical_device->heap.used),
++              (unsigned long long)device->physical_device->heap.size,
++              native ? (const void*)native->buffer : nullptr, h ? h->fd : -1, h ? h->size : -1);
++      if (h && result != VK_SUCCESS)
++         fprintf(stderr, "SHENG_ALLOC_NATIVE n=%u valid=%d width=%d height=%d stride=%d format=%d usage=%llx reserve=%u/%u\n",
++                 n, tu_ohos_valid_handle(h), h->width, h->height, h->stride, h->format,
++                 (unsigned long long)h->usage, h->reserveFds, h->reserveInts);
++
++   }
++   return result;
++}
+diff --git a/src/freedreno/vulkan/tu_device.h b/src/freedreno/vulkan/tu_device.h
+index 8ae5b21e36e..346051fc02e 100644
+--- a/src/freedreno/vulkan/tu_device.h
++++ b/src/freedreno/vulkan/tu_device.h
+@@ -11,6 +11,7 @@
+ #define TU_DEVICE_H
+ 
+ #include "tu_common.h"
++#include "tu_ohos.h"
+ #include "perfcntrs/freedreno_perfcntr.h"
+ 
+ #include "util/rwlock.h"
+@@ -543,6 +544,10 @@ struct tu_device_memory
+ 
+    struct tu_bo *bo;
+ 
++   struct OH_NativeBuffer *ohos_buffer;
++   struct Ace5OHBufferHandle ohos_handle;
++   bool ohos_import;
++
+    /* for dedicated allocations */
+    struct tu_image *image;
+ };
+diff --git a/src/freedreno/vulkan/tu_formats.cc b/src/freedreno/vulkan/tu_formats.cc
+index 484035a43de..5cc24fabf0f 100644
+--- a/src/freedreno/vulkan/tu_formats.cc
++++ b/src/freedreno/vulkan/tu_formats.cc
+@@ -756,6 +756,14 @@ tu_get_external_image_format_properties(
+    assert(handleType !=
+           VK_EXTERNAL_MEMORY_HANDLE_TYPE_ANDROID_HARDWARE_BUFFER_BIT_ANDROID);
+    switch (handleType) {
++   case VK_EXTERNAL_MEMORY_HANDLE_TYPE_OH_NATIVE_BUFFER_BIT_OHOS:
++      if (pImageFormatInfo->type != VK_IMAGE_TYPE_2D ||
++          (pImageFormatInfo->flags & VK_IMAGE_CREATE_PROTECTED_BIT) ||
++          !tu_ohos_supported_format(pImageFormatInfo->format))
++         return VK_ERROR_FORMAT_NOT_SUPPORTED;
++      flags = VK_EXTERNAL_MEMORY_FEATURE_DEDICATED_ONLY_BIT | VK_EXTERNAL_MEMORY_FEATURE_IMPORTABLE_BIT;
++      compat_flags = VK_EXTERNAL_MEMORY_HANDLE_TYPE_OH_NATIVE_BUFFER_BIT_OHOS;
++      break;
+    case VK_EXTERNAL_MEMORY_HANDLE_TYPE_OPAQUE_FD_BIT:
+    case VK_EXTERNAL_MEMORY_HANDLE_TYPE_DMA_BUF_BIT_EXT:
+       switch (pImageFormatInfo->type) {
+diff --git a/src/freedreno/vulkan/tu_image.cc b/src/freedreno/vulkan/tu_image.cc
+index 478a63b71d4..1c05f2199e0 100644
+--- a/src/freedreno/vulkan/tu_image.cc
++++ b/src/freedreno/vulkan/tu_image.cc
+@@ -1,3 +1,4 @@
++#include <stdio.h>
+ /*
+  * Copyright © 2016 Red Hat.
+  * Copyright © 2016 Bas Nieuwenhuizen
+@@ -926,13 +927,28 @@ tu_android_get_wsi_memory(struct tu_device *dev,
+ #endif /* VK_USE_PLATFORM_ANDROID_KHR */
+ 
+ VKAPI_ATTR VkResult VKAPI_CALL
+-tu_CreateImage(VkDevice _device,
++sheng_observed_tu_CreateImage(VkDevice _device,
+                const VkImageCreateInfo *pCreateInfo,
+                const VkAllocationCallbacks *alloc,
+                VkImage *pImage)
+ {
++   VkImageCreateInfo resolved_info;
++   const VkExternalFormatOHOS *external =
++      vk_find_struct_const(pCreateInfo->pNext, EXTERNAL_FORMAT_OHOS);
++   if (external && external->externalFormat) {
++      const VkExternalMemoryImageCreateInfo *memory =
++         vk_find_struct_const(pCreateInfo->pNext, EXTERNAL_MEMORY_IMAGE_CREATE_INFO);
++      if ((external->externalFormat != 24 && external->externalFormat != 25 && external->externalFormat != 28 && external->externalFormat != 29) || pCreateInfo->format != VK_FORMAT_UNDEFINED ||
++          !memory || !(memory->handleTypes & VK_EXTERNAL_MEMORY_HANDLE_TYPE_OH_NATIVE_BUFFER_BIT_OHOS))
++         return VK_ERROR_FORMAT_NOT_SUPPORTED;
++      resolved_info = *pCreateInfo;
++      resolved_info.format = external->externalFormat == 24 || external->externalFormat == 25 ?
++         VK_FORMAT_G8_B8R8_2PLANE_420_UNORM : VK_FORMAT_G8_B8_R8_3PLANE_420_UNORM;
++      pCreateInfo = &resolved_info;
++   }
+    uint64_t modifier = DRM_FORMAT_MOD_INVALID;
+    const VkSubresourceLayout *plane_layouts = NULL;
++   const VkNativeBufferOHOS *ohos_native = (const VkNativeBufferOHOS *)__vk_find_struct((void *)pCreateInfo->pNext, VK_STRUCTURE_TYPE_NATIVE_BUFFER_OHOS);
+    VkResult result;
+ 
+    VK_FROM_HANDLE(tu_device, device, _device);
+@@ -1001,6 +1017,21 @@ tu_CreateImage(VkDevice _device,
+          modifier = DRM_FORMAT_MOD_LINEAR;
+    }
+ 
++   if (ohos_native ||
++       (image->vk.external_handle_types & VK_EXTERNAL_MEMORY_HANDLE_TYPE_OH_NATIVE_BUFFER_BIT_OHOS)) {
++      image->ohos_create_info = *pCreateInfo;
++      image->ohos_create_info.pNext = NULL;
++   }
++   if (ohos_native) {
++      result = tu_ohos_import_image(device, image, ohos_native, alloc);
++      if (result != VK_SUCCESS) goto fail;
++      *pImage = tu_image_to_handle(image);
++      return VK_SUCCESS;
++   }
++   if (image->vk.external_handle_types & VK_EXTERNAL_MEMORY_HANDLE_TYPE_OH_NATIVE_BUFFER_BIT_OHOS) {
++      *pImage = tu_image_to_handle(image);
++      return VK_SUCCESS; // Explicit stride arrives with the imported native buffer.
++   }
+    /* This section is removed by the optimizer for non-ANDROID builds */
+    VkImageDrmFormatModifierExplicitCreateInfoEXT eci;
+    VkSubresourceLayout a_plane_layouts[TU_MAX_PLANE_COUNT];
+@@ -1135,6 +1166,11 @@ tu_image_bind(struct tu_device *device,
+    }
+ 
+    assert(mem);
++   if (mem->ohos_import) {
++      result = tu_ohos_bind_layout(device, image, &mem->ohos_handle);
++      if (result != VK_SUCCESS)
++         return result;
++   }
+    image->mem = mem;
+    image->mem_offset = offset;
+    image->iova = mem->iova + offset;
+@@ -1539,6 +1575,17 @@ tu_CreateImageView(VkDevice _device,
+ {
+    VK_FROM_HANDLE(tu_device, device, _device);
+    struct tu_image_view *view;
++   VkImageViewCreateInfo resolved_info;
++   VK_FROM_HANDLE(tu_image, image, pCreateInfo->image);
++   if (pCreateInfo->format == VK_FORMAT_UNDEFINED &&
++       (image->vk.external_handle_types & VK_EXTERNAL_MEMORY_HANDLE_TYPE_OH_NATIVE_BUFFER_BIT_OHOS)) {
++      if (image->vk.format != VK_FORMAT_G8_B8R8_2PLANE_420_UNORM &&
++          image->vk.format != VK_FORMAT_G8_B8_R8_3PLANE_420_UNORM)
++         return VK_ERROR_FORMAT_NOT_SUPPORTED;
++      resolved_info = *pCreateInfo;
++      resolved_info.format = image->vk.format;
++      pCreateInfo = &resolved_info;
++   }
+ 
+    view = static_cast<struct tu_image_view *>(vk_object_alloc(
+       &device->vk, pAllocator, sizeof(*view), VK_OBJECT_TYPE_IMAGE_VIEW));
+@@ -1601,6 +1648,21 @@ tu_fragment_density_map_sample(const struct tu_image_view *fdm,
+    area->height = 1.0f / density[1];
+ }
+ 
++
++VKAPI_ATTR VkResult VKAPI_CALL
++tu_CreateImage(VkDevice device, const VkImageCreateInfo *info,
++               const VkAllocationCallbacks *alloc, VkImage *image)
++{
++   VkResult result = sheng_observed_tu_CreateImage(device, info, alloc, image);
++   static unsigned calls = 0, failures = 0;
++   unsigned n = __atomic_add_fetch(&calls, 1, __ATOMIC_RELAXED);
++   if (n <= 12 || (result != VK_SUCCESS && __atomic_add_fetch(&failures, 1, __ATOMIC_RELAXED) <= 32))
++      fprintf(stderr, "SHENG_CREATE n=%u result=%d size=%ux%u format=%u usage=%x tiling=%u image=%p\n",
++              n, result, info->extent.width, info->extent.height, info->format,
++              info->usage, info->tiling, result == VK_SUCCESS ? (void*)*image : nullptr);
++   return result;
++}
++
+ VKAPI_ATTR VkResult VKAPI_CALL
+ tu_GetImageOpaqueCaptureDescriptorDataEXT(VkDevice device,
+                                           const VkImageCaptureDescriptorDataInfoEXT *pInfo,
+diff --git a/src/freedreno/vulkan/tu_image.h b/src/freedreno/vulkan/tu_image.h
+index 28de9828cf4..fbfe336c6e5 100644
+--- a/src/freedreno/vulkan/tu_image.h
++++ b/src/freedreno/vulkan/tu_image.h
+@@ -21,6 +21,9 @@ struct tu_image
+ {
+    struct vk_image vk;
+ 
++   /* OHOS native-buffer images are laid out at bind time from this copy (pNext dropped; they are linear). */
++   VkImageCreateInfo ohos_create_info;
++
+    struct fdl_layout layout[3];
+    uint64_t subsampled_metadata_offset;
+    uint64_t total_size;
+diff --git a/src/freedreno/vulkan/tu_knl_kgsl.cc b/src/freedreno/vulkan/tu_knl_kgsl.cc
+index 270a069eb71..5cd9357f074 100644
+--- a/src/freedreno/vulkan/tu_knl_kgsl.cc
++++ b/src/freedreno/vulkan/tu_knl_kgsl.cc
+@@ -31,6 +31,14 @@
+ #include "tu_queue.h"
+ #include "tu_rmv.h"
+ 
++#include <map>
++#include <mutex>
++#include <sys/stat.h>
++
++/* dma-buf imports by (device, inode); see kgsl_bo_init_dmabuf. */
++static std::mutex dmabuf_bos_lock;
++static std::map<std::pair<const tu_device *, ino_t>, tu_bo *> dmabuf_bos;
++
+ /* ION_HEAP(ION_SYSTEM_HEAP_ID) */
+ #define KGSL_ION_SYSTEM_HEAP_MASK (1u << 25)
+ 
+@@ -408,6 +416,18 @@ kgsl_bo_init_dmabuf(struct tu_device *dev,
+    };
+    int ret;
+ 
++   struct stat shared;
++   const bool known = fstat(fd, &shared) == 0;
++   if (known) {
++      std::lock_guard<std::mutex> guard(dmabuf_bos_lock);
++      auto it = dmabuf_bos.find({dev, shared.st_ino});
++      if (it != dmabuf_bos.end() && it->second->size >= size) {
++         p_atomic_inc(&it->second->refcnt);
++         *out_bo = it->second;
++         return VK_SUCCESS;
++      }
++   }
++
+    req.flags |= kgsl_align_flag(align);
+ 
+    ret = safe_ioctl(dev->physical_device->local_fd,
+@@ -451,6 +471,10 @@ kgsl_bo_init_dmabuf(struct tu_device *dev,
+        * collisions with 32-bit KGSL handles (which are used for native BOs).
+        */
+       bo->unique_id = st.st_ino | (1ULL << 63);
++   if (known) {
++      std::lock_guard<std::mutex> guard(dmabuf_bos_lock);
++      dmabuf_bos[{dev, shared.st_ino}] = bo;
++   }
+ 
+    tu_dump_bo_init(dev, bo);
+ 
+@@ -500,8 +524,16 @@ kgsl_bo_finish(struct tu_device *dev, struct tu_bo *bo)
+ {
+    assert(bo->gem_handle);
+ 
+-   if (!p_atomic_dec_zero(&bo->refcnt))
++   if (bo->unique_id >> 63) {
++      std::lock_guard<std::mutex> guard(dmabuf_bos_lock);
++      if (!p_atomic_dec_zero(&bo->refcnt))
++         return;
++      auto it = dmabuf_bos.find({dev, ino_t(bo->unique_id & ~(1ULL << 63))});
++      if (it != dmabuf_bos.end() && it->second == bo)
++         dmabuf_bos.erase(it);
++   } else if (!p_atomic_dec_zero(&bo->refcnt)) {
+       return;
++   }
+ 
+    tu_debug_bos_del(dev, bo);
+    tu_dump_bo_del(dev, bo);
+diff --git a/src/vulkan/registry/vk.xml b/src/vulkan/registry/vk.xml
+index 885e3ed97b0..91ef237b98e 100644
+--- a/src/vulkan/registry/vk.xml
++++ b/src/vulkan/registry/vk.xml
+@@ -31216,7 +31216,7 @@ endif::VK_KHR_internally_synchronized_queues[]
+                 <enum value="&quot;VK_HUAWEI_extension_686&quot;" name="VK_HUAWEI_EXTENSION_686_EXTENSION_NAME" />
+             </require>
+         </extension>
+-        <extension name="VK_OHOS_native_buffer" number="589" type="device" platform="ohos" author="HUAWEI" contact="Weilan Chen @wchen-h" supported="disabled" nofeatures="true">
++        <extension name="VK_OHOS_native_buffer" number="589" type="device" platform="ohos" author="HUAWEI" contact="Weilan Chen @wchen-h" supported="vulkan" nofeatures="true">
+             <require>
+                 <enum value="1" name="VK_OHOS_NATIVE_BUFFER_SPEC_VERSION" />
+                 <enum value="&quot;VK_OHOS_native_buffer&quot;" name="VK_OHOS_NATIVE_BUFFER_EXTENSION_NAME" />
+diff --git a/src/vulkan/runtime/vk_image.c b/src/vulkan/runtime/vk_image.c
+index 474cd4149e8..12058c10291 100644
+--- a/src/vulkan/runtime/vk_image.c
++++ b/src/vulkan/runtime/vk_image.c
+@@ -38,7 +38,7 @@
+ #include "vk_util.h"
+ #include "vulkan/wsi/wsi_common.h"
+ 
+-#ifdef VK_USE_PLATFORM_ANDROID_KHR
++#if defined(VK_USE_PLATFORM_ANDROID_KHR) || defined(VK_USE_PLATFORM_OHOS)
+ #include "vk_android.h"
+ #include <vulkan/vulkan_android.h>
+ #endif
+@@ -115,7 +115,7 @@ vk_image_init(struct vk_device *device,
+    image->drm_format_mod = ((1ULL << 56) - 1) /* DRM_FORMAT_MOD_INVALID */;
+ #endif
+ 
+-#ifdef VK_USE_PLATFORM_ANDROID_KHR
++#if defined(VK_USE_PLATFORM_ANDROID_KHR) || defined(VK_USE_PLATFORM_OHOS)
+    if (image->external_handle_types &
+              VK_EXTERNAL_MEMORY_HANDLE_TYPE_ANDROID_HARDWARE_BUFFER_BIT_ANDROID)
+       image->android_buffer_type = ANDROID_BUFFER_HARDWARE;
+@@ -186,7 +186,7 @@ vk_image_destroy(struct vk_device *device,
+                  const VkAllocationCallbacks *alloc,
+                  struct vk_image *image)
+ {
+-#ifdef VK_USE_PLATFORM_ANDROID_KHR
++#if defined(VK_USE_PLATFORM_ANDROID_KHR) || defined(VK_USE_PLATFORM_OHOS)
+    if (image->anb_memory) {
+       device->dispatch_table.FreeMemory(
+          (VkDevice)device, image->anb_memory, alloc);
+diff --git a/src/vulkan/runtime/vk_image.h b/src/vulkan/runtime/vk_image.h
+index 4518281076f..26def12d346 100644
+--- a/src/vulkan/runtime/vk_image.h
++++ b/src/vulkan/runtime/vk_image.h
+@@ -29,7 +29,7 @@
+ #include "util/detect_os.h"
+ #include "util/u_math.h"
+ 
+-#ifdef VK_USE_PLATFORM_ANDROID_KHR
++#if defined(VK_USE_PLATFORM_ANDROID_KHR) || defined(VK_USE_PLATFORM_OHOS)
+ enum android_buffer_type {
+    ANDROID_BUFFER_NONE = 0,
+    ANDROID_BUFFER_NATIVE,
+@@ -93,7 +93,7 @@ struct vk_image {
+    uint64_t drm_format_mod;
+ #endif
+ 
+-#ifdef VK_USE_PLATFORM_ANDROID_KHR
++#if defined(VK_USE_PLATFORM_ANDROID_KHR) || defined(VK_USE_PLATFORM_OHOS)
+    enum android_buffer_type android_buffer_type;
+    VkDeviceMemory anb_memory;
+ 
+@@ -451,7 +451,7 @@ VkImageLayout vk_att_ref_stencil_layout(const VkAttachmentReference2 *att_ref,
+ VkImageLayout vk_att_desc_stencil_layout(const VkAttachmentDescription2 *att_desc,
+                                            bool final);
+ 
+-#ifdef VK_USE_PLATFORM_ANDROID_KHR
++#if defined(VK_USE_PLATFORM_ANDROID_KHR) || defined(VK_USE_PLATFORM_OHOS)
+ static inline bool
+ vk_image_is_android_native_buffer(struct vk_image *image)
+ {
+diff --git a/src/vulkan/runtime/vk_queue.c b/src/vulkan/runtime/vk_queue.c
+index b146acb0cba..e8a7d3844bf 100644
+--- a/src/vulkan/runtime/vk_queue.c
++++ b/src/vulkan/runtime/vk_queue.c
+@@ -1241,7 +1241,7 @@ vk_queue_finish(struct vk_queue *queue)
+       vk_queue_submit_destroy(queue, submit);
+    }
+ 
+-#ifdef VK_USE_PLATFORM_ANDROID_KHR
++#if defined(VK_USE_PLATFORM_ANDROID_KHR) || defined(VK_USE_PLATFORM_OHOS)
+    if (queue->anb_semaphore != VK_NULL_HANDLE) {
+       struct vk_device *device = queue->base.device;
+       device->dispatch_table.DestroySemaphore(vk_device_to_handle(device),
+diff --git a/src/vulkan/runtime/vk_queue.h b/src/vulkan/runtime/vk_queue.h
+index ff880aa95e4..0630d1adc09 100644
+--- a/src/vulkan/runtime/vk_queue.h
++++ b/src/vulkan/runtime/vk_queue.h
+@@ -146,7 +146,7 @@ struct vk_queue {
+    struct util_dynarray labels;
+    bool region_begin;
+ 
+-#ifdef VK_USE_PLATFORM_ANDROID_KHR
++#if defined(VK_USE_PLATFORM_ANDROID_KHR) || defined(VK_USE_PLATFORM_OHOS)
+    /** SYNC_FD signal semaphore for vkQueueSignalReleaseImageANDROID
+     *
+     * VK_ANDROID_native_buffer enforces explicit fencing on the present api
+diff --git a/src/vulkan/runtime/vk_ycbcr_conversion.c b/src/vulkan/runtime/vk_ycbcr_conversion.c
+index f754a4ddbf9..a09e3ac66af 100644
+--- a/src/vulkan/runtime/vk_ycbcr_conversion.c
++++ b/src/vulkan/runtime/vk_ycbcr_conversion.c
+@@ -70,6 +70,26 @@ vk_common_CreateSamplerYcbcrConversion(VkDevice _device,
+       state->mapping[3] = pCreateInfo->components.a;
+    }
+ 
++#ifdef VK_USE_PLATFORM_OHOS
++   /* The Ace5 OHOS native-buffer importer exposes linear NV12 as opaque ID 24. */
++   const VkExternalFormatOHOS *ohos_ext_info =
++      vk_find_struct_const(pCreateInfo->pNext, EXTERNAL_FORMAT_OHOS);
++   if (ohos_ext_info && ohos_ext_info->externalFormat) {
++      if ((ohos_ext_info->externalFormat != 24 && ohos_ext_info->externalFormat != 25 && ohos_ext_info->externalFormat != 28 && ohos_ext_info->externalFormat != 29) || pCreateInfo->format != VK_FORMAT_UNDEFINED) {
++         vk_object_free(device, pAllocator, conversion);
++         return VK_ERROR_FORMAT_NOT_SUPPORTED;
++      }
++      const bool two_plane = ohos_ext_info->externalFormat == 24 || ohos_ext_info->externalFormat == 25;
++      state->format = two_plane ? VK_FORMAT_G8_B8R8_2PLANE_420_UNORM : VK_FORMAT_G8_B8_R8_3PLANE_420_UNORM;
++      for (unsigned i = 0; i < 4; ++i)
++         state->mapping[i] = VK_COMPONENT_SWIZZLE_IDENTITY;
++      if (ohos_ext_info->externalFormat == 25) {  /* NV21: Cr where NV12 has Cb */
++         state->mapping[0] = VK_COMPONENT_SWIZZLE_B;
++         state->mapping[2] = VK_COMPONENT_SWIZZLE_R;
++      }
++   }
++#endif
++
+    state->chroma_offsets[0] = pCreateInfo->xChromaOffset;
+    state->chroma_offsets[1] = pCreateInfo->yChromaOffset;
+    state->chroma_filter = pCreateInfo->chromaFilter;
+diff --git a/src/freedreno/vulkan/tu_ohos.cc b/src/freedreno/vulkan/tu_ohos.cc
+new file mode 100644
+index 00000000000..49174af89ec
+--- /dev/null
++++ b/src/freedreno/vulkan/tu_ohos.cc
+@@ -0,0 +1,301 @@
++#include <stdio.h>
++/* SPDX-License-Identifier: MIT
++ * Real linear DMA-BUF import and explicit sync for the Ace5 OHOS port.
++ * Only the formats/layouts exported by our allocator are supported.
++ */
++#include "tu_device.h"
++#include "tu_image.h"
++#include "tu_entrypoints.h"
++#include "vk_queue.h"
++#include "vk_util.h"
++#include "drm-uapi/drm_fourcc.h"
++#include "vk_alloc.h"
++#include <unistd.h>
++#include <errno.h>
++#include <stdio.h>
++
++static VkFormat ohos_format(int format) {
++ switch(format) {
++ case 3: return VK_FORMAT_R5G6B5_UNORM_PACK16;
++ case 11: case 12: return VK_FORMAT_R8G8B8A8_UNORM;
++ case 19: case 20: return VK_FORMAT_B8G8R8A8_UNORM;
++ case 28: case 29: return VK_FORMAT_G8_B8_R8_3PLANE_420_UNORM;
++ case 24: return VK_FORMAT_G8_B8R8_2PLANE_420_UNORM; // NV12, linear Y then interleaved UV
++ case 25: return VK_FORMAT_G8_B8R8_2PLANE_420_UNORM; // NV21: interleaved VU, swapped in the conversion
++ default: return VK_FORMAT_UNDEFINED;
++ }
++}
++bool tu_ohos_supported_format(VkFormat f) {
++ return f==VK_FORMAT_R5G6B5_UNORM_PACK16 || f==VK_FORMAT_R8G8B8A8_UNORM || f==VK_FORMAT_B8G8R8A8_UNORM || f==VK_FORMAT_G8_B8R8_2PLANE_420_UNORM || f==VK_FORMAT_G8_B8_R8_3PLANE_420_UNORM;
++}
++// BLOB width/stride are byte counts, not image dimensions. Never admit this
++// format through image validation or advertise image sampling/render features.
++bool tu_ohos_valid_blob_handle(const Ace5OHBufferHandle *h) {
++ if(!h || h->fd<0 || h->format!=38 || h->width<=0 || h->width>256*1024*1024 ||
++    h->height!=1 || h->stride!=h->width || h->size<=0 || h->reserveFds || h->reserveInts ||
++    (h->usage & ((1ULL<<11)|(7ULL<<8)))) return false;
++ uint64_t page_size=(uint64_t(h->width)+4095)&~uint64_t(4095);
++ return uint64_t(h->size)==page_size;
++}
++bool tu_ohos_valid_handle(const Ace5OHBufferHandle *h) {
++ if(!h || h->fd<0 || h->width<=0 || h->height<=0 || h->width>16384 || h->height>16384 ||
++    h->size<=0 || h->reserveFds || h->reserveInts || (h->usage & (1ULL<<11))) return false;
++ bool yuv=h->format==24 || h->format==25 || h->format==28 || h->format==29;
++ if(yuv && ((h->width | h->height)&1))return false;
++ int bpp=yuv?1:h->format==3?2:4;
++ uint64_t required=uint64_t(h->stride)*h->height;
++ if(yuv)required+=required/2;
++ return ohos_format(h->format)!=VK_FORMAT_UNDEFINED && h->stride>=h->width*bpp &&
++    !(h->stride%64) && required<=uint64_t(h->size);
++}
++VkResult tu_ohos_bind_layout(tu_device *device,tu_image *image,const Ace5OHBufferHandle *h) {
++ bool valid=tu_ohos_valid_handle(h);
++ fprintf(stderr,"SHENG_BIND valid=%d vkformat=%u nativeformat=%d vkextent=%ux%u native=%dx%d stride=%d size=%d samples=%u flags=%llx\n",valid,image->vk.format,h?h->format:-1,image->vk.extent.width,image->vk.extent.height,h?h->width:-1,h?h->height:-1,h?h->stride:-1,h?h->size:-1,image->vk.samples,(unsigned long long)image->vk.create_flags);
++ if(!valid || image->vk.format!=ohos_format(h->format) ||
++    image->vk.extent.width!=unsigned(h->width) || image->vk.extent.height!=unsigned(h->height) ||
++    image->vk.samples!=VK_SAMPLE_COUNT_1_BIT || image->vk.create_flags&VK_IMAGE_CREATE_PROTECTED_BIT)
++    return VK_ERROR_INVALID_EXTERNAL_HANDLE;
++ VkSubresourceLayout planes[3]={};planes[0].rowPitch=h->stride;planes[0].size=uint64_t(h->stride)*h->height;
++ if(h->format==24 || h->format==25){planes[1].offset=planes[0].size;planes[1].rowPitch=h->stride;planes[1].size=planes[0].size/2;}
++ if(h->format==28 || h->format==29) {
++  const uint64_t chromaSize=uint64_t(h->stride/2)*(h->height/2);
++  planes[1].offset=planes[0].size+(h->format==29?chromaSize:0);
++  planes[2].offset=planes[0].size+(h->format==28?chromaSize:0);
++  planes[1].rowPitch=planes[2].rowPitch=h->stride/2;
++  planes[1].size=planes[2].size=chromaSize;
++ }
++ VkResult result=TU_CALLX(device,tu_image_init)(device,image,&image->ohos_create_info,DRM_FORMAT_MOD_LINEAR,planes,TU_IMAGE_ID_ASSIGN);
++ fprintf(stderr,"SHENG_BIND layout_result=%d total_size=%llu native_size=%d\n",result,(unsigned long long)image->total_size,h->size);
++ if(result!=VK_SUCCESS)return result;
++ return image->total_size<=unsigned(h->size)?VK_SUCCESS:VK_ERROR_INVALID_EXTERNAL_HANDLE;
++}
++VkResult tu_ohos_import_image(tu_device *device,tu_image *image,const VkNativeBufferOHOS *native,const VkAllocationCallbacks *alloc) {
++ auto *h=reinterpret_cast<const Ace5OHBufferHandle*>(native->handle);
++ // BindImageMemory2 computes the explicit layout once, after importing memory.
++ // fdl6_layout accumulates slice sizes; computing it here too doubles the size.
++ if(!tu_ohos_valid_handle(h))return VK_ERROR_INVALID_EXTERNAL_HANDLE;
++ VkResult r;
++ int fd=dup(h->fd);if(fd<0)return VK_ERROR_OUT_OF_HOST_MEMORY;
++ VkMemoryDedicatedAllocateInfo dedicated={VK_STRUCTURE_TYPE_MEMORY_DEDICATED_ALLOCATE_INFO};
++ dedicated.image=tu_image_to_handle(image);
++ VkImportMemoryFdInfoKHR imported={VK_STRUCTURE_TYPE_IMPORT_MEMORY_FD_INFO_KHR};
++ imported.pNext=&dedicated;imported.handleType=VK_EXTERNAL_MEMORY_HANDLE_TYPE_DMA_BUF_BIT_EXT;imported.fd=fd;
++ VkMemoryAllocateInfo info={VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO};
++ info.pNext=&imported;info.allocationSize=h->size;info.memoryTypeIndex=0;
++ r=tu_AllocateMemory(tu_device_to_handle(device),&info,alloc,&image->vk.anb_memory);
++ if(r!=VK_SUCCESS){close(fd);return r;}
++ auto *memory=tu_device_memory_from_handle(image->vk.anb_memory);
++ memory->ohos_handle=*h;memory->ohos_import=true;
++ VkBindImageMemoryInfo bind={VK_STRUCTURE_TYPE_BIND_IMAGE_MEMORY_INFO};bind.image=tu_image_to_handle(image);bind.memory=image->vk.anb_memory;
++ return tu_BindImageMemory2(tu_device_to_handle(device),1,&bind);
++}
++VKAPI_ATTR VkResult VKAPI_CALL sheng_observed_tu_GetNativeBufferPropertiesOHOS(VkDevice dev,const OH_NativeBuffer *buffer,VkNativeBufferPropertiesOHOS *out) {
++ VK_FROM_HANDLE(tu_device,device,dev);
++ auto *h=OH_NativeBuffer_GetBufferHandle(buffer);
++ if(!out || (!tu_ohos_valid_handle(h) && !tu_ohos_valid_blob_handle(h))) {
++  static unsigned invalid_count=0;
++  if(invalid_count++<48)fprintf(stderr,"SHENG_NATIVE_INVALID handle=%p fd=%d native=%dx%d format=%d stride=%d size=%d usage=%llx reserve=%u/%u out=%p\n",(const void*)h,h?h->fd:-1,h?h->width:-1,h?h->height:-1,h?h->format:-1,h?h->stride:-1,h?h->size:-1,(unsigned long long)(h?h->usage:0),h?h->reserveFds:0,h?h->reserveInts:0,(void*)out);
++  return VK_ERROR_INVALID_EXTERNAL_HANDLE;
++ }
++ out->allocationSize=h->size;out->memoryTypeBits=0;
++ for(unsigned i=0;i<device->physical_device->memory.type_count;i++)
++  if(device->physical_device->memory.types[i]&VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT)out->memoryTypeBits|=1u<<i;
++ if(!out->memoryTypeBits)return VK_ERROR_INVALID_EXTERNAL_HANDLE;
++ auto *format=vk_find_struct(out->pNext,NATIVE_BUFFER_FORMAT_PROPERTIES_OHOS);
++ if(format) {
++  auto *f=(VkNativeBufferFormatPropertiesOHOS*)format;
++  if(h->format==38) {
++   f->format=VK_FORMAT_UNDEFINED;f->externalFormat=0;f->formatFeatures=0;
++   f->samplerYcbcrConversionComponents={VK_COMPONENT_SWIZZLE_IDENTITY,VK_COMPONENT_SWIZZLE_IDENTITY,VK_COMPONENT_SWIZZLE_IDENTITY,VK_COMPONENT_SWIZZLE_IDENTITY};
++   f->suggestedYcbcrModel=VK_SAMPLER_YCBCR_MODEL_CONVERSION_RGB_IDENTITY;
++   f->suggestedYcbcrRange=VK_SAMPLER_YCBCR_RANGE_ITU_FULL;
++   f->suggestedXChromaOffset=f->suggestedYChromaOffset=VK_CHROMA_LOCATION_COSITED_EVEN;
++   return VK_SUCCESS;
++  }
++  // Rosen/Skia imports NV12 through its external YCbCr texture path.
++  // Opaque ID 24 is the OHOS linear NV12 native-buffer format, not a VkFormat.
++  const bool yuv=h->format==24 || h->format==25 || h->format==28 || h->format==29;
++  f->format=yuv?VK_FORMAT_UNDEFINED:ohos_format(h->format);
++  f->externalFormat=yuv?h->format:0;
++  VkFormatProperties2 props={VK_STRUCTURE_TYPE_FORMAT_PROPERTIES_2};
++  tu_GetPhysicalDeviceFormatProperties2(tu_physical_device_to_handle(device->physical_device),ohos_format(h->format),&props);
++  f->formatFeatures=props.formatProperties.linearTilingFeatures;
++  f->samplerYcbcrConversionComponents={VK_COMPONENT_SWIZZLE_IDENTITY,VK_COMPONENT_SWIZZLE_IDENTITY,VK_COMPONENT_SWIZZLE_IDENTITY,VK_COMPONENT_SWIZZLE_IDENTITY};
++  if(h->format==25)f->samplerYcbcrConversionComponents={VK_COMPONENT_SWIZZLE_B,VK_COMPONENT_SWIZZLE_IDENTITY,VK_COMPONENT_SWIZZLE_R,VK_COMPONENT_SWIZZLE_IDENTITY};
++  f->suggestedYcbcrModel=yuv?VK_SAMPLER_YCBCR_MODEL_CONVERSION_YCBCR_601:VK_SAMPLER_YCBCR_MODEL_CONVERSION_RGB_IDENTITY;
++  f->suggestedYcbcrRange=yuv?VK_SAMPLER_YCBCR_RANGE_ITU_NARROW:VK_SAMPLER_YCBCR_RANGE_ITU_FULL;
++  f->suggestedXChromaOffset=f->suggestedYChromaOffset=VK_CHROMA_LOCATION_COSITED_EVEN;
++ }
++ return VK_SUCCESS;
++}
++VKAPI_ATTR VkResult VKAPI_CALL tu_GetMemoryNativeBufferOHOS(VkDevice,const VkMemoryGetNativeBufferInfoOHOS *info,OH_NativeBuffer **out) {
++ if(!out)return VK_ERROR_INVALID_EXTERNAL_HANDLE;*out=nullptr;
++ if(!info)return VK_ERROR_INVALID_EXTERNAL_HANDLE;
++ VK_FROM_HANDLE(tu_device_memory,mem,info->memory);
++ if(!mem || !mem->ohos_buffer)return VK_ERROR_INVALID_EXTERNAL_HANDLE;
++ if(OH_NativeBuffer_Reference(mem->ohos_buffer)!=0)return VK_ERROR_INVALID_EXTERNAL_HANDLE;
++ *out=mem->ohos_buffer;return VK_SUCCESS;
++}
++VKAPI_ATTR VkResult VKAPI_CALL tu_GetSwapchainGrallocUsageOHOS(VkDevice,VkFormat format,VkImageUsageFlags usage,uint64_t *out) {
++ if(!out || !tu_ohos_supported_format(format))return VK_ERROR_FORMAT_NOT_SUPPORTED;
++ const VkImageUsageFlags supported=VK_IMAGE_USAGE_TRANSFER_SRC_BIT|VK_IMAGE_USAGE_TRANSFER_DST_BIT|VK_IMAGE_USAGE_SAMPLED_BIT|VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT|VK_IMAGE_USAGE_INPUT_ATTACHMENT_BIT;
++ if(usage&~supported)return VK_ERROR_FORMAT_NOT_SUPPORTED;
++ *out=3|(1ULL<<3)|(1ULL<<8)|(1ULL<<9)|(1ULL<<10);return VK_SUCCESS;
++}
++
++/* Sync implementation adapted from Mesa vk_android.c (MIT). */
++VKAPI_ATTR VkResult VKAPI_CALL
++tu_AcquireImageOHOS(VkDevice _device,
++                              VkImage image,
++                              int nativeFenceFd,
++                              VkSemaphore semaphore,
++                              VkFence fence)
++{
++   VK_FROM_HANDLE(vk_device, device, _device);
++   VkResult result = VK_SUCCESS;
++
++   /* From https://source.android.com/devices/graphics/implement-vulkan :
++    *
++    *    "The driver takes ownership of the fence file descriptor and closes
++    *    the fence file descriptor when no longer needed. The driver must do
++    *    so even if neither a semaphore or fence object is provided, or even
++    *    if vkAcquireImageANDROID fails and returns an error."
++    *
++    * The Vulkan spec for VkImportFence/SemaphoreFdKHR(), however, requires
++    * the file descriptor to be left alone on failure.
++    */
++   int semaphore_fd = -1, fence_fd = -1;
++   if (nativeFenceFd >= 0) {
++      if (semaphore != VK_NULL_HANDLE && fence != VK_NULL_HANDLE) {
++         /* We have both so we have to import the sync file twice. One of
++          * them needs to be a dup.
++          */
++         semaphore_fd = nativeFenceFd;
++         fence_fd = dup(nativeFenceFd);
++         if (fence_fd < 0) {
++            VkResult err = (errno == EMFILE) ? VK_ERROR_TOO_MANY_OBJECTS :
++                                               VK_ERROR_OUT_OF_HOST_MEMORY;
++            close(nativeFenceFd);
++            return vk_error(device, err);
++         }
++      } else if (semaphore != VK_NULL_HANDLE) {
++         semaphore_fd = nativeFenceFd;
++      } else if (fence != VK_NULL_HANDLE) {
++         fence_fd = nativeFenceFd;
++      } else {
++         /* Nothing to import into so we have to close the file */
++         close(nativeFenceFd);
++      }
++   }
++
++   if (semaphore != VK_NULL_HANDLE) {
++      const VkImportSemaphoreFdInfoKHR info = {
++         .sType = VK_STRUCTURE_TYPE_IMPORT_SEMAPHORE_FD_INFO_KHR,
++         .semaphore = semaphore,
++         .flags = VK_SEMAPHORE_IMPORT_TEMPORARY_BIT,
++         .handleType = VK_EXTERNAL_SEMAPHORE_HANDLE_TYPE_SYNC_FD_BIT,
++         .fd = semaphore_fd,
++      };
++      result = device->dispatch_table.ImportSemaphoreFdKHR(_device, &info);
++      if (result == VK_SUCCESS)
++         semaphore_fd = -1; /* The driver took ownership */
++   }
++
++   if (result == VK_SUCCESS && fence != VK_NULL_HANDLE) {
++      const VkImportFenceFdInfoKHR info = {
++         .sType = VK_STRUCTURE_TYPE_IMPORT_FENCE_FD_INFO_KHR,
++         .fence = fence,
++         .flags = VK_FENCE_IMPORT_TEMPORARY_BIT,
++         .handleType = VK_EXTERNAL_FENCE_HANDLE_TYPE_SYNC_FD_BIT,
++         .fd = fence_fd,
++      };
++      result = device->dispatch_table.ImportFenceFdKHR(_device, &info);
++      if (result == VK_SUCCESS)
++         fence_fd = -1; /* The driver took ownership */
++   }
++
++   if (semaphore_fd >= 0)
++      close(semaphore_fd);
++   if (fence_fd >= 0)
++      close(fence_fd);
++
++   return result;
++}
++
++static VkResult
++vk_anb_semaphore_init_once(struct vk_queue *queue, struct vk_device *device)
++{
++   if (queue->anb_semaphore != VK_NULL_HANDLE)
++      return VK_SUCCESS;
++
++   const VkExportSemaphoreCreateInfo export_info = {
++      .sType = VK_STRUCTURE_TYPE_EXPORT_SEMAPHORE_CREATE_INFO,
++      .handleTypes = VK_EXTERNAL_SEMAPHORE_HANDLE_TYPE_SYNC_FD_BIT,
++   };
++   const VkSemaphoreCreateInfo create_info = {
++      .sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO,
++      .pNext = &export_info,
++   };
++   return device->dispatch_table.CreateSemaphore(vk_device_to_handle(device),
++                                                 &create_info, NULL,
++                                                 &queue->anb_semaphore);
++}
++
++VKAPI_ATTR VkResult VKAPI_CALL
++tu_QueueSignalReleaseImageOHOS(VkQueue _queue,
++                                         uint32_t waitSemaphoreCount,
++                                         const VkSemaphore *pWaitSemaphores,
++                                         VkImage image,
++                                         int *pNativeFenceFd)
++{
++   VK_FROM_HANDLE(vk_queue, queue, _queue);
++   struct vk_device *device = queue->base.device;
++   VkResult result = VK_SUCCESS;
++
++   STACK_ARRAY(VkPipelineStageFlags, stage_flags, MAX2(1, waitSemaphoreCount));
++   for (uint32_t i = 0; i < MAX2(1, waitSemaphoreCount); i++)
++      stage_flags[i] = VK_PIPELINE_STAGE_ALL_COMMANDS_BIT;
++
++   result = vk_anb_semaphore_init_once(queue, device);
++   if (result != VK_SUCCESS) {
++      STACK_ARRAY_FINISH(stage_flags);
++      return result;
++   }
++
++   const VkSubmitInfo submit_info = {
++      .sType = VK_STRUCTURE_TYPE_SUBMIT_INFO,
++      .waitSemaphoreCount = waitSemaphoreCount,
++      .pWaitSemaphores = pWaitSemaphores,
++      .pWaitDstStageMask = stage_flags,
++      .signalSemaphoreCount = 1,
++      .pSignalSemaphores = &queue->anb_semaphore,
++   };
++   result = device->dispatch_table.QueueSubmit(_queue, 1, &submit_info,
++                                               VK_NULL_HANDLE);
++   STACK_ARRAY_FINISH(stage_flags);
++   if (result != VK_SUCCESS)
++      return result;
++
++   const VkSemaphoreGetFdInfoKHR get_fd = {
++      .sType = VK_STRUCTURE_TYPE_SEMAPHORE_GET_FD_INFO_KHR,
++      .handleType = VK_EXTERNAL_SEMAPHORE_HANDLE_TYPE_SYNC_FD_BIT,
++      .semaphore = queue->anb_semaphore,
++   };
++   return device->dispatch_table.GetSemaphoreFdKHR(vk_device_to_handle(device),
++                                                   &get_fd, pNativeFenceFd);
++}
++
++
++VKAPI_ATTR VkResult VKAPI_CALL
++tu_GetNativeBufferPropertiesOHOS(VkDevice device, const OH_NativeBuffer *buffer,
++                                 VkNativeBufferPropertiesOHOS *out)
++{
++   VkResult result = sheng_observed_tu_GetNativeBufferPropertiesOHOS(device, buffer, out);
++   static unsigned calls = 0, failures = 0;
++   unsigned n = __atomic_add_fetch(&calls, 1, __ATOMIC_RELAXED);
++   if (n <= 12 || (result != VK_SUCCESS && __atomic_add_fetch(&failures, 1, __ATOMIC_RELAXED) <= 32))
++      fprintf(stderr, "SHENG_PROPERTIES n=%u result=%d native=%p size=%llu types=%x\n",
++              n, result, (const void*)buffer, out ? (unsigned long long)out->allocationSize : 0,
++              out ? out->memoryTypeBits : 0);
++   return result;
++}
+diff --git a/src/freedreno/vulkan/tu_ohos.h b/src/freedreno/vulkan/tu_ohos.h
+new file mode 100644
+index 00000000000..8c072edb590
+--- /dev/null
++++ b/src/freedreno/vulkan/tu_ohos.h
+@@ -0,0 +1,33 @@
++/* SPDX-License-Identifier: MIT
++ * Ace5 linear DMA-BUF bridge for the pinned HarmonyOS native-buffer ABI.
++ */
++#ifndef TU_OHOS_H
++#define TU_OHOS_H
++#include <stdint.h>
++#include <vulkan/vulkan.h>
++struct Ace5OHBufferHandle {
++ int32_t fd, width, stride, height, size, format;
++ uint64_t usage;
++ void *virAddr;
++ uint64_t phyAddr;
++ uint32_t reserveFds, reserveInts;
++};
++extern "C" {
++const Ace5OHBufferHandle *OH_NativeBuffer_GetBufferHandle(const OH_NativeBuffer *);
++int32_t OH_NativeBuffer_Reference(OH_NativeBuffer *);
++int32_t OH_NativeBuffer_Unreference(OH_NativeBuffer *);
++}
++struct tu_device;
++VKAPI_ATTR VkResult VKAPI_CALL sheng_observed_tu_AllocateMemory(VkDevice, const VkMemoryAllocateInfo *,
++   const VkAllocationCallbacks *, VkDeviceMemory *);
++VKAPI_ATTR VkResult VKAPI_CALL sheng_observed_tu_CreateImage(VkDevice, const VkImageCreateInfo *,
++   const VkAllocationCallbacks *, VkImage *);
++VKAPI_ATTR VkResult VKAPI_CALL sheng_observed_tu_GetNativeBufferPropertiesOHOS(VkDevice, const OH_NativeBuffer *,
++   VkNativeBufferPropertiesOHOS *);
++struct tu_image;
++bool tu_ohos_valid_handle(const Ace5OHBufferHandle *);
++bool tu_ohos_valid_blob_handle(const Ace5OHBufferHandle *);
++bool tu_ohos_supported_format(VkFormat);
++VkResult tu_ohos_bind_layout(tu_device *,tu_image *,const Ace5OHBufferHandle *);
++VkResult tu_ohos_import_image(tu_device *,tu_image *,const VkNativeBufferOHOS *,const VkAllocationCallbacks *);
++#endif

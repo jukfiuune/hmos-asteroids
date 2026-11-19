@@ -1,0 +1,8 @@
+# What the helpers start or load by path in the Android root (build-android-helpers.sh keeps these and their
+# dependencies). The linker and bionic come with the runtime APEX.
+vendor/bin/agmplay
+vendor/bin/audioadsprpcd
+vendor/bin/sscrpcd
+vendor/lib64/libagm.so
+vendor/lib64/hw/android.hardware.bluetooth@1.0-impl-qti.so
+vendor/lib64/libaacvibrator.so

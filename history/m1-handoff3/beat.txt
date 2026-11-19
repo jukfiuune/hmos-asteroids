@@ -1,0 +1,1 @@
+beat 19620 uptime /hmosdata/m1/blackbox.sh: line 21: cut: Permission denied go=

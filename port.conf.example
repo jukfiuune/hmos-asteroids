@@ -1,0 +1,7 @@
+# Copy to port.conf (git ignores it) and set where the heavy builds run. ./port and the laptop-side scripts read it;
+# environment variables of the same names override it.
+#
+# BUILD_HOST  user@host of the build machine (reached with ssh/scp; key login), or "local" to build on this machine.
+# BUILD_ROOT  the build tree on that machine: a path relative to its home, or absolute. README.md lists its layout.
+BUILD_HOST=local
+BUILD_ROOT=harmony-build

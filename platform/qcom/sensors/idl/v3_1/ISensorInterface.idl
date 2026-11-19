@@ -1,0 +1,21 @@
+/*
+ * asteroids: HarmonyOS NEXT's sensor HDI 3.1, which OpenHarmony doesn't publish. It is 3.0 plus five methods taking a
+ * callback id; their request codes (17-21, after 3.0's sixteen) and argument order are read from the donor's
+ * libsensor_proxy_3.1.z.so, and they match sheng's sensor_interface_service.h. hdi-gen makes the C++ headers from it
+ * (sensors/build-sensors.sh).
+ */
+
+package ohos.hdi.sensor.v3_1;
+
+import ohos.hdi.sensor.v3_0.SensorTypes;
+import ohos.hdi.sensor.v3_0.ISensorCallback;
+import ohos.hdi.sensor.v3_0.ISensorInterface;
+
+interface ISensorInterface extends ohos.hdi.sensor.v3_0.ISensorInterface {
+    EnableWithCallbackId([in] struct DeviceSensorInfo deviceSensorInfo, [in] unsigned int callbackId);
+    DisableWithCallbackId([in] struct DeviceSensorInfo deviceSensorInfo, [in] unsigned int callbackId);
+    SetBatchWithCallbackId([in] struct DeviceSensorInfo deviceSensorInfo, [in] unsigned int callbackId,
+        [in] long samplingInterval, [in] long reportInterval);
+    RegisterWithCallbackId([in] int groupId, [in] ISensorCallback callbackObj, [in] unsigned int callbackId);
+    UnregisterWithCallbackId([in] int groupId, [in] ISensorCallback callbackObj, [in] unsigned int callbackId);
+}

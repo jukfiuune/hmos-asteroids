@@ -1,0 +1,3 @@
+<config>
+  <device name="MI2S-LPAIF-RX-PRIMARY" rate="48000" ch="2" bits="32" />
+</config>

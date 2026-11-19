@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Configs>
+  <!-- asteroids: the donor's (sys_prod) with this panel's density and camera hole (a 43 px circle at 540,68.6; the
+       status bar's keep-out area keeps the donor's proportions). 460 dpi gives the 376 vp width the donor's 1260 px
+       panel has at 540, instead of 320 vp. -->
+  <dpi>460</dpi>
+  <defaultDeviceRotationOffset>0</defaultDeviceRotationOffset>
+  <cutoutArea>435 36 211 72</cutoutArea>
+  <defaultDisplayCutoutPath>M519 47 L562 47 v 43 h -43 Z</defaultDisplayCutoutPath>
+  <rotationPolicy>11</rotationPolicy>
+  <supportRotateWithSensor enable="true"/>
+  <externalScreenDefaultMode>mirror</externalScreenDefaultMode>
+  <castBundleName>com.huawei.hmos.huaweicast</castBundleName>
+  <castAbilityName>CastSourceServiceAbility</castAbilityName>
+</Configs>

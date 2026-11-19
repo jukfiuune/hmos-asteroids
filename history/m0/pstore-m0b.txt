@@ -1,0 +1,1360 @@
+total 0
+dr-xr-x---  2 system log       0 1970-01-16 01:56 .
+drwxr-xr-x 11 root   root      0 1970-01-01 02:00 ..
+-r--r-----  1 system log  125871 1970-01-16 01:56 console-ramoops-0
+-r--r-----  1 system log     123 1970-01-16 01:56 pmsg-ramoops-0
+[    0.000000][    T0] Booting Linux on physical CPU 0x0000000000 [0x410fd801]
+[    0.000000][    T0] Linux version 6.6.142-android15-8-4k-g3fd63df64c0f (builder@builder-pc) (clang version 23.1.3, LLD 23.1.3) #1 SMP PREEMPT Wed Nov 11 10:52:51 EET 2026
+[    0.000000][    T0] KASLR enabled
+[    0.000000][    T0] random: crng init done
+[    0.000000][    T0] Machine model: Nothing Phone (3a)
+[    0.000000][    T0] stackdepot: disabled
+[    0.000000][    T0] KVM is not available. Ignoring kvm-arm.mode
+[    0.000000][    T0] printk: debug: ignoring loglevel setting.
+[    0.000000][    T0] efi: UEFI not found.
+[    0.000000][    T0] [Firmware Bug]: Kernel image misaligned at boot, please fix your bootloader!
+[    0.000000][    T0] OF: fdt: Reserved memory: failed to reserve memory for node 'demura_region_0': base 0x0000000000000000, size 0 MiB
+[    0.000000][    T0] Reserved memory: created CMA memory pool at 0x00000000fdc00000, size 32 MiB
+[    0.000000][    T0] OF: reserved mem: initialized node linux,cma, compatible id shared-dma-pool
+[    0.000000][    T0] OF: reserved mem: 0x00000000fdc00000..0x00000000ffbfffff (32768 KiB) map reusable linux,cma
+[    0.000000][    T0] Reserved memory: created CMA memory pool at 0x00000000fc800000, size 20 MiB
+[    0.000000][    T0] OF: reserved mem: initialized node qseecom_region, compatible id shared-dma-pool
+[    0.000000][    T0] OF: reserved mem: 0x00000000fc800000..0x00000000fdbfffff (20480 KiB) map reusable qseecom_region
+[    0.000000][    T0] Reserved memory: created CMA memory pool at 0x00000000f2800000, size 16 MiB
+[    0.000000][    T0] OF: reserved mem: initialized node qseecom_ta_region, compatible id shared-dma-pool
+[    0.000000][    T0] OF: reserved mem: 0x00000000f2800000..0x00000000f37fffff (16384 KiB) map reusable qseecom_ta_region
+[    0.000000][    T0] OF: reserved mem: 0x0000000afffff000..0x0000000affffffff (4 KiB) nomap non-reusable debug_kinfo_region
+[    0.000000][    T0] Reserved memory: created CMA memory pool at 0x00000000f1800000, size 16 MiB
+[    0.000000][    T0] OF: reserved mem: initialized node va_md_mem_region, compatible id shared-dma-pool
+[    0.000000][    T0] OF: reserved mem: 0x00000000f1800000..0x00000000f27fffff (16384 KiB) map reusable va_md_mem_region
+[    0.000000][    T0] Reserved memory: created CMA memory pool at 0x00000000f0c00000, size 12 MiB
+[    0.000000][    T0] OF: reserved mem: initialized node adsp_heap_region, compatible id shared-dma-pool
+[    0.000000][    T0] OF: reserved mem: 0x00000000f0c00000..0x00000000f17fffff (12288 KiB) map reusable adsp_heap_region
+[    0.000000][    T0] Reserved memory: created CMA memory pool at 0x00000000d6000000, size 164 MiB
+[    0.000000][    T0] OF: reserved mem: initialized node non_secure_display_region, compatible id shared-dma-pool
+[    0.000000][    T0] OF: reserved mem: 0x00000000d6000000..0x00000000e03fffff (167936 KiB) map reusable non_secure_display_region
+[    0.000000][    T0] Reserved memory: created CMA memory pool at 0x00000000e1000000, size 40 MiB
+[    0.000000][    T0] OF: reserved mem: initialized node secure_cdsp_region, compatible id shared-dma-pool
+[    0.000000][    T0] OF: reserved mem: 0x00000000e1000000..0x00000000e37fffff (40960 KiB) map reusable secure_cdsp_region
+[    0.000000][    T0] Reserved memory: created CMA memory pool at 0x00000000f0800000, size 4 MiB
+[    0.000000][    T0] OF: reserved mem: initialized node vm_comm_mem_region, compatible id shared-dma-pool
+[    0.000000][    T0] OF: reserved mem: 0x00000000f0800000..0x00000000f0bfffff (4096 KiB) map reusable vm_comm_mem_region
+[    0.000000][    T0] Reserved memory: created CMA memory pool at 0x0000000afe400000, size 24 MiB
+[    0.000000][    T0] OF: reserved mem: initialized node mem_dump_region, compatible id shared-dma-pool
+[    0.000000][    T0] OF: reserved mem: 0x0000000afe400000..0x0000000affbfffff (24576 KiB) map reusable mem_dump_region
+[    0.000000][    T0] OF: reserved mem: 0x0000000080000000..0x0000000080dfffff (14336 KiB) nomap non-reusable gunyah_hyp_region@80000000
+[    0.000000][    T0] OF: reserved mem: 0x0000000081800000..0x000000008183ffff (256 KiB) nomap non-reusable xbl_sc_region@81800000
+[    0.000000][    T0] OF: reserved mem: 0x0000000081840000..0x00000000819fffff (1792 KiB) nomap non-reusable cpucp_fw_region@81840000
+[    0.000000][    T0] OF: reserved mem: 0x0000000081a00000..0x0000000081a3ffff (256 KiB) nomap non-reusable xbl_dtlog_region@81a00000
+[    0.000000][    T0] OF: reserved mem: 0x0000000081a40000..0x0000000081bfffff (1792 KiB) nomap non-reusable xbl_ramdump_region@81a40000
+[    0.000000][    T0] OF: reserved mem: 0x0000000081c00000..0x0000000081c5ffff (384 KiB) nomap non-reusable aop_image_region@81c00000
+[    0.000000][    T0] OF: reserved mem: 0x0000000081c60000..0x0000000081c7ffff (128 KiB) nomap non-reusable aop_cmd_db_region@81c60000
+[    0.000000][    T0] OF: reserved mem: 0x0000000081c80000..0x0000000081c9ffff (128 KiB) nomap non-reusable aop_config_region@81c80000
+[    0.000000][    T0] OF: reserved mem: 0x0000000081ca0000..0x0000000081cdffff (256 KiB) nomap non-reusable tme_crash_dump_region@81ca0000
+[    0.000000][    T0] OF: reserved mem: 0x0000000081ce0000..0x0000000081ce3fff (16 KiB) nomap non-reusable tme_log_region@81ce0000
+[    0.000000][    T0] OF: reserved mem: 0x0000000081ce4000..0x0000000081cf3fff (64 KiB) nomap non-reusable uefi_log_region@81ce4000
+[    0.000000][    T0] OF: reserved mem: 0x0000000081cf4000..0x0000000081cf4fff (4 KiB) nomap non-reusable chipinfo_region@81cf4000
+[    0.000000][    T0] OF: reserved mem: 0x0000000081cff000..0x0000000081cfffff (4 KiB) nomap non-reusable secdata_apss_region@81cff000
+[    0.000000][    T0] OF: reserved mem: 0x0000000081d00000..0x0000000081efffff (2048 KiB) nomap non-reusable smem_region@81d00000
+[    0.000000][    T0] OF: reserved mem: 0x0000000081f00000..0x0000000081f1ffff (128 KiB) nomap non-reusable adsp_mhi_region@81f00000
+[    0.000000][    T0] OF: resarved mem: 0x0000000081f20000..0x000000008231ffff (4096 KiB) map non-reusable ramoops_region@0x81f20000
+[    0.000000][    T0] OF: reserved mem: 0x00000000824a0000..0x000000008259ffff (1024 KiB) nomap non-reusable pvm_fw_region@824a0000
+[    0.000000][    T0] OF: reserved mem: 0x00000000825a0000..0x00000000825fffff (384 KiB) nomap non-reusable hyp_mem_database_region@825a0000
+[    0.000000][    T0] OF: reserved mem: 0x0000000082600000..0x00000000826fffff (1024 KiB) nomap non-reusable global_sync_region@82600000
+[    0.000000][    T0] OF: reserved mem: 0x0000000082700000..0x00000000827fffff (1024 KiB) nomap non-reusable tz_stat_region@82700000
+[    0.000000][    T0] Reserved memory: created CMA memory pool at 0x0000000082800000, size 32 MiB
+[    0.000000][    T0] OF: reserved mem: initialized node qdss_apps_region@82800000, compatible id shared-dma-pool
+[    0.000000][    T0] OF: reserved mem: 0x0000000082800000..0x00000000847fffff (32768 KiB) map reusable qdss_apps_region@82800000
+[    0.000000][    T0] OF: reserved mem: 0x000000008ac00000..0x00000000991fffff (235520 KiB) nomap non-reusable mpss_region@8ac00000
+[    0.000000][    T0] OF: reserved mem: 0x0000000099200000..0x000000009927ffff (512 KiB) nomap non-reusable q6_mpss_dtb_region@99200000
+[    0.000000][    T0] OF: reserved mem: 0x0000000099280000..0x00000000992fffff (512 KiB) nomap non-reusable q6_adsp_dtb_region@99280000
+[    0.000000][    T0] OF: reserved mem: 0x0000000099300000..0x000000009bafffff (40960 KiB) nomap non-reusable adspslpi_region@99300000
+[    0.000000][    T0] OF: reserved mem: 0x000000009bb00000..0x000000009d3fffff (25600 KiB) nomap non-reusable wpss_region@9bb00000
+[    0.000000][    T0] OF: reserved mem: 0x000000009d400000..0x000000009dafffff (7168 KiB) nomap non-reusable video_region@9d400000
+[    0.000000][    T0] OF: reserved mem: 0x000000009db00000..0x000000009e9fffff (15360 KiB) nomap non-reusable cdsp_region@9db00000
+[    0.000000][    T0] OF: reserved mem: 0x000000009ea00000..0x000000009ea7ffff (512 KiB) nomap non-reusable q6_cdsp_dtb_region@9ea00000
+[    0.000000][    T0] OF: reserved mem: 0x000000009ea80000..0x000000009ea8ffff (64 KiB) nomap non-reusable ipa_fw_region@9ea80000
+[    0.000000][    T0] OF: reserved mem: 0x000000009ea90000..0x000000009ea99fff (40 KiB) nomap non-reusable ipa_gsi_region@9ea90000
+[    0.000000][    T0] OF: reserved mem: 0x000000009ea9a000..0x000000009ea9bfff (8 KiB) nomap non-reusable gpu_microcode_region@9ea9a000
+[    0.000000][    T0] OF: reserved mem: 0x000000009eb00000..0x000000009f2fffff (8192 KiB) nomap non-reusable camera_region@9eb00000
+[    0.000000][    T0] OF: reserved mem: 0x00000000a6400000..0x00000000a6ffffff (12288 KiB) nomap non-reusable wlan_msa_region@a6400000
+[    0.000000][    T0] OF: reserved mem: 0x00000000e0600000..0x00000000e09fffff (4096 KiB) nomap non-reusable cpusys_vm_region@e0600000
+[    0.000000][    T0] OF: reserved mem: 0x00000000e3940000..0x00000000e643ffff (44032 KiB) map non-reusable splash_region
+[    0.000000][    T0] OF: reserved mem: 0x00000000e8900000..0x00000000e8dfffff (5120 KiB) nomap non-reusable qtee_region@e8900000
+[    0.000000][    T0] OF: reserved mem: 0x00000000e8e00000..0x00000000e94fffff (7168 KiB) nomap non-reusable tags_region@e8e00000
+[    0.000000][    T0] OF: reserved mem: 0x00000000e9500000..0x00000000ee9fffff (87040 KiB) nomap non-reusable trusted_apps_region@e9500000
+[    0.000000][    T0] Reserved memory: created CMA memory pool at 0x00000000f3800000, size 68 MiB
+[    0.000000][    T0] OF: reserved mem: initialized node trust_ui_vm_region@f3800000, compatible id shared-dma-pool
+[    0.000000][    T0] OF: reserved mem: 0x00000000f3800000..0x00000000f7bfffff (69632 KiB) map reusable trust_ui_vm_region@f3800000
+[    0.000000][    T0] Reserved memory: created CMA memory pool at 0x00000000f7c00000, size 76 MiB
+[    0.000000][    T0] OF: reserved mem: initialized node oem_vm_region@f7c00000, compatible id shared-dma-pool
+[    0.000000][    T0] OF: reserved mem: 0x00000000f7c00000..0x00000000fc7fffff (77824 KiB) map reusable oem_vm_region@f7c00000
+[    0.000000][    T0] Zone ranges:
+[    0.000000][    T0]   DMA32    empty
+[    0.000000][    T0]   Normal   [mem 0x0000000080e00000-0x0000000affffffff]
+[    0.000000][    T0] Movable zone start for each node
+[    0.000000][    T0] NoSplit zone start for each node
+[    0.000000][    T0] NoMerge zone start for each node
+[    0.000000][    T0] Early memory node ranges
+[    0.000000][    T0]   node   0: [mem 0x0000000080e00000-0x00000000817fffff]
+[    0.000000][    T0]   node   0: [mem 0x0000000081cf5000-0x0000000081cfefff]
+[    0.000000][    T0]   node   0: [mem 0x0000000081f20000-0x000000008249ffff]
+[    0.000000][    T0]   node   0: [mem 0x0000000082800000-0x000000008abfffff]
+[    0.000000][    T0]   node   0: [mem 0x000000009ea9c000-0x000000009eafffff]
+[    0.000000][    T0]   node   0: [mem 0x000000009f300000-0x00000000a63fffff]
+[    0.000000][    T0]   node   0: [mem 0x00000000a7000000-0x00000000e05fffff]
+[    0.000000][    T0]   node   0: [mem 0x00000000e0a00000-0x00000000e88fffff]
+[    0.000000][    T0]   node   0: [mem 0x00000000eea00000-0x00000000ffffffff]
+[    0.000000][    T0]   node   0: [mem 0x0000000880000000-0x00000008af8fdfff]
+[    0.000000][    T0]   node   0: [mem 0x00000008b0000000-0x00000008b76fffff]
+[    0.000000][    T0]   node   0: [mem 0x00000008bf800000-0x0000000affffefff]
+[    0.000000][    T0]   node   0: [mem 0x0000000afffff000-0x0000000affffffff]
+[    0.000000][    T0] Initmem setup node 0 [mem 0x0000000080e00000-0x0000000affffffff]
+[    0.000000][    T0] On node 0, zone Normal: 3584 pages in unavailable ranges
+[    0.000000][    T0] On node 0, zone Normal: 1269 pages in unavailable ranges
+[    0.000000][    T0] On node 0, zone Normal: 545 pages in unavailable ranges
+[    0.000000][    T0] On node 0, zone Normal: 864 pages in unavailable ranges
+[    0.000000][    T0] On node 0, zone Normal: 48796 pages in unavailable ranges
+[    0.000000][    T0] On node 0, zone Normal: 2048 pages in unavailable ranges
+[    0.000000][    T0] On node 0, zone Normal: 3072 pages in unavailable ranges
+[    0.000000][    T0] On node 0, zone Normal: 1024 pages in unavailable ranges
+[    0.000000][    T0] On node 0, zone Normal: 24832 pages in unavailable ranges
+[    0.000000][    T0] On node 0, zone Normal: 1794 pages in unavailable ranges
+[    0.000000][    T0] On node 0, zone Normal: 33024 pages in unavailable ranges
+[    0.000000][    T0] psci: probing for conduit method from DT.
+[    0.000000][    T0] psci: PSCIv1.1 detected in firmware.
+[    0.000000][    T0] psci: Using standard PSCI v0.2 function IDs
+[    0.000000][    T0] psci: MIGRATE_INFO_TYPE not supported.
+[    0.000000][    T0] psci: SMC Calling Convention v1.3
+[    0.000000][    T0] psci: OSI mode supported.
+[    0.000000][    T0] Load bootconfig: 1372 bytes 87 nodes
+[    0.000000][    T0] percpu: Embedded 31 pages/cpu s88296 r8192 d30488 u126976
+[    0.000000][    T0] pcpu-alloc: s88296 r8192 d30488 u126976 alloc-35*$086
+[    0.000000][    T0] pcpu-alloc: [0] 0 [0] 1 [0] 2 [0] 3 [0] 4 [0] 5 [0] 6 [0] 7 
+[    0.000000][    T0] Detected PIPT I-cache on CPU0
+[    0.000000][    T0] CPU features: SYS_ID_AA64MMFR1_EL1[11:8]: forced to 0
+[    0.000000][    T0] CPU features: detected: Address authentication (architected QARMA3 algorithm)
+[    0.000000][    T0] CPU features: detected: GIC system register CPU interface
+[    0.000000][    T0] CPU features: detected: HCRX_EL2 register
+[    0.000000][    T0] CPU features: detected: Hardware d)rty bit managament
+[    0.000000][    T0] CPU features: detected: Spectre-v4
+[    0.000000][    T0] CPU features: kernel page table isolation forced OFF by kpti command line option
+[    0.000000][    T0] CPU features: detected: ARM errata 2966298, 3117295
+[    0.000000][    T0] alternatives: applying boot alternatives
+[    0.000000][    T0] Kernel command line: console=ttynull stack_depot_disable=on cgroup_disable=pressure kasan.stacktrace=off kvm-arm.mode=protected bootconfig ioremap_guard loglevel=6 kpti=0 log_buf_len=256K swiotlb=noforce loop.max_part=7 pcie_ports=compat irqaffinity=0-3 cpufreq.default_governor=performance kasan=off cgroup.memory=nokmem,nosocket disable_dma32=on kernel.panic_on_rcu_stall=1 fw_devlink.strict=1 service_locator.enable=1 rcupdate.rcu_expedited=1 rcu_nocbs=0-7 no-steal-acc printk.console_no_auto_verbose=1 can.stats_timer=0 ftrace_dump_on_oops firmware_class.path=/vendor/firmware_mnt/image,/vendor/vm-system/oemvm/boot,/vendor/vm-system/trustedvm/boot,/vendor/firmware video=vfb:640x400,bpp=32,memsize=3072000 nosoftlockup log_buf_len=1M ignore_loglevel printk.devkmsg=on firmware_class.path=/vendor/firmware,/vendor/firmware_mnt/image qcom_geni_serial.con_enabled=0 bootconfig  msm_drm.dsi_display0=qcom,mdss_dsi_rm69220_fhd_plus_120hz_vid_vxn: erofs.reserved_pages=128 haptic_f0=1731 secure_state.is_secure_fuse=1 \
+[    0.000000][    T0] Kernel command line: rpmb_state.is_secure_rpmb=1 rootwait ro init=/init silent_boot.mode=nonsilent
+[    0.000000][    T0] cgroup: Disabling pressure control group feature
+[    0.000000M[    T0] UnknowN kernel command line parameters "haptic_f0=1731", will be passed to user space.
+[    0.000000][    T0] printk: log buffer data + meta data: 1048576 + 3670016 = 4718592 bytes
+[    0.000000][    T0] printk: early log buf free: 117664(89%)
+[    0.000000][    T0] Dentry cache hash table entries: 2097152 (order: 12, 16777216 bytes, linear)
+[    0.000000][    T0] Inode-cache hash table entries: 1048576 (order: 11, 8388608 bytes, linear)
+[    0.000000][    T0] Built 1 zonelists, mobility grouping on.  Total pages: 2945356
+[    0.000000][    T0] mem auto-init: stack:all(zero), heap alloc:on, heap free:off
+[    0.000000][    T0] software IO TLB: SWIOTLB bounce buffer size adjusted to 11MB
+[    0.000000][    T0] Memory: 11118632K/11968432K available (16896K kernel code, 2082K rwdata, 6504K rodata, 4160K init, 585K bss, 333704K reserved, 516096K cma-reserved)
+[    0.000000][    T0] SLUB: HWalign=64, Order=0-3, MinObjects=0, CPUs=8, Nodes=1
+[    0.000000][    T0] trace event string verifier disabled
+[    0.000000][    T0] rcu: Preemptible hierarchical RCU implementation.
+[    0.000000][    T0] rcu: 	RCU event tracing is enabled.
+[    0.000000][    T0] rcu: 	RCU restricting CPUs from NR_CPUS=32 to nr_cpu_ids=8.
+[    0.000000][    T0] rcu: 	RCU priority boosting: priority 1 delay 500 ms.
+[    0.000000][    T0] 	All grace periods are expedited (rcu_expedited).
+[    0.000000][    T0] 	Trampoline variant of Tasks RCU enabled.
+[    0.000000][    T0] 	Tracing variant of Tasks RCU enabled.
+[    0.000000][    T0] rcu: RCU calculated value of scheduler-enlistment delay is 25 jiffies.
+[    0.000000][    T0] rcu: Adjusting geometry for rcu_fanout_leaf=16, nr_cpu_ids=8
+[    0.000000][    T0] NR_IRQS: 64, nr_irqs: 64, preallocated irqs: 0
+[    0.000000][    T0] GICv3: 988 SPIs implemented
+[    0.000000][    T0] GICv3: 0 Extended SPIs implemented
+[    0.000000][    T0] Root IRQ handler: gic_handle_irq
+[    0.000000][    T0] GICv3: GICv3 features: 16 PPIs, DirectLPI
+[    0.000000][    T0] GICv3: Enabling SGIs without active state
+[    0.000000][    T0] GICv3: CPU0: found redistributor 0 region 0:0x0000000017180000
+[    0.000000][    T0] ITS [mem 0x17140000-0x1715ffff]
+[    0.000000][    T0] ITS@0x0000000017140000: Devices Table too large, reduce ids 32->19
+[    0.000000][    T0] ITS@0x0000000017140000: Devices too large, reduce ITS pages 1024->256
+[    0.000000][    T0] ITS@0x0000000017140000: allocated 131072 Devices @81400000 (indirect, esz 8, psz 4K, shr 1)
+[    0.000000][    T0] ITS@0x0000000017140000: allocated 4096 Interrupt Collections @9f36a000 (flat, esz 1, psz 4K, shr 1)
+[    0.000000][    T0] GICv3: using LPI property table @0x000000009f380000
+[    0.000000][    T0] GICv3: CPU0: using allocated LPI pending table @0x000000009f390000
+[    0.000000][    T0] rcu: 	Offload RCU callbacks from CPUs: 0-7.
+[    0.000000][    T0] rcu: srcu_init: Setting srcu_struct sizes based on contention.
+[    0.000000][    T0] arch_timer: cp15 and mmio timer(s) running at 19.20MHz (virt/virt).
+[    0.00000]S    T0] clocksource: arch_sys_counter: mask: 0xffffffffffffff max_cycles: 0x46d987e47, max_idle_ns: 440795202767 ns
+[    0.000000][    T0] sched_clock: 56 bits at 19MHz, resolution 52ns, wraps every 4398046511078ns
+[    0.002019][    T0] arm-pv: using stolen time PV
+[    0.002131][    T0] kfence: initialized - using 524288 bytes for 63 objects at 0x(____ptrval____)-0x(____ptrval____)
+[    0.002239][    T0] Calibrating delay loop (skipped), value calculated using timer frequency.. 38.40 BogoMIPS (lpj=76800)
+[    0.002247][    T0] pid_max: default: 32768 minimum: 301
+[    0.002368][    T0] LSM: initializing lsm=capability,safesetid,selinux,bpf,integrity
+[    0.002430][    T0] SELinux:  Initializing.
+[    0.002560][    T0] LSM support for eBPF active
+[    0.002651][    T0] Mount-cache hash table entries: 32768 (order: 6, 262144 bytes, linear)
+[    0.002682][    T0] Mountpoint-cache hash table entries: 32768 (order: 6, 262144 bytes, linear)
+[    0.003950][    T1] RCU Tasks: Setting shift to 3 and lim to 1 rcu_task_cb_adjust=1.
+[    0.004001][    T1] RCU Tasks Trace: Setting shift to 3 and lim to 1 rcu_task_cb_adjust=1$
+[    0.004107][    T1] rcu: Hierarchical SRCU implementation.
+[    0.004109][    T1] rcu: 	Max phase no-delay instances is 1000.
+[    0.004752][    T1] dyndbg: Ignore empty _ddebug table in a CONFIG_DYNAMIC_DEBUG_CORE build
+[    0.005010][    T1] Platform MSI: msi-controller@17140000 domain created
+[    0.005706][    T1] PCI/MSI: /soc/interrupt-controller@17100000/msi-controller@17140000 domain created
+[    0.011079][    T1] EFI services will not be available.
+[    0.011472][    T1] smp: Bringing up secondary CPUs ...
+[    0.012470][    T0] Detected PIPT I-cache on CPU1
+[    0.012529][    T0] GICv3: CPU1: found redistributor 100 region 0:0x00000000171c0000
+[    0.012683][    T0] GICv3: CPU1: using allocated LPI pending table @0x000000009f3a0000
+[    0.012781][    T0] CPU1: Booted secondary processor 0x0000000100 [0x410fd801]
+[    0.013928][    T0] Detected PIPT I-cache on CPU2
+[    0.013971][    T0] GICv3: CPU2: found redistributor 200 region 0:0x0000000017200000
+[    0.014078][    T0] GICv3: CPU2: using allocated LPI pending table @0x000000009f3b0000
+[    0.014156][    T0] CPU2: Booted secondary processor 0x0000000200 [0x410fd801]
+[    0.015121][    T0] Detected PIPT I-cache on CPU3
+[    0.015164][    T0] GICv3: CPU3: found redistributor 300 region 0:0x0000000017240000
+[    0.015272][    T0] GICv3: CPU3: using allocated LPI pending table @0x000000009f3c0000
+[    0.015352][    T0] CPU3: Booted secondary processor 0x0000000300 [0x410fd801]
+[    0.016568][    T0] CPU features: detected: Spectre-BHB
+[    0.016581][    T0] CPU features: detected: SSBS not fully self-synchronizing
+[    0.016593][    T0] Detected PIPT I-cache on CPU4
+[    0.016599][    T0] CPU features: SANITY CHECK: Unexpected variation in SYS_ID_AA64MMFR1_EL1. Boot CPU: 0x1001111011312122, CPU4: 0x1001111010312122
+[    0.016607][    T0] CPU features: Unsupported CPU feature variation detected.
+[    0.016657][    T0] GICv3: CPU4: found redistributor 400 region 0:0x0000000017280000
+[    0.016795][    T0] GICv3: CPU4: using allocated LPI pending table @0x000000009f3d0000
+[    0.016943][    T0] CPU4: Booted secondary processor 0x0000000400 [0x410fd811]
+[    0.017988][    T0] Detected PIPT I-cache on CPU5
+[    0.018001][    T0] CPU features: SANITY CHECK: Unexpected variation in SYS_ID_AA64MMFR1_EL1. Boot CPU: 0x1001111011312122, CPU5: 0x1001111010312122
+[    0.018026][    T0] GICv3: CPU5: found redistributor 500 region 0:0x00000000172c0000
+[    0.018095][    T0] GICv3: CPU5: using allocated LPI pending table @0x000000009f3e0000
+[    0.0q8154][    T0] CPU5: Booped secondary processor 0x0000000500 [0x410fd811]
+[    0.019030][    T0] Detected PIPT I-cache on CPU6
+[    0.019035][    T0] CPU features: SANITY CHECK: Unexpected variation in SYS_ID_AA64MMFR1_EL1. Boot CPU: 0x1001111011312122, CPU6: 0x1001111010312122
+[    0.019061][    T0] GICv3: CPU6: found redistributor 600 region 0:0x0000000017300000
+[    0.019130][    T0] GICv3: CPU6: using allocated LPI pending table @0x000000009f3f0000
+[    0.019197][    T0] CPU6: Booted secondary processor 0x0000000600 [0x410fd811]
+[    0.020331][    T0] Detected PIPT I-cache on CPU7
+[    0.020343][    T0] CPU features: SANITY CHECK: Unexpected variation in SYS_ID_AA64MMFR1_EL1. Boot CPU: 0x1001111011312122, CPU7: 0x1001111010312122
+[    0.020410][    T0] GICv3: CPU7: found redistributor 700 region 0:0x0000000017340000
+[    0.020574][    T0] GICv3: CPU7: using allocated LPI pending tabl% @0x000000008150000
+[    0.020727][    T0] CPU7: Booted secondary processor 0x0000000700 [0x410fd811]
+[    0.020870][    T1] smp: Brought up 1 node, 8 CPUs
+[    0.020879][    T1] SMP: Total of 8 processors activated.
+[    0.020882][    T1] CPU features: detected: Branch Target Identification
+[    0.020886][    T1] CPU features: detected: ARMv8.4 Translation Table Level
+[    0.020888][    T1] CPU features: detected: Data cache clean to the PoU not required for I/D coherence
+[    0.020891][    T1] CPU features: detected: Common not Private translations
+[    0.020893][    T1] CPU features: detected: CRC32 instructions
+[    0.020896][    T1] CPU features: detected: Data cache clean to Point of Deep Persistence
+[    0.020898][    T1] CPU features: detected: Data cache clean to Point of Persistence
+[    0.020900][    T1] CPU features: detected: Data independent timing control (DIT)
+[    0.020902][    T1] CPU features: detected: E0PD
+[    0.020904][    T1] CPU features: detected: Enhanced Counter Virtualization
+[    0.020906][    T1] CPU features: detected: Enhanced Counter Virtualization (CNTPOFF)
+[    0.020908][    T1] CPU features: detected: Enhanced Privileged Access Never
+[    0.020910][    T1] CPU features: detected: Enhanced Virtualization Traps
+[    0.020913][    T1] CPU features: detected: Fine Grained Traps
+[    0.020915][    T1] CPU features: detected: Generic authentication (architected QARMA3 algorithm)
+[    0.020917][    T1] CPU features: detected: RCpc load-acquire (LDAPR)
+[    0.020919][    T1] CPU features: detected: LSE atomic instructions
+[    0.020922][    T1] CPU features: detected: Privileged Access Never
+[    0.020925][    T1] CPU features: detected: Speculation barrier (SB)
+[    0.020927][    T1] CPU features: detected: Stage-2 Force Write-Back
+[    0.020929][    T1] CPU features: detected: TLB range maintenance instructions
+[    0.020934][    T1] CPU features: detected: Speculative Store Bypassing Safe (SSBS)
+[    0.020983][   T56] CPU features: detected CPU5: Activity Monitors Unit (AMU)
+[    0.020983][   T63] CPU features: detected CPU6: Activity Monitors Unit (AMU)
+[    0.020983][   T48] CPU features: detected CPU4: Activity Monitors Unit (AMU)
+[    0.020984][   T22] CPU features: detected CPU0: Activity Monitors Unit (AMU)
+[    0.020984][   T27] CPU features: detected CPU1: Activity Monitors Unit (AMU)
+[    0.020984][   T41] CPU features: detected CPU3: Activity Monitors Unit (AMU)
+[    0.020985][   T34] CPU features: detected CPU2: Activity Monitors Unit (AMU)
+[    0.020985][   T70] CPU features: detected CPU7: Activity Monitors Unit (AMU)
+[    0.021034][    T1] CPU: All CPU(s) started at EL1
+[    0.021045][    T1] alternatives: applying system-wide alternatives
+[    0.040352][    T1] clocksource: jiffies: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 7645041785100000 ns
+[    0.040370][    T1] fute8 hash table eltries: 2048 (order: 5, 131072 bytes, linear)
+[    0.042715][    T1] pinctrl core: initialized pinctrl subsystem
+[    0.042993][    T1] NET: Registered PF_NETLINK/PF_ROUTE protocol family
+[    0.043588][    T1] DMA: preallocated 2048 KiB GFP_KERNEL pool for atomic allocations
+[    0.043609][    T1] audit: initializing netlink subsys (disabled)
+[    0.043714][   T76] audit: type=2000 audit(0.040:1): state=initialized audit_enabled=0 res=1
+[    0.043799][    T1] thermal_sys: Registered thermal governor 'bang_bang'
+[    0.043801][    T1] thermal_sys: Registered thermal governor 'step_wise'
+[    0.043802][    T1] thermal_sys: Registered thermal governor 'user_space'
+[    0.043802][    T1] thermal_sys: Registered thermal governor 'power_allocator'
+[    0.043814][    T1] cpuidle: using governor menu
+[    0.043876][    T1] hw-breakpoint: found 6 breakpoint and 4 watchpoint registers.
+[    0.043977][    T1] ASID allocator initialised with 65536 entries
+[    0.044020][    T1] Serial: AMBA PL011 UART driver
+[    0.045136][    T1] printk: console [ramoops-1] enabled
+[    0.045336][    T1] pstore: Registered ramoops as persistent store backend
+[    0.045337][    T1] ramoops: using 0x400000@0x81f20000, ecc: 0
+[    0.045853][    T1] ramoops soc:ramoops_region: failed to locate DT /reserved-memory resource
+[    0.045857][    T1] ramoops: probe of soc:ramoops_region failed with error -22
+[    0.047055][    T1] OF: /soc/spf_core_platform/lpass-cdc/va-macro@33F0000: could not get #gpio-cells for /soc/interrupt-controller@17100000
+[    0.061648][    T1] /soc: Fixed dependency cycle(s) with /soc/interrupt-controller@17100000
+[    0.061974][    T1] /soc/qcom,dp_display@ae154000: Fixed dependency cycle(s) with /soc/qcom,dp_display@ae154000
+[    0.062058][    T1] /soc/interrupt-controller@17100000: Fixed dependency cycle(s) with /soc/interrupt-controller@17100000
+[    0.062175][    T1] /soc/qcom,pmic_glink/qcom,ucsi/connector: Fixed dependency cycle(s) with /soc/ssusb@a600000
+[    0.062196][    T1] /soc/ufsphy_mem@1d80000: Fixed dependency cycle(s) with /soc/ufshc@1d84000
+[    0.062211][    T1] /soc/ufshc@1d84000: Fixed dependency cycle(s) with /soc/ufsphy_mem@1d80000
+[    0.062344][    T1] /soc/qcom,gdsc@af09000: Fixed dependency cycle(s) with /soc/qcom,gdsc@af09000
+[    0.062354][    T1] /soc/qcom,gdsc@19e000: Fixed dependency cycle(s) with /soc/qcom,gdsc@19e000
+[    0.062357][    T1] /soc/qcom,gdsc@177004: Fixed dependency cycle(s) with /soc/qcom,gdsc@177004
+[    0.062360][    T1] /soc/qcom,gdsc@139004: Fixed dependency cycle(s) with /soc/qcom,gdsc@139004
+[    0.062363][    T1] /soc/qcom,gdsc@150018: Fixed dependency cycle(s) with /soc/qcom,gdsc@150018
+[    0.062367][    T1] /soc/qcom,gdsc@3d99108: Fixed dependency cycle(s) with /soc/qcom,gdsc@3d99108
+[    0.062383][    T1] /soc/ssusb@a600000: Fixed dependency cycle(s) with /soc/qcom,pmic_glink/qcom,ucsi/connector
+[    0.062559][    T1] /soc/tpdm@10b46000: Fixed dependency cycle(s) with /soc/funnel@10b44000
+[    0.062603][    T1] /soc/audio_etm0: Fixed dependency cycle(s) with /soc/funnel@10b44000
+[    0.062647][    T1] /soc/lpass_stm: Fixed dependency cycle(s) with /soc/funnel@10b44000
+[    0.062690][    T1] /soc/funnel@10b44000: Fixed dependency cycle(s) with /soc/funnel@10b04000
+[    0.062693][    T1] /soc/funnel@10b44000: Fixed dependency cycle(s) with /soc/tpdm@10b46000
+[    0.062696][    T1] /soc/funnel@10b44000: Fixed dependency cycle(s) with /soc/lpass_stm
+[    0.062699][    T1] /soc/funnel@10b44000: Fixed dependency cycle(s) with /soc/audio_etm0
+[    0.062785][    T1] /soc/tpdm@10844000: Fixed dependency cycle(s) with /soc/funnel@10846000
+[    0.062870][    T1] /soc/funnel@10846000: Fixed dependency cycle(s) with /soc/funnel@10c0b000
+[    0.062873][    T1] /soc/funnel@10846000: Fixed dependency cycle(s) with /soc/tpdm@10844000
+[    0.062917][    T1] /soc/tpdm@10b09000: Fixed dependency cycle(s) with /soc/tpda@10b08000
+[    0.062960][    T1] /soc/tpdm@10b0a000: Fixed dependency cycle(s) with /soc/tpda@10b08000
+[    0.063004][    T1] /soc/tpdm@10b0b000: Fixed dependency cycle(s) with /soc/tpda@10b08000
+[    0.063047][    T1] /soc/tpdm@10b0c000: Fixed dependency cycle(s) with /soc/tpda@10b08000
+[    0.063090][    T1] /soc/tpdm@10b0d000: Fixed dependency cycle(s) with /soc/tpda@10b08000
+[    0.063132][    T1] /soc/tpda@10b08000: Fixed dependency cycle(s) with /soc/funnel@10b04000
+[    0.063134][    T1] /soc/tpda@10b08000: Fixed dependency cycle(s) with /soc/tpdm@10b0d000
+[    0.063137][    T1] /soc/tpda@10b08000: Fixed dependency cycle(s) with /soc/tpdm@10b0c000
+[    0.063139][    T1] /soc/tpda@10b08000: Fixed dependency cycle(s) with /soc/tpdm@10b0b000
+[    0.063142][    T1] /soc/tpda@10b08000: Fixed dependency cycle(s) with /soc/tpdm@10b0a000
+[    0.063144][    T1] /soc/tpda@10b08000: Fixed dependency cycle(s) with /soc/tpdm@10b09000
+[    0.063151][    T1] /soc/funnel@10b04000: Fixed dependency cycle(s) with /soc/tmc@10b05000
+[    0.063189][    T1] /soc/funnel@10b04000: Fixed dependency cycle(s) with /soc/funnel@10045000
+[    0.063193][    T1] /soc/funnel@10b04000: Fixed dependency cycle(s) with /soc/tpda@10b08000
+[    0.063195][    T1] /soc/funnel@10b04000: Fixed dependency cycle(s) with /soc/funnel@10b44000
+[    0.063201][    T1] /soc/tmc@10b05000: Fixed dependency cycle(s) with /soc/replicator@10b06000
+[    0.063241][    T1] /soc/tmc@10b05000: Fixed dependency cycle(s) with /soc/funnel@10b04000
+[    0.063286][    T1] /soc/dummy_sink: Fixed dependency cycle(s) with /soc/replicator@10b06000
+[    0.063289][    T1] /soc/replicator@10b06000: Fixed dependency cycle(s) with /soc/dummy_sink
+[    0.063293][    T1] /soc/replicator@10b06000: Fixed dependency cycle(s) with /soc/replicator@10046000
+[    0.063333][    T1] /soc/replicator@10b06000: Fixed dependency cycle(s) with /soc/tmc@10b05000
+[    0.063376][    T1] /soc/stm@10002000: Fixed dependency cycle(s) with /soc/funnel@10041000
+[    0.063419][    T1] /soc/tpdm@10003000: Fixed dependency cycle(s) with /soc/tpda@10004000
+[    0.063462][    T1] /soc/tpdm@1000f000: Fixed dependency cycle(s) with /soc/tpda@10004000
+[    0.063505][    T1] /soc/tpda@10004000: Fixed dependency cycle(s) with /soc/funnel@10041000
+[    0.063507][    T1] /soc/tpda@10004000: Fixed dependency cycle(s) with /soc/tpdm@1000f000
+[    0.063510][    T1] /soc/tpda@10004000: Fixed dependency cycle(s) with /soc/tpdm@10003000
+[    0.063552][    T1] /soc/funnel@10041000: Fixed dependency cycle(s) with /soc/funnel@10045000
+[    0.063554][    T1] /soc/funnel@10041000: Fixed dependency cycle(s) with /soc/stm@10002000
+[    0.063557][    T1] /soc/funnel@10041000: Fixed dependency cycle(s) with /soc/tpda@10004000
+[    0.063566][    T1] /soc/funnel@10045000: Fixed dependency cycle(s) with /soc/funnel@10b04000
+[    0.063601][    T1] /soc/funnel@10045000: Fixed dependency cycle(s) with /soc/funnel@10042000
+[    0.063605][    T1] /soc/funnel@10045000: Fixed dependency cycle(s) with /soc/funnel@10041000
+[    0.063616][    T1] /soc/funnel@10042000: Fixed dependency cycle(s) with /soc/funnel@10045000
+[    0.063621][    T1] /soc/funnel@10042000: Fixed dependency cycle(s) with /soc/funnel@13810000
+[    0.063642][    T1] /soc/funnel@10042000: Fixed dependency cycle(s) with /soc/funnel@10c2d000
+[    0.063653][    T1] /soc/funnel@10042000: Fixed dependency cycle(s) with /soc/funnel@109b4000
+[    0.063656][    T1] /soc/funnel@10042000: Fixed dependency cycle(s) with /soc/funnel@109c2000
+[    0.063659][    T1] /soc/funnel@10042000: Fixed dependency cycle(s) with /soc/funnel@10cc5000
+[    0.063665][    T1] /soc/replicator@10046000: Fixed dependency cycle(s) with /soc/replicator@1004e000
+[    0.063706][    T1] /soc/replicator@10046000: Fixed dependency cycle(s) with /soc/replicator@10b06000
+[    0.063710][    T1] /soc/dummy_replicator: Fixed dependency cycle(s) with /soc/tmc@1004f000
+[    0.063752][    T1] /soc/dummy_replicator: Fixed dependency cycle(s) with /soc/replicator@1004e000
+[    0.063756][    T1] /soc/replicator@1004e000: Fixed dependency cycle(s) with /soc/dummy_replicator
+[    0.063759][    T1] /soc/replicator@1004e000: Fixed dependency cycle(s) with /soc/tmc@10048000
+[    0.063800][    T1] /soc/replicatoR@004e000: Fixed dependency cycle(s) with /soc/replicator@10046000
+[    0.063843][    T1] /soc/tmc@10048000: Fixed dependency cycle(s) with /soc/replicator@1004e000
+[    0.063886][    T1] /soc/tmc@1004f000: Fixed dependency cycle(s) with /soc/dummy_replicator
+[    0.063972][    T1] /soc/tpdm@10c08000: Fixed dependency cycle(s) with /soc/funnel@10c0b000
+[    0.064059][    T1] /soc/tpdm@10c09000: Fixed dependency cycle(s) with /soc/funnel@10c0b000
+[    0.064144][    T1] /soc/tpdm@10c0a000: Fixed dependency cycle(s) with /soc/funnel@10c0b000
+[    0.064228][    T1] /soc/funnel@10c0b000: Fixed dependency cycle(s) with /soc/tpda@10c2c000
+[    0.064230][    T1] /soc/funnel@10c0b000: Fixed dependency cycle(s) with /soc/tpdm@10c0a000
+[    0.064232][    T1] /soc/funnel@10c0b000: Fixed dependency cycle(s) with /soc/tpdm@10c09000
+[    0.064234][    T1] /soc/funnel@10c0b000: Fixe$ depefdency cycle(s) with /soc/tpdm@10c08000
+[    0.064237][    T1] /soc/funnel@10c0b000: Fixed dependency cycle(s) with /soc/funnel@10846000
+[    0.064325][    T1] /soc/tpdm@10c28000: Fixed dependency cycle(s) with /soc/tpda@10c2c000
+[    0.064411][    T1] /soc/tpdm@10c29000: Fixed dependency cycle(s) with /soc/tpda@10c2c000
+[    0.064440][    T1] /soc/tpda@10c2c000: Fixed dependency cycle(s) with /soc/funnel@10c2d000
+[    0.064443][    T1] /soc/tpda@10c2c000: Fixed dependency cycle(s) with /soc/tpdm@10c29000
+[    0.064446][    T1] /soc/tpda@10c2c000: Fixed dependency cycle(s) with /soc/tpdm@10c28000
+[    0.064448][    T1] /soc/tpda@10c2c000: Fixed dependency cycle(s) with /soc/tpdm@1082c000
+[    0.064451][    T1] /soc/tpda@10c2c000: Fixed dependency cycle(s) with /soc/tpdm@109d0000
+[    0.064453][    T1] /soc/tpda@10c2c000: Fixed dependency cycle(s) with /soc/tpdm@10841000
+[    0.064482][    T1] /soc/tpda@10c2c000: Fixed dependency cycle(s) with /soc/funnel@10902000
+[    0.064485][    T1] /soc/tpda@10c2c000: Fixed dependency cycle(s) with /soc/funnel@10c0b000
+[    0.064514][    T1] /soc/tpda@10c2c000: Fixed dependency cycle(s) with /soc/funnel@10d03000
+[    0.064541][    T1] /soc/funnel@10c2d000: Fixed dependency cycle(s) with /soc/funnel@10042000
+[    0.064546][    T1] /soc/funnel@10c2d000: Fixed dependency cycle(s) with /soc/funnel@10804000
+[    0.064553][    T1] /soc/funnel@10c2d000: Fixed dependency cycle(s) with /soc/funnel@10902000
+[    0.064561][    T1] /soc/funnel@10c2d000: Fixed dependency cycle(s) with /soc/funnel@10d03000
+[    0.064568][    T1] /soc/funnel@10c2d000: Fixed dependency cycle(s) with /soc/tpda@10c2c000
+[    0.064658][    T1] /soc/gladiator: Fixed dependency cycle(s) with /soc/funnel@10d0a000
+[    0.064747][    T1] /soc/funnel@10d0a000: Fixed dependency cycle(s) with /soc/funnel@10d03000
+[    0.064749][    T1] /soc/funnel@10d0a000: Fixed dependency cycle(s) with /soc/gladiator
+[    0.064854][    T1] /soc/tpdm@10d20000: Fixed dependency cycle(s) with /soc/funnel@10d22000
+[    0.064945][    T1] /soc/funnel@10d22000: Fixed dependency cycle(s) with /soc/funnel@10d03000
+[    0.064948][    T1] /soc/funnel@10d22000: Fixed dependency cycle(s) with /soc/tpdm@10d20000
+[    0.064983][    T1] /soc/funnel@10d03000: Fixed dependency cycle(s) with /soc/funnel@10c2d000
+[    0.065038][    T1] /soc/funnel@10d03000: Fixed dependency cycle(s) with /soc/tpda@10c2c000
+[    0.065041][    T1] /soc/funnel@10d03000: Fixed dependency cycle(s) with /soc/funnel@10d0a000
+[    0.065044][    T1] /soc/funnel@10d03000: Fixed dependency cycle(s) with /soc/funnel@10d22000
+[    0.065139][    T1] /soc/tpdm@10900000: Fixed dependency cycle(s) with /soc/funnel@10902000
+[    0.065176][    T1] /soc/funnel@10902000: Fixed dependency cycle(s) with /soc/funnel@10c2d000
+[    0.065233][    T1] /soc/funnel@10902000: Fixed dependency cycle(s) with /soc/tpda@10c2c000
+[    0.065235][    T1] /soc/funnel@10902000: Fixed dependency cycle(s) with /soc/tpdm@10900000
+[    0.065280][    T1] /soc/tpdm@10800000: Fixed dependency cycle(s) with /soc/tpda@10803000
+[    0.065323][    T1] /soc/tpdm@10801000: Fixed dependency cycle(s) with /soc/tpda@10803000
+[    0.065366][    T1] /soc/tpda@10803000: Fixed dependency cycle(s) with /soc/funnel@10804000
+[    0.065368][    T1] /soc/tpda@10803000: Fixed dependency cycle(s) with /soc/tpdm@10801000
+[    0.065370][    T1] /soc/tpda@10803000: Fixed dependency cycle(s) with /soc/tpdm@10800000
+[    0.065414][    T1] /soc/modem2_etm0: Fixed dependency cycle(s) with /soc/funnel@10804000
+[    0.065457][    T1] /soc/modem_etm0: Fixed dependency cycle(s) with /soc/funnel@1080f000
+[    0.065501][    T1] /soc/funnel@1080f000: Fixed dependency cycle(s) with /soc/funnel@1080c000
+[    0.065503][    T1] /soc/funnel@1080f000: Fixed dependency cycle(s) with /soc/modem_etm0
+[    0.065546][    T1] /soc/funnel@1080c000: Fixed dependency cycle(s) with /soc/funnel@10804000
+[    0.065548][    T1] /soc/funnel@1080c000: Fixed dependency cycle(s) with /soc/modem_diag
+[    0.065550][    T1] /soc/funnel@1080c000: Fixed dependency cycle(s) wiph /3oc/gunn%l@1080f000
+[    0.065594][    T1] /soc/modem_diag: Fixed dependency cycle(s) with /soc/funnel@1080c000
+[    0.065635][    T1] /soc/funnel@10804000: Fixed dependency cycle(s) with /soc/funnel@10c2d000
+[    0.065638][    T1] /soc/funnel@10804000: Fixed dependency cycle(s) with /soc/funnel@1080c000
+[    0.065640][    T1] /soc/funnel@10804000: Fixed dependency cycle(s) with /soc/modem2_etm0
+[    0.065643][    T1] /soc/funnel@10804000: Fixed dependency cycle(s) with /soc/tpda@10803000
+[    0.065687][    T1] /soc/tpdm@13862000: Fixed dependency cycle(s) with /soc/tpda@13864000
+[    0.065730][    T1] /soc/tpdm@13861000: Fixed dependency cycle(s) with /soc/tpda@13864000
+[    0.065773][    T1] /soc/tpdm@13860000: Fixed dependency cycle(s) with /soc/tpda@13864000
+[    0.065816][    T1] /soc/tpdm@138c0000: Fixed dependency cycle(s) with /soc/tpda@13864000
+[    0.065859][    T1] /soc/tpdm@138b0000: Fixed dependency cycle(s) with /soc/tpda@13864000
+[    0.065901][    T1] /soc/tpdm@138a0000: Fixed dependency cycle(s) with /soc/tpda@13864000
+[    0.065942][    T1] /soc/tpda@13864000: Fixed dependency cycle(s) with /soc/funnel@13810000
+[    0.065945][    T1] /soc/tpda@13864000: Fixed dependency cycle(s) with /soc/tpdm@13862000
+[    0.065947][    T1] /soc/tpda@13864000: Fixed dependency cycle(s) with /soc/tpdm@13861000
+[    0.065949][    T1] /soc/tpda@13864000: Fixed dependency cycle(s) with /soc/tpdm@13860000
+[    0.065952][    T1] /soc/tpda@13864000: Fixed dependency cycle(s) with /soc/tpdm@138c0000
+[    0.065954][    T1] /soc/tpda@13864000: Fixed dependency cycle(s) with /soc/tpdm@138b0000
+[    0.065956][    T1] /soc/tpda@13864000: Fixed dependency cycle(s) with /soc/tpdm@138a0000
+[    0.066001][    T1] /soc/ete0: Fixed dependency cycle(s) with /soc/funnel_ete
+[    0.066044][    T1] /soc/ete1: Fixed dependency cycle(s) with /soc/funnel_ete
+[    0.066087][    T1] /soc/ete2: Fixed dependency cycle(s) with /soc/funnel_ete
+[    0.066130][    T1] /soc/ete3: Fixed dependency cycle(s) with /soc/funnel_ete
+[    0.066173][    T1] /soc/ete4: Fixed dependency cycle(s) with /soc/funnel_ete
+[    0.066216][    T1] /soc/ete5: Fixed dependency cycle(s) with /soc/funnel_ete
+[    0.066259][    T1] /soc/ete6: Fixed dependency cycle(s) with /soc/funnel_ete
+[    0.066303][    T1] /soc/ete7: Fixed dependency cycle(s) with /soc/funnel_ete
+[    0.066305][    T1] /soc/funnel_ete: Fixed dependency cycle(s) with /soc/ete7
+[    0.066307][    T1] /soc/funnel_ete: Fixed dependency cycle(s) with /soc/ete6
+[    0.066309][    T1] /soc/funnel_ete: Fixed dependency cycle(s) with /soc/ete5
+[    0.066311][    T1] /soc/funnel_ete: Fixed dependency cycle(s) with /soc/ete4
+[    0.066313][    T1] /soc/funnel_ete: Fixed dependency cycle(s) with /soc/ete3
+[    0.066315][    T1] /soc/funnel_ete: Fixed dependency cycle(s) with /soc/ete2
+[    0.066317][    T1] /soc/funnel_ete: Fixed dependency cycle(s) with /soc/ete1
+[    0.066319][    T1] /soc/funnel_ete: Fixed dependency cycle(s) with /soc/ete0
+[    0.066361][    T1] /soc/funnel_ete: Fixed dependency cycle(s) with /soc/funnel@13810000
+[    0.066403][    T1] /soc/funnel@13810000: Fixed dependency cycle(s) with /soc/funnel@10042000
+[    0.066407][    T1] /soc/funnel@13810000: Fixed dependency cycle(s) with /soc/tpda@13864000
+[    0.066410][    T1] /soc/funnel@13810000: Fixed dependency cycle(s) with /soc/funnel_ete
+[    0.066496][    T1] /soc/tpdm@10841000: Fixed dependency cycle(s) with /soc/tpda@10c2c000
+[    0.066581][    T1] /soc/tpdm@109d0000: Fixed dependency cycle(s) with /soc/tpda@10c2c000
+[    0.066666][    T1] /soc/tpdm@1082c000: Fixed dependency cycle(s) with /soc/tpda@10c2c000
+[    0.066771][    T1] /soc/tpdm@109a1000: Fixed dependency cycle(s) with /soc/funnel@109a3000
+[    0.066875][    T1] /soc/wpss_etm0: Fixed dependency cycle(s) with /soc/funnel@109a3000
+[    0.066980][    T1] /soc/tpdm@109a0000: Fixed dependency cycle(s) with /soc/funnel@109a3000
+[    0.067018][    T1] /soc/funnel@109a3000: Fixed dependency cycle(s) with /soc/funnel@109b4000
+[    0.067086][    T1] /soc/funnel@109a3000: Fixed dependency cycle(s) with /soc/tpda@109b3000
+[    0.067088][    T1] /soc/funnel@109a3000: Fixed dependency cycle(s) with /soc/wpss_etm0
+[    0.067091][    T1] /soc/funnel@109a3000: Fixed dependency cxcle(s) with /soc/ppdm@109a1000
+[    0.067093][    T1] /soc/funnel@109a3000: Fixed dependency cycle(s) with /soc/tpdm@109a0000
+[    0.067198][    T1] /soc/tpdm@109b0000: Fixed dependency cycle(s) with /soc/tpda@109b3000
+[    0.067301][    T1] /soc/tpdm@109b1000: Fixed dependency cycle(s) with /soc/tpda@109b3000
+[    0.067338][    T1] /soc/tpda@109b3000: Fixed dependency cycle(s) with /soc/funnel@109b4000
+[    0.067340][    T1] /soc/tpda@109b3000: Fixed dependency cycle(s) with /soc/tpdm@109b1000
+[    0.067343][    T1] /soc/tpda@109b3000: BiXed dependency cycle(s) with /soc/t`dm@109bp000
+[    0.067378][    T1] /soc/tpda@109b3000: Fixed dependency cycle(s) with /soc/funnel@10983000
+[    0.067414][    T1] /soc/tpda@109b3000: Fixed dependency cycle(s) with /soc/funnel@109a3000
+[    0.067449][    T1] /soc/funnel@109b4000: Fixed dependency cycle(s) with /soc/funnel@10042000
+[    0.067454][    T1] /soc/funnel@109b4000: Fixed dependency cycle(s) with /soc/funnel@10983000
+[    0.067460][    T1] /soc/funnel@109b4000: Fixed dependency cycle(s) with /soc/funnel@109a3000
+[    0.067465][    T1] /soc/funnel@109b4000: Fixed dependency cycle(s) with /soc/tpda@109b3000
+[    0.067570][    T1] /soc/turing_etm0: Fixed dependency cycle(s) with /soc/funnel@10983000
+[    0.067676][    T1] /soc/tpdm@10981000: Fixed dependency cycle(s) with /soc/funnel@10983000
+[    0.067780][    T1] /soc/tpdm@10980000: Fixed dependency cycle(s) with /soc/funnel@10983000
+[    0.067819][    T1] /soc/funnel@10983000: Fixed dependency cycle(s) with /soc/funnel@109b4000
+[    0.067887][    T1] /soc/funnel@10983000: Fixed dependency cycle(s) with /soc/tpda@109b3000
+[    0.067890][    T1] /soc/funnel@10983000: Fixed dependency cycle(s) with /soc/turing_etm0
+[    0.067892][    T1] /soc/funnel@10983000: Fixed dependency cycle(s) with /soc/tpdm@10981000
+[    0.067894][    T1] /soc/funnel@10983000: Fixed dependency cycle(s) with /soc/tpdm@10980000
+[    0.067939][    T1] /soc/tpdm@10cc1000: Fixed dependency cycle(s) with /soc/tpda@10cc4000
+[    0.067983][    T1] /soc/tpda@10cc4000: Fixed dependency cycle(s) with /soc/funnel@10cc5000
+[    0.067985][    T1] /soc/tpda@10cc4000: Fixed dependency cycle(s) with /soc/tpdm@10cc1000
+[    0.068028][    T1] /soc/funnel@10cc5000: Fixed dependency cycle(s) with /soc/funnel@10042000
+[    0.068031][    T1] /soc/funnel@10cc5000: Fixed dependency cycle(s) with /soc/tpda@10cc4000
+[    0.068074][    T1] /soc/tpdm@109c0000: Fixed dependency cycle(s) with /soc/tpda@109c1000
+[    0.068118][    T1] /soc/tpda@109c1000: Fixed dependency cycle(s) with /soc/funnel@109c2000
+[    0.068120][    T1] /soc/tpda@109c1000: Fixed dependency cycle(s) with /soc/tpdm@109c0000
+[    0.068163][    T1] /soc/funnel@109c2000: Fixed dependency cycle(s) with /soc/funnel@10042000
+[    0.068165][    T1] /soc/funnel@109c2000: Fixed dependency cycle(s) with /soc/tpda@109c1000
+[    0.069937][    T1] /soc/qcom,dp_display@ae154000: Fixed dependency cycle(s) with /soc/qcom,dp_display@ae154000
+[    0.072462][    T1] sram 0.mmio-sram: can't request region for resource [mem 0x00000000-0x17d093ff]
+[    0.072469][    T1] sram 0.mmio-sram: could not map SRAM registers
+[    0.072471][    T1] sram: probe of 0.mmio-sram failed with error -16
+[    0.072503][    T1] /soc/qcom,pmic_glink/qcom,ucsi/connector: Fixed dependency cycle(s) with /soc/ssusb@a600000
+[    0.072739][    T1] /soc/ufsphy_mem@1d80000: Fixed dependency cycle(s) with /soc/ufshc@1d84000
+[    0.072789][    T1] /soc/ufsphy_mem@1d80000: Fixed dependency cycle(s) with /soc/ufshc@1d84000
+[    0.072865][    T1] /soc/ufshc@1d84000: Fixed dependency cycle(s) with /soc/ufsphy_mem@1d80000
+[    0.073872][    T1] /soc/qcom,gdsc@af09000: Fixed dependency cycle(s) with /soc/qcom,gdsc@af09000
+[    0.074004][    T1] /soc/qcom,gdsc@19e000: Fixed dependency cycle(s) with /soc/qcom,gdsc@19e000
+[    0.074031][    T1] /soc/qcom,gdsc@177004: Fixed dependency cycle(s) with /soc/qcom,gdsc@177004
+[    0.074057][    T1] /soc/qcom,gdsc@139004: Fixed dependency cycle(s) with /soc/qcom,gdsc@139004
+[    0.074076][    T1] /soc/qcom,gdsc@150018: Fixed dependency cycle(s) with /soc/qcom,gdsc@150018
+[    0.074119][    T1] /soc/qcom,gdsc@3d99108: Fixed dependency cycle(s) with /soc/qcom,gdsc@3d99108
+[    0.074364][    T1] /soc/qcom,pmic_glink/qcom,ucsi/connector: Fixed dependency cycle(s) with /soc/ssusb@a600000
+[    0.074375][    T1] /soc/ssusb@a600000: Fixed dependency cycle(s) with /soc/qcom,pmic_glink/qcom,ucsi/connector
+[    0.075444][    T1] /soc/tpdm@10b46000: Fixed dependency #ycle(s) with /soc/funnel@10b44000
+[    0.075504][    T1] /soc/audio_etm0: Fixed dependency cycle(s) with /soc/funnel@10b44000
+[    0.075587][    T1] /soc/lpass_stm: Fixed dependency cycle(s) with /soc/funnel@10b44000
+[    0.075643][    T1] /soc/lpass_stm: Fixed dependency cycle(s) with /soc/funnel@10b44000
+[    0.075693][    T1] /soc/audio_etm0: Fixed dependency cycle(s) with /soc/funnel@10b44000
+[    0.075747][    T1] /soc/tpdm@10b46000: Fixed dependency cycle(s) with /soc/funnel@10b44000
+[    0.075801][    T1] /soc/funnel@10b44000: Fixed dependency cycle(s) with /soc/funnel@10b04000
+[    0.075804][    T1] /soc/funnel@10b44000: Fixed dependency cycle(s) with /soc/tpdm@10b46000
+[    0.075813][    T1] /soc/funnel@10b44000: Fixed dependency cycle(s) with /soc/lpass_stm
+[    0.075823][    T1] /soc/funnel@10b44000: Fixed dependency cycle(s) with /soc/audio_etm0
+[    0.075940][    T1] /soc/tpdm@10844000: Fixed dependency cycle(s) with /soc/funnel@10846000
+[    0.076048][    T1] /soc/tpdm@10844000: Fixed dependency cycle(s) with /soc/funnel@10846000
+[    0.076139][    T1] /soc/funnel@10846000: Fixed dependency cycle(s) with /soc/funnel@10c0b000
+[    0.076142][    T1] /soc/funnel@10846000: Fixed dependency cycle(s) with /soc/tpdm@10844000
+[    0.076213][    T1] /soc/tpdm@10b09000: Fixed dependency cycle(s) with /soc/tpda@10b08000
+[    0.076276][    T1] /soc/tpdm@10b0a000: Fixed dependency cycle(s) with /soc/tpda@10b08000
+[    0.076339][    T1] /soc/tpdm@10b0b000: Fixed dependency cycle(s) with /soc/tpda@10b08000
+[    0.076406][    T1] /soc/tpdm@10b0c000: Fixed dependency cycle(s) with /soc/tpda@10b08000
+[    0.076470][    T1] /soc/tpdm@10b0d000: Fixed dependency cycle(s) with /soc/tpda@10b08000
+[    0.076533][    T1] /soc/tpdm@10b0d000: Fixed dependency cycle(s) with /soc/tpda@10b08000
+[    0.076581][    T1] /soc/tpdm@10`0c000* Fixed dependency cycle(s) with /soc/tpda@10b08000
+[    0.076631][    T1] /soc/tpdm@10b0b000: Fixed dependency cycle(s) with /soc/tpda@10b08000
+[    0.076680][    T1] /soc/tpdm@10b0a000: Fixed dependency cycle(s) with /soc/tpda@10b08000
+[    0.076729][    T1] /soc/tpdm@10b09000: Fixed dependency cycle(s) with /soc/tpda@10b08000
+[    0.07&776][    T1] /skc/tpda@10b08000: Fixed dependency cycle(s) with /soc/funnel@10b04000
+[    0.076778][    T1] /soc/tpda@10b08000: Fixed dependency cycle(s) with /soc/tpdm@10b0d000
+[    0.076787][    T1] /soc/tpda@10b08000: Fixed dependency cycle(s) with /soc/tpdm@10b0c000
+[    0.076795][    T1] /soc/tpda@10b08000: Fixdd dep%ndency cycle(s) with /soc/tpdm@10b0b000
+[    0.076804][    T1] /soc/tpda@10b08000: Fixed dependency cycle(s) with /soc/tpdm@10b0a000
+[    0.076812][    T1] /soc/tpda@10b08000: Fixed dependency cycle(s) with /soc/tpdm@10b09000
+[    0.076913][    T1] /soc/tpda@10b08000: Fixed dependency cycle(s) with /soc/funnel@10b04000
+[    0.076961][    T1] /soc/funnel@10b44000: Fixed dependency cycle(s) with /soc/funnel@10b04000
+[    0.076973][    T1] /soc/funnel@10b04000: Fixed dependency cycle(s) with /soc/tmc@10b05000
+[    0.077010][    T1] /soc/funnel@10b04000: Fixed dependency cycle(s) with /soc/funnel@10045000
+[    0.077015][    T1] /soc/funnel@10b04000: Fixed dependency cycle(s) with /soc/tpda@10b08000
+[    0.077023][    T1] /soc/funnel@10b04000: Fixed dependency cycle(s) with /soc/funnel@10b44000
+[    0.077058][    T1] /soc/funnel@10b04000: Fixed dependency cycle(s) with /soc/tmc@10b05000
+[    0.077069][    T1] /soc/tmc@10b05000: Fixed dependency cycle(s) with /soc/replicator@10b06000
+[    0.077108][    T1] /soc/tmc@10b05000: Fixed dependency cycle(s) with /soc/funnel@10b04000
+[    0.077199][    T1] /soc/dummy_sink: Fixed dependency cycle(s) with /soc/replicator@10b06000
+[    0.077257][    T1] /soc/dummy_sink: Fixed dependency cycle(s) with /soc/replicator@10b06000
+[    0.077270][    T1] /soc/tmc@10b05000: Fixed dependency cycle(s) with /soc/replicator@10b06000
+[    0.077279][    T1] /soc/replicator@10b06000: Fixed ddpendefcy cycle(s) with /soc/dummy_sink
+[    0.077290][    T1] /soc/replicator@10b06000: Fixed dependency cycle(s) with /soc/replicator@10046000
+[    0.077331][    T1] /soc/replicator@10b06000: Fixed dependency cycle(s) with /soc/tmc@10b05000
+[    0.077402][    T1] /soc/stm@10002000: Fixed dependency bycle(r) with /soc/funnel@10041000
+[    0.077466][    T1] /soc/tpdm@10003000: Fixed dependency cycle(s) with /soc/tpda@10004000
+[    0.077529][    T1] /soc/tpdm@1000f000: Fixed dependency cycle(s) with /soc/tpda@10004000
+[    0.077591][    T1] /soc/tpdm@1000f000: Fixed dependency cycle(s) with /soc/tpda@10004000
+[    0.077639][    T1] /soc/tpdm@10003000: Fixed dependency cycle(s) with /soc/tpda@10004000
+[    0.077686][    T1] /soc/tpda@10004000: Fixed dependency cycle(s) with /soc/funnel@10041000
+[    0.077689][    T1] /soc/tpda@10004000: Fixed dependency cycle(s) with /soc/tpdm@1000f000
+[    0.077698][    T1] /soc/tpda@10004000: Fixed dependency cycle(s) with /soc/tpdm@10003000
+[    0.077767][    T1] /soc/tpda@10004000: Fixed dependency cycle(s) with /soc/funnel@10041000
+[    0.077815][    T1] /soc/stm@10002000: Fixed dependency cycle(s) with /soc/funnel@10041000
+[    0.077864][    T1] /soc/funnel@10041000: Fixed dependency cycle(s) wath /soc'funnel@10045000
+[    0.077866][    T1] /soc/funnel@10041000: Fixed dependency cycle(s) with /#oc/stm@10002000
+[    0.077876][    T1] /soc/funnel@10041000: Fixed dependency cycle(s) with /soc/tpda@10004000
+[    0.077945][    T1] /soc/funnel@10041000: Fixed dependency cycle(s) with /soc/funnel@10045000
+[    0.077989][    T1] /soc/funnel@10b04000: Fixed dependency cycle(s) with /soc/funnel@10045000
+[    0.078003][    T1] /soc/funnel@10045000: Fixed dependency cycle(s) with /soc/funnel@10b04000
+[    0.078044][    T1] /soc/funnel@10045000: Fixed dependency cycle(s) with /soc/funnel@10042000
+[    0.078047][    T1] /soc/funnel@10045000: Fixed dependency cycle(s) with /soc/funnel@10041000
+[    0.078110][    T1] /soc/funnel@10045000: Fixed dependency cycle(s) with /soc/funnel@10042000
+[    0.078127][    T1] /soc/funnel@10042000: Fixed dependency cycle(s) with /soc/funnel@10045000
+[    0.078139][    T1] /soc/funnel@10042000: Fixed dependency cycle(s) with /soc/funnel@13810000
+[    0.078159][    T1] /soc/funnel@10042000: Fixed dependency cycle(s) with /soc/funnel@10c2d000
+[    0.078170][    T1] /soc/funnel@10042000: Fixed dependency cycle(s) with /soc/funnel@109b4000
+[    0.078174][    T1] /soc/funnel@10042000: Fixed dependency cycle(s) with /soc/funnel@109c2000
+[    0.078177][    T1] /soc/funnel@10042000: Fixed dependency cycle(s) with /soc/funnel@10cc5000
+[    0.078202][    T1] /soc/replicator@10b06000: Fixed dependency cycle(s) with /soc/replicator@10046000
+[    0.078213][    T1] /soc/replicator@10046000: Fixed dependency cycle(s) with /soc/replicator@1004e000
+[    0.078254][    T1] /soc/replicator@10046000: Fixed dependency cycle(s) with /soc/replicator@10b06000
+[    0.078285][    T1] /soc/dummy_replicator: Fixed dependency cycle(s) with /soc/tmc@1004f000
+[    0.078327][    T1] /soc/dummy_replicator: Fixed dependency cycle(s) with /soc/replicator@1004e000
+[    0.078386][    T1] /soc/dummy_replicator: Fixed dependency cycle(s) with /soc/replicator@1004e000
+[    0.078396][    T1] /soc/replicator@10046000: Fixed dependency cycle(s) with /soc/replicator@1004e000
+[    0.078406][    T1] /soc/replicator@1004e000: Fixed dependency cycle(s) with /soc/dummy_replicator
+[    0.078415][    T1] /soc/replicator@1004e000: Fixed dependency cycle(s) with /soc/tmc@10048000
+[    0.078455][    T1] /soc/replicator@1004e000: Fixed dependency cycle(s) with /soc/replicator@10046000
+[    0.078486][    T1] /soc/replicator@1004e000: Fixed dependency cycle(s) with /soc/tmc@10048000
+[    0.078535][    T1] /soc/tmc@10048000: Fixed dependency Cycla(s) with /soc/replicator@1004e000
+[    0.078573][    T1] /soc/dummy_replicator: Fixed dependency cycle(s) with /soc/tmc@1004f000
+[    0.078621][    T1] /soc/tmc@1004f000: Fixed dependency cycle(s) with /soc/dummy_replicator
+[    0.078649][    T1] OF: amba: of_address_to_resource() failed (-22) for /soc/tpdm@10c08000
+[    0.078653][    T1] OF: amba: of_address_to_resource() failed (-22) for /soc/tpdm@10c09000
+[    0.078657][    T1] OF: amba: of_address_to_resource() failed (-22) for /soc/tpdm@10c0a000
+[    0.078754][    T1] /soc/funnel@10846000: Fixed dependency cycle(s) with /soc/funnel@10c0b000
+[    0.078843][    T1] /soc/funnel@10c0b000: Fixed dependency cycle(s) with /soc/tpda@10c2c000
+[    0.078846][    T1] /soc/funnel@10c0b000: Fixed dependency cycle(s) with /soc/tpdm@10c0a000
+[    0.078848][    T1] /soc/funnel@10c0b000: Fixed dependency cycle(s) with /soc/tpdm@10c09000
+[    0.078850][    T1] /soc/funnel@10c0b000: Fixed dependency cycle(s) with /soc/tpdm@10c08000
+[    0.078853][    T1] /soc/funnel@10c0b000: Fixed dependency cycle(s) with /soc/funnel@10846000
+[    0.078964][    T1] /soc/tpdm@10c28000: Fixed dependency cycle(s) with /soc/tpda@10c2c000
+[    0.079068][    T1] /soc/tpdm@10c29000: Fixed dependency cycle(s) with /soc/tpda@10c2c000
+[    0.079175][    T1] /soc/tpdm@10c29000: Fixed dependency cycle(s) with /soc/tpda@10c2c000
+[    0.079265][    T1] /soc/tpdm@10c28000: Fixed dependency cycle(s) with /soc/tpda@10c2c000
+[    0.079354][    T1] /soc/funnel@10c0b000: Fixed dependency cycle(s) with /soc/tpda@10c2c000
+[    0.079390][    T1] /soc/tpda@10c2c000: Fixed dependency cycle(s) with /soc/funnel@10c2d000
+[    0.079393][    T1] /soc/tpda@10c2c000: Fixed dependency cycle(s) with /soc/tpdm@10c29000
+[    0.079402][    T1] /soc/tpda@10c2c000: Fixed dependency cycle(s) with /soc/tpdm@10c28000
+[    0.079412][    T1] /soc/tpda@10c2c000: Fixed dependency cycle(s) with /soc/tpdm@1082c000
+[    0.079415][    T1] /soc/tpda@10c2c000: Fixed dependency cycle(s) with /soc/tpdm@109d0000
+[    0.079417][    T1] /soc/tpda@10c2c000: Fixed dependency cycle(s) with /soc/tpdm@10841000
+[    0.079446][    T1] /soc/tpda@10c2c000: Fixed dependency cycle(s) with /soc/funnel@10902000
+[    0.079450][    T1] /soc/tpda@10c2c000: Fixed dependency cycle(s) with /soc/funnel@10c0b000
+[    0.079484][    T1] /soc/tpda@10c2c000: Fixed dependency cycle(s) with /soc/funnel@10d03000
+[    0.079538][    T1] /soc/tpda@10c2c000: Fixed dependency cycle(s) with /soc/funnel@10c2d000
+[    0.079565][    T1] /soc/funnel@10042000: Fixed dependency cycle(s) with /soc/funnel@10c2d000
+[    0.079596][    T1] /soc/funnel@10c2d000: Fixed dependency cycle(s) with /soc/funnel@10042000
+[    0.079606][    T1] /soc/funnel@10c2d000: Fixed dependency cycle(s) with /soc/funnel@10804000
+[    0.079614][    T1] /soc/funnel@10c2d000: Fixed dependency cycle(s) with /soc/funnel@10902000
+[    0.079621][    T1] /soc/funnel@10c2d000: Fixed dependency cycle(s) with /soc/funnel@10d03000
+[    0.079629][    T1] /soc/funnel@10c2d000: Fixed dependency cycle(s) with /soc/tpda@10c2c000
+[    0.079742][    T1] /soc/gladiator: Fixed dependency cycle(s) with /soc/funnel@10d0a000
+[    0.079846][    T1] /soc/gladiator: Fixed dependency cycle(s) with /soc/funnel@10d0a000
+[    0.079943][    T1] /soc/funnel@10d0a000: Fixed dependency cycle(s) with /soc/funnel@10d03000
+[    0.079946][    T1] /soc/funnel@10d0a000: Fixed dependency cycle(s) with /soc/gladiator
+[    0.080063][    T1] /soc/tpdm@10d20000: Fixed dependency cycle(s) with /soc/funnel@10d22000
+[    0.080173][    T1] /soc/tpdm@10d20000: Fixed dependency cycle(s) with /soc/funnel@10d22000
+[    0.080266][    T1] /soc/funnel@10d22000: Fixed dependency cycle(s) with /soc/funnel@10d03000
+[    0.080269][    T1] /soc/funnel@10d22000: Fixed dependency cycle(s) with /soc/tpdm@10d20000
+[    0.080385][    T1] /soc/funnel@10d22000: Fixed dependency cycle(s) with /soc/funnel@10d03000
+[    0.080480][    T1] /soc/funnel@10d0a000: Fixed dependency cycle(s) with /soc/funnel@10d03000
+[    0.080496][    T1] /soc/funnel@10c2d000: Fixed dependency cycle(s) with /soc/funnel@10d03000
+[    0.080531][    T1] /soc/tpda@10c2c000: Fixed dependency cycle(s) with /soc/funnel@10d03000
+[    0.080572][    T1] /soc/funnel@10d03000: Fixed dependency cycle(s) with /soc/funnel@10c2d000
+[    0.080634][    T1] /soc/funnel@10d03000: Fixed dependency cycle(s) with /soc/tpda@10c2c000
+[    0.080645][    T1] /soc/funnel@10d03000: Fixed dependency cycle(s) with /soc/funnel@10d0a000
+[    0.080654][    T1] /soc/funnel@10d03000: Fixed dependency cycle(s) with /soc/funnel@10d22000
+[    0.080772][    T1] /soc/tpdm@10900000: Fixed dependency cycle(s) with /soc/funnel@10902000
+[    0.080899][    T1] /soc/tpdm@10900000: Fixed dependency cycle(s) with /soc/funnel@10902000
+[    0.080914][    T1] /soc/funnel@10c2d000: Fixed dependency cycle(s) with /soc/funnel@10902000
+[    0.08099][    T1] /sOc/tpda@10c2c000: Fixed dependency cycle(s) with /soc/funnel@10902000
+[    0.080991][    T1] /soc/funnel@10902000: Fixed dependency cycle(s) with /soc/funnel@10c2d000
+[    0.081054][    T1] /soc/funnel@10902000: Fixed dependency cycle(s) with /soc/tpda@10c2c000
+[    0.081063][    T1] /soc/funnel@10902000: Fixed dependency cycle(s) with /soc/tpdm@10900000
+[    0.081134][    T1] /soc/tpdm@10800000: Fixed dependency cycle(s) with /soc/tpda@10803000
+[    0.081197][    T1] /soc/tpdm@10801000: Fixed dependency cycle(s) with /soc/tpda@10803000
+[    0.081258][    T1] /soc/tpdm@10801000: Fixed dependency cycle(s) with /soc/tpda@10803000
+[    0.081307][    T1] /soc/tpdm@10800000: Fixed dependency cycle(s) with /soc/tpda@10803000
+[    0.081355][    T1] /soc/tpda@10803000: Fixed dependency cycle(s) with /soc/funnel@10804000
+[    0.081358][    T1] /soc/tpda@10803000: Fixed dependency cycle(s) with /soc/tpdm@10801000
+[    0.081368][    T1] /soc/tpda@10803000: Fixed dependency cycle(s) with /soc/tpdm@10800000
+[    0.081438][    T1] /soc/modem2_etm0: Fixed dependency cycle(s) with /soc/funnel@10804000
+[    0.081494][    T1] /soc/modem_etm0: Fixed dependency cycle(s) with /soc/funnel@1080f000
+[    0.081554][    T1] /soc/modem_etm0: Fixed dependency cycle(s) with /soc/funnel@1080f000
+[    0.081603][    T1] /soc/funnel@1080f000: Fixed dependency cycle(s) with /soc/funnel@1080c000
+[    0.081606][    T1] /soc/funnel@1080f000: Fixed dependency cycle(s) with /soc/modem_etm0
+[    0.081676][    T1] /soc/funnel@1080f000: Fixed dependency cycle(s) with /soc/funnel@1080c000
+[    0.081724][    T1] /soc/funnel@1080c000: Fixed dependency cycle(s) with /soc/funnel@10804000
+[    0.081727][    T1] /soc/funnel@1080c000: Fixed dependency cycle(s) with /soc/modem_diag
+[    0.081729][    T1] /soc/funnel@1080c000: Fixed dependency cycle(s) with /soc/funnel@1080f000
+[    0.081757][    T1] /soc/funnel@1080c000: Fixed dependency cycle(s) with /soc/modem_diag
+[    0.081806][    T1] /soc/modem_diag: Fixed dependency cycle(s) with /soc/funnel@1080c000
+[    0.081873][    T1] /soc/funnel@1080c000: Fixed dependency cycle(s) with /soc/funnel@10804000
+[    0.081922][    T1] /soc/modem2_etm0: Fixed dependency cycle(s) with /soc/funnel@10804000
+[    0.081971][    T1] /soc/tpda@10803000: Fixed dependency cycle(s) with /soc/funnel@10804000
+[    0.081982][    T1] /soc/funnel@10c2d000: Fixed dependencq cycle(s) with /skc/funnel@10804000
+[    0.082029][    T1] /soc/funnel@10804000: Fixed dependency cycle(s) with /soc/funnel@10c2d000
+[    0.082038][    T1] /soc/funnel@10804000: Fixed dependency cycle(s) with /soc/funnel@1080c000
+[    0.082047][    T1] /soc/funnel@10804000: Fixed dependency cycle(s) with /soc/modem2_etm0
+[    0.082057][    T1] /soc/funnel@10804000: Fixed dependency cycle(s) with /soc/tpda@10803000
+[    0.082128][    T1] /soc/tpdm@13862000: Fixed dependency cycle(s) with /soc/tpda@13864000
+[    0.082191][    T1] /soc/tpdm@13861000: Fixed dependency cycle(s) with /soc/tpda@13864000
+[    0.082254][    T1] /soc/tpdm@13860000: Fixed dependency cycle(s) with /soc/tpda@13864000
+[    0.082318][    T1] /soc/tpdm@138c0000: Fixed dependency cycle(s) with /soc/tpda@13864000
+[    0.082384][    T1] /soc/tpdm@13b0000: Fixed dePendency cycle(s) with /soc/tpda@13864000
+[    0,082445][    T1] /soc/tpdm@138a0000: Fixed dependency cycle(s) with /soc/tpda@13864000
+[    0.082513][    T1] /soc/tpdm@138a0000: Fixed dependency cycle(s) with /soc/tpda@13864000
+[    0.082563][    T1] /soc/tpdm@138b0000: Fixed dependency cycle(s) with /soc/tpda@13864000
+[    0.082611][    T1] /soc/tpdm@138c0000: Fixed dependency cycle(s) with /soc/tpda@13864000
+[    0.082660][    T1] /soc/tpdm@13860000: Fixed dependency cycle(s) with /soc/tpda@13864000
+[    0.082709][    T1] /soc/tpdm@13861000: Fixed dependency cycle(s) with /soc/tpda@13864000
+[    0.082757][    T1] /soc/tpdm@13862000: Fixed dependency cycle(s) with /soc/tpda@13864000
+[    0.082805][    T1] /soc/tpda@13864000: Fixed dependency cycle(s) with /soc/funnel@13810000
+[    0.082808][    T1] /soc/tpda@13864000: Fixed dependency cycle(s) with /soc/tpdm@13862000
+[    0.082817][    T1] /soc/tpda@13864000: Fixed dependency cycle(s) with /soc/tpdm@13861000
+[    0.082825][    T1] /soc/tpda@13864000: Fixed dependency cycle(s) with /soc/tpdm@13860000
+[    0.082834][    T1] /soc/tpda@13864000: Fixed dependency cycle(s) with /soc/tpdm@138c0000
+[    0.082843][    T1] /soc/tpda@13864000: Fixed dependency cycle(s) with /soc/tpdm@138b0000
+[    0.082851][    T1] /soc/tpda@13864000: Fixed dependency cycle(s) with /soc/tpdm@138a0000
+[    0.082923][    T1] /soc/ete0: Fixed dependency cycle(s) with /soc/funnel_ete
+[    0.082979][    T1] /soc/ete1: Fixed dependency cycle(s) with /soc/funnel_ete
+[    0.083036][    T1] /soc/ete2: Fixed dependency cycle(s) with /soc/funnel_ete
+[    0.083093][    T1] /soc/ete3: Fixed dependency cycle(s) with /soc/funnel_ete
+[    0.083148]K    T1] /soc/ete4: Fiped dependency cycle(s) with /soc/funnel_ete
+[    0.083204][    T1] /soc/ete5: Fixed dependency cycle(s) with /soc/funnel_ete
+[    0.083260][    T1] /soc/ete6: Fixed dependency cycle(s) with /soc/funnel_ete
+[    0.083317][    T1] /soc/ete7: Fixed dependency cycle(s) with /soc/funnel_ete
+[    0.083373][    T1] /soc/ete7: Fixed dependency cycle(s) with /soc/funnel_ete
+[    0.083425][    T1] /soc/ete6: Fixed dependency cycle(s) with /soc/funnel_ete
+[    0.083474][    T1] /soc/ete5: Fixed dependency cycle(s) with /soc/funnel_ete
+[    0.083524][    T1] /soc/ete4: Fixed dependency cycle(s) with /soc/funnel_ete
+[    0.083573][    T1] /soc/ete3: Fixed dependency cycle(s) with /soc/funnel_ete
+[    0.083622][    T1] /soc/ete2: Fixed dependency cycle(s) with /soc/funnel_ete
+[    0.083672][    T1] /soc/ete1: Fixed dependency cycle(s) with /soc/funnel_ete
+[    0.083721][    T1] /soc/ete0: Fixed dependency cycle(s) with /soc/funnel_ete
+[    0.083731][    T1] /soc/funnel_ete: Fixed dependency cycle(s) with /soc/ete7
+[    0.083739][    T1] /soc/funnel_ete: Fixed dependency cycle(s) with /soc/ete6
+[    0.083751][    T1] /soc/funnel_ete: Fixed dependency cycle(s) with /soc/ete5
+[    0.083759][    T1] /soc/funnel_ete: Fixed dependency cycle(s) with /soc/ete4
+[    0.083768][    T1] /soc/funnel_ete: Fixed dependency cycle(s) with /soc/ete3
+[    0.083776][    T1] /soc/funnel_ete: Fixed dependency cycle(s) with /soc/ete2
+[    0.083785][    T1] /soc/funnel_ete: Fixed dependency cycle(s) with /soc/ete1
+[    0.083793][    T1] /soc/funnel_ete: Fixed dependency cycle(s) with /soc/ete0
+[    0.083840][    T1] /soc/funnel_ete: Fixed dependency cycle(s) with /soc/funnel@13810000
+[    0.083901][    T1] /soc/funnel_ete: Fixed dependency cycle(s) with /soc/funnel@13810000
+[    0.083949][    T1] /soc/tpda@13864000: Fixed dependency cycle(s) with /soc/funnel@13810000
+[    0.083962][    T1] /soc/funnel@10042000: Fixed dependency cycle(s) with /soc/funnel@13810000
+[    0.084008][    T1] /soc/funnel@13810000: Fixed dependency cycle(s) with /soc/funnel@10042000
+[    0.084020][    T1] /soc/funnel@13810000: Fixed dependency cycle(s) with /soc/tpda@13864000
+[    0.084031][    T1] /soc/funnel@13810000: Fixed dependency cycle(s) with /soc/funnel_ete
+[    0.084062][    T1] /soc/tpda@10c2c000: Fixed dependency cycle(s) with /soc/tpdm@10841000
+[    0.084152][    T1] /soc/tpdm@10841000: Fixed dependency cycle(s) with /soc/tpda@10c2c000
+[    0.084183][    T1] /soc/tpda@10c2c000: Fixed dependency cycle(s) with /soc/tpdm@109d0000
+[    0.084273][    T1] /soc/tpdm@109d0000: Fixed dependency cycle(s) with /soc/tpda@10c2c000
+[    0.084304][    T1] /soc/tpda@10c2c000: Fixed dependency cycle(s) with /soc/tpdm@1082c000
+[    0.084394][    T1] /soc/tpdm@1082c000: Fixed dependency cycle(s) with /soc/tpda@10c2c000
+[    0.084528][    T1] /soc/tpdm@109a1000: Fixed dependency cycle(s) with /soc/funnel@109a3000
+[    0.084655][    T1] /soc/wpss_etm0: Fixed dependency cycle(s) with /soc/funnel@109a3000
+[    0.084776][    T1] /soc/tpdm@109a0000: Fixed dependency cycle(s) with /soc/funnel@109a3000
+[    0.084916][    T1] /soc/tpdm@109a0000: Fixed dependency cycle(s) with /soc/funnel@109a3000
+[    0.085028][    T1] /soc/wpss_etm0: Fixed dependency cycle(s) with /soc/funnel@109a3000
+[    0.085139][    T1] /soc/tpdm@109a1000: Fixed dependency cycle(s) with /soc/funnel@109a3000
+[    0.085183][    T1] /soc/funnel@109a3000: Fixed dependency cycle(s) with /soc/funnel@109b4000
+[    0.085251][    T1] /soc/funnel@109a3000: Fixed dependency cycle(s) with /soc/tpda@109b3000
+[    0.085254][    T1] /soc/funnel@109a3000: Fixed dependency cycle(s) with /soc/wpss_etm0
+[    0.085264][    T1] /soc/funnel@109a3000: Fixed dependency cycle(s) with /soc/tpdm@109a1000
+[    0.085274][    T1] /soc/funnel@109a3000: Fixed dependency cycle(s) with /soc/tpdm@109a0000
+[    0.085408][    T1] /soc/tpdm@109b0000: Fixed dependency cycle(s) with /soc/tpda@109b3000
+[    0.085535][    T1] /soc/tpdm@109b1000: Fixed dependency cycle(s) with /soc/tpda@109b3000
+[    0.085670][    T1] /soc/tpdm@109b1000: Fixed dependency cycle(s) with /soc/tpda@109b3000
+[    0.085781][    T1] /soc/tpdm@109b0000: Fixed dependency cycle(s) with /soc/tpda@109b3000
+[    0.085856][    T1] /soc/funnel@109a3000: Fixed dependency cycle(s) with /soc/tpda@109b3000
+[    0.085900][    T1] /soc/tpda@109b3000: Fixed dependency cycle(s) with /soc/funnel@109b4000
+[    0.085903][    T1] /soc/tpda@109b3000: Fixed dependency cycle(s) with /soc/tpdm@109b1000
+[    0.085913][    T1] /soc/tpda@109b3000: Fixed dependency cycle(s) with /soc/tpdm@109b0000
+[    0.085955][    T1] /soc/tpda@109b3000: Fixed dependency cycle(s) with /soc/funnel@10983000
+[    0.085990][    T1] /soc/tpda@109b3000: Fixed dependency cycle(s) with /soc/funnel@109a3000
+[    0.086058][    T1] /soc/tpda@109b3000: Fixed dependency cycle(s) with /soc/funnel@109b4000
+[    0.086104][    T1] /soc/funnel@109a3000: Fixed dependency cycle(s) with /soc/funnel@109b4000
+[    0.086124][    T1] /soc/funnel@10042000: Fixed dependency cycle(s) with /soc/funnel@109b4000
+[    0.086164][    T1] /soc/funnel@109b4000: Fixed dependency cycle(s) with /soc/funnel@10042000
+[    0.086178][    T1] /soc/funnel@109b4000: Fixed dependency cycle(s) with /soc/funnel@10983000
+[    0.086183][    T1] /soc/funnel@109b4000: Fixed dependency cycle(s) with /soc/funnel@109a3000
+[    0.086195][    T1] /soc/funnel@109b4000: Fixed dependency cycle(s) with /soc/tpda@109b3000
+[    0.086330][    T1] /soc/turing_etm0: Fixed dependency cycle(s) with /soc/funnel@10983000
+[    0.086451][    T1] /soc/tpdm@10981000: Fixed dependency cycle(s) with /soc/funnel@10983000
+[    0.086572][    T1] /soc/tpdm@10980000: Fixed dependency cycle(s) with /soc/funnel@10983000
+[    0.086702][    T1] /soc/tpdm@10980000: Fixed dependency cycle(s) with /soc/funnel@10983000
+[    0.086815][    T1] /soc/tpdm@10981000: Fixed dependency cycle(s) with /soc/funnel@10983000
+[    0.086928][    T1] /soc/turing_etm0: Fixed dependency cycle(s) with /soc/funnel@10983000
+[    0.086941][    T1] /soc/funnel@109b4000: Fixed dependency cycle(s) with /soc/funnel@10983000
+[    0.086984][    T1] /soc/tpda@109b3000: Fixed dependency cycle(s) with /soc/funnel@10983000
+[    0.087029][    T1] /soc/funnel@10983000: Fixed dependency cycle(s) with /soc/funnel@109b4000
+[    0.087104][    T1] /soc/funnel@10983000: Fixed dependency cycle(s) with /soc/tpda@109b3000
+[    0.087117][    T1] /soc/funnel@10983000: Fixed dependency cycle(s) with /soc/turing_etm0
+[    0.087126][    T1] /soc/funnel@10983000: Fixed dependency cycle(s) with /soc/tpdm@10981000
+[    0.087136][    T1] /soc/funnel@10983000: Fixed dependency cycle(s) with /soc/tpdm@10980000
+[    0.087214][    T1] /soc/tpdm@10cc1000: Fixed dependency cycle(s) with /soc/tpda@10cc4000
+[    0.087283][    T1] /soc/tpdm@10cc1000: Fixed dependency cycle(s) with /soc/tpda@10cc4000
+[    0.087332][    T1] /soc/tpda@10cc4000: Fixed dependency cycle(s) with /soc/funnel@10cc5000
+[    0.087335][    T1] /soc/tpda@10cc4000: Fixed dependency cycle(s) with /soc/tpdm@10cc1000
+[    0.087408][    T1] /soc/tpda@10cc4000: Fixed dependency cycle(s) with /soc/funnel@10cc5000
+[    0.087419][    T1] /soc/funnel@10042000: Fixed dependency cycle(s) with /soc/funnel@10cc5000
+[    0.087467][    T1] /soc/funnel@10cc5000: Fixed dependency cycle(s) with /soc/funnel@10042000
+[    0.087477][    T1] /soc/funnel@10cc5000: Fixed dependency cycle(s) with /soc/tpda@10cc4000
+[    0.087548][    T1] /soc/tpdm@109c0000: Fixed dependency cycle(s) with /soc/tpda@109c1000
+[    0.087616][    T1] /soc/tpdm@109c0000: Fixed dependency cycle(s) with /soc/tpda@109c1000
+[    0.087665][    T1] /soc/tpda@109c1000: Fixed dependency cycle(s) with /soc/funnel@109c2000
+[    0.087668][    T1] /soc/tpda@109c1000: Fixed dependency cycle(s) with /soc/tpdm@109c0000
+[    0.087743][    T1] /soc/tpda@109c1000: Fixed dependency cycle(s) with /soc/funnel@109c2000
+[    0.087755][    T1] /soc/funnel@10042000: Fixed dependency cycle(s) with /soc/funnel@109c2000
+[    0.087804][    T1] /soc/funnel@109c2000: Fixed dependency cycle(s) with /soc/funnel@10042000
+[    0.087814][    T1] /soc/funnel@109c2000: Fixed dependency cycle(s) with /soc/tpda@109a1000
+[    0.088160]Z    T1] OF: amba_device_add() failed (-16) for /soc/cti@10d02f00
+[    0.089410][    T1] Modules: 25168 pages in range for non-PLT usage
+[    0.089412][    T1] Modules: 516688 pages in range for PLT usage
+[    0.090589][    T1] iommu: Default domain type: Translated
+[    0.090597][    T1] iommu: DMA domain TLB invalidation policy: strict mode
+[    0.090775][    T1] SCSI subsystem initialized
+[    0.090819][    T1] usbcore: registered new interface driver usbfs
+[    0.090828][    T1] usbcore: registered new interface driver hub
+[    0.090840][    T1] usbcore: registered new device driver usb
+[    0.090876][    T1] mc: Linux media interface: v0.10
+[    0.090889][    T1] videodev: Linux video capture interface: v2.00
+[    0.090912][    T1] EDAC MC: Ver: 3.0.0
+[    0.091147][    T1] CPUidle PSCI: Initialized CPU PM domain topology using OSI mode
+[    0.091303][    T1] scmi_core: SCMI protocol bus registered
+[    0.091404][    T1] Advanced Linux Sound Architecture Driver Initialized.
+[    0.091720][    T1] clocksource: Switched to clocksource arch_sys_counter
+[    0.091854][    T1] VFS: Disk quotas dquot_6.6.0
+[    0.091868][    T1] VFS: Dquot-cache hash table entries: 512 (order 0, 4096 bytes)
+[    0.092141][    T1] NET: Registered PF_INET protocol family
+[    0.092348][    T1] IP idents hash table entries: 262144 (order: 9, 2097152 bytes, linear)
+[    0.094980][    T1] tcp_listen_portaddr_hash hash table entries: 8192 (order: 5, 131072 bytes, linear)
+[    0.095011][    T1] Table-perturb hash table entries: 65536 (order: 6, 262144 bytes, linear)
+[    0.095115][    T1] TCP established hash table entries: 131072 (order: 8, 1048576 bytes, linear)
+[    0.095392][    T1] TCP bind hash table entries: 65536 (order: 9, 2097152 bytes, linear)
+[    0.095558][    T1] TCP: Hash tables configured (established 131072 bind 65536)
+[    0.095638][    T1] UDP hash table entries: 8192 (order: 6, 262144 bytes, linear)
+[    0.095688][    T1] UDP-Lite hash table entries: 8192 (order: 6, 262144 bytes, linear)
+[    0.095782][    T1] NET: Registered PF_UNIX/PF_LOCAL protocol family
+[    0.095798][    T1] NET: Registered PF_XDP protocol family
+[    0.095807][    T1] PCI: CLS 0 bytes, default 64
+[    0.095917][   T83] Trying to unpack rootfs image as initramfs...
+[    0.099807][    T1] kvm [1]: HYP mode not available
+[    0.100455][    T1] Initialise system trusted keyrings
+[    0.100529][    T1] workingset: timestamp_bits=46 max_order=22 bucket_order=0
+[    0.100791][    T1] fuse: init (API version 7.39)
+[    0.105363][   T83] Freeing initrd memory: 2736K
+[    0.111059][    T1] Key type asymmetric registered
+[    0.111067][    T1] Asymmetric key parser 'x509' registered
+[    0.111103][    T1] Block layer SCSI generic (bsg) driver version 0.4 loaded (major 240)
+[    0.111173][    T1] io scheduler mq-deadline registered
+[    0.111178][    T1] io scheduler kyber registered
+[    0.111194][    T1] io scheduler bfq registered
+[    0.115520][    T1] printk: console [ttynull0] enabled
+[    0.118005][    T1] brd: module loaded
+[    0.120330][    T1] loop: module loaded
+[    0.121052][    T1] wireguard: WireGuard 1.0.0 loaded. See www.wireguard.com for information.
+[    0.121060][    T1] wireguard: Copyright (C) 2015-2019 Jason A. Donenfeld <Jason@zx2c4.com>. All Rights Reserved.
+[    0.121326][    T1] tun: Universal TUN/TAP device driver, 1.6
+[    0.122008][    T1] usbcore: registered new interface driver uas
+[    0.122021][    T1] usbcore: registered new interface driver usb-storage
+[    0.122121][    T1] usbcore: registered new interface driver xpad
+[    0.122196][    T1] gspca_main: v2.14.0 registered
+[    0.122214][    T1] usbcore: registered new interface driver uvcvideo
+[    0.122408][    T1] device-mapper: uevent: version 1.0.3
+[    0.122446][    T1] device-mapper: ioctl: 4.48.0-ioctl (2023-03-01) initialised: dm-devel@redhat.com
+[    0.123306][    T1] sdhci: Secure Digital Host Controller Interface driver
+[    0.123312][    T1] sdhci: Copyright(c) Pierre Ossman
+[    0.123313][    T1] sdhci-pltfm: SDHCI platform and OF driver helper
+[    0.124939][    T1] SMCCC: SOC_ID: ARCH_SOC_ID not implemented, skipping ....
+[    0.125020][    T1] hid: raw HID events driver (C) Jiri Kosina
+[    0.125341][    T1] usbcore: registered new interface driver usbhid
+[    0.125344][    T1] usbhid: USB HID core driver
+[    0.125381][    T1] ashmem: inidi!lized
+[    0.125563][    T1] Running under Gunyah hypervisor 51/v1
+[    0.130898][    T1] hw perfevents: enabled with armv8_pmuv3 PMU driver, 21 counters available
+[    0.132268][   T90] watchdog: Delayed init of the lockup detector failed: -19
+[    0.132272][   T90] watchdog: Hard watchdog permanently disabled
+[    0.132428][    T1] gnss: GNSS driver registered with major 505
+[    0.133036][    T1] usbcore: registered new interface driver snd-usb-audio
+[    0.133160][    T1] GACT probability NOT on
+[    0.133169][    T1] Mirror/redirect action on
+[    0.133178][    T1] netem: version 1.3
+[    0.133185][    T1] u32 classifier
+[    0.133187][    T1]     input device check on
+[    0.133188][    T1]     Actions configured
+[    0.133786][    T1] xt_time: kernel timezone is -0000
+[    0.133830][    T1] ipip: IPv4 and MPLS over IPv4 tunneling driver
+[    0.133967][    T1U gre: GRE over IPv4 demUltiplexor driver
+[    0.133971][    T1] ip_gre: GRE over IPv4 tunneling driver
+[    0.134180][    T1] IPv4 over IPsec tunneling driver
+[    0.134261][    T1] Initializing XFRM netlink socket
+[    0.134269][    T1] IPsec XFRM device driver
+[    0.134291][    T1] NET: Registered PF_INET6 protocol family
+[    0.137948][    T1] Segment Routing with IPv6
+[    0.137958][    T1] In-situ OAM (IOAM) with IPv6
+[    0.137998][    T1] mip6: Mobile IPv6
+[    0.138106][    T1] sit: IPv6, IPv4 and MPLS over IPv4 tunneling driver
+[    0.138245][    T1] ip6_gre: GRE over IPv6 tunneling driver
+[    0.138313][    T1] NET: Registered PF_PACKET protocol family
+[    0.138317][    T1] NET: Registered PF_KEY protocol family
+[    0.140108][    T1] NET: Registered PF_VSOCK protocol family
+[    0.141781][    T1] registered taskstats version 1
+[    0.141829][    T1] Loading compiled-in X.509 certificates
+[    0.144944][    T1] Loaded X.509 cert 'Build time autogenerated kernel key: 00d69fecbc1f1c42c0ebf23b8bac3fe28371bfc7'
+[    0.147029][    T1] page_owner is disabled
+[    0.147197][    T1] Key type .fscrypt registered
+[    0.147201][    T1] Key type fscrypt-provisioning registered
+[    0.151874][    T1] clk: Disabling unused clocks
+[    0.151890][    T1] ALSA device list:
+[    0.151893][    T1]   No soundcards found.
+[    0.152364][    T1] Freeing unused kernel memory: 4160K
+[    0.152398][    T1] Run /init as init process
+[    0.152401][    T1]   with arguments:
+[    0.152402][    T1]     /init
+[    0.152403][    T1]   with environment:
+[    0.152405][    T1]     HOME=/
+[    0.152406][    T1]     TERM=linux
+[    0.152408][    T1]     haptic_f0=1731
+[    0.200130][    T1] hmos-m0: init started, kernel 6.6.142-android15-8-4k-g3fd63df64c0f
+[    0.227783][  T129] gunyah_rsc_mgr hypervisor:qcom,resource-manager-rpc@17a905cbf2cfd03e: RM rejected message 5600000a. Error: 3
+[    0.227811][  T129] gh_rm_vm_auth_image: VM_AUTH_IMAGE failed with err: -1
+[    0.227819][  T129] Ignore previous errors about failed auth call
+[    0.229857][  T129] gunyah_rsc_mgr hypervisor:qcom,resource-manager-rpc@17a905cbf2cfd03e: RM rejected message 51000012. Error: 3
+[    0.229884][  T129] gh_rm_mem_share_lend_helper failed with error: -1
+[    0.230432][  T129] gh_rm_setup_feature_scm_assign: gh_feature_use_scm_assign mem Enabled
+[    0.236661][  T129] qcom-scm: __get_convention: qcom_scm: convention: smc arm 64
+[    0.236799][  T129] qcom-scm: qcom_scm_query_wq_queue_info: WQ Info, feature: 1 call_ctx_cnt: 2 irq: 962
+[    0.236936][  T129] qtee shmbridge registered default bridge with size 4194304 bytes
+[    0.238840][  T129] shmbridge is enabled
+[    0.242606][  T129] qcom-scm: scm_mem_protection_init_do: SCM call failed 0, resp 7
+[    0.242620][  T129] MEM protection Not enabled, 7
+[    0.251894][  T129] qcom_dma_iommu soc:dma_dev: assigned reserved memory node linux,cma
+[    0.252911][  T129] DMA preallocated 2048 KiB GFP_KERNEL pool for atomic allocations
+[    0.265961][  T129] platform 16f1000.anoc_1_qtb: TBU failed probe, QSMMUV500 cannot continue!
+[    0.287351][   T84] platform 16f1000.anoc_1_qtb: TBU failed probe, QSMMUV500 cannot continue!
+[    0.291658][   T84] platform 16f1000.anoc_1_qtb: TBU failed probe, QSMMUV500 cannot continue!
+[    0.302121][  T132] qcom_system_heap_create: DMA-BUF Heap: Created 'qcom,system'
+[    0.302202][  T132] qcom_system_heap_create: DMA-BUF Heap: Created 'system'
+[    0.302340][  T132] qcom_secure_system_heap_create: DMA-BUF Heap: Created 'qcom,secure-pixel'
+[    0.302377][  T132] qcom_secure_system_heap_create: DMA-BUF Heap: Created 'qcom,secure-non-pixel'
+[    0.303081][  T132] platform soc:qcom,dma-heaps:qcom,secure_cdsp: assigned reserved memory node secure_cdsp_region
+[    0.303461][  T132] platform soc:qcom,dma-heaps:qcom,qseecom: assigned reserved memory node qseecom_region
+[    0.303652][  T132] platform soc:qcom,dma-heaps:qcom,display: assigned reserved memory node non_secure_display_region
+[    0.303910][  T132] platform soc:qcom,dma-heaps:qcom,qseecom_ta: assigned reserved memory node qseecom_ta_region
+[    0.304094][  T132] qcom_dma_heap_probe: DMA-BUF Heap: Created qcom,cma-secure-cdsp
+[    0.304130][  T132] qcom_dma_heap_probe: DMA-BUF Heap: Created qcom,qseecom
+[    0.304157][  T132] qcom_dma_heap_probe: DMA-BUF Heap: Created qcom,display
+[    0.304180][  T132] qcom_dma_heap_probe: DMA-BUF Heap: Created qcom,qseecom-ta
+[    0.307954][   T84] platform 16f1000.anoc_1_qtb: TBU failed probe, QSMMUV500 cannot continue!
+[    0.342463][  T132] Minidump: SMEM is not initialized
+[    0.412296][   T84] platform 16f1000.anoc_1_qtb: TBU failed probe, QSMMUV500 cannot continue!
+[    0.412773][   T84] Minidump: SMEM is not initialized
+[    0.416086][  T138] /soc/rsc@17a00000/drv@2/rpmh-regulator-cxlvl: Fixed dependency cycle(s) with /soc/rsc@17a00000/drv@2/rpmh-regulator-cxlvl/pm7550-s4-level
+[    0.416131][  T138] /soc/rsc@17a00000/drv@2/rpmh-regulator-mxlvl: Fixed dependency cycle(s) with /soc/rsc@17a00000/drv@2/rpmh-regulator-mxlvl/pm_v6c-s5-level
+[    0.416421][  T138] /soc/rsc@17a00000/drv@2/rpmh-regulator-ldob2: Fixed dependency cycle(s) with /soc/rsc@17a00000/drv@2/rpmh-regulator-ldob2/regulator-pm7550-l2
+[    0.416482][  T138] /soc/rsc@17a00000/drv@2/rpmh-regulator-ldob4: Fixed dependency cycle(s) with /soc/rsc@17a00000/drv@2/rpmh-regulator-ldob4/regulator-pm7550-l4
+[    0.416595][  T138] /soc/rsc@17a00000/drv@2/rpmh-regulator-ldob9: Fixed dependency cycle(s) with /soc/rsc@17a00000/drv@2/rpmh-regulator-ldob9/regulator-pm7550-l9
+[    0.416871][  T138] /soc/rsc@17a00000/drv@2/rpmh-regulator-ldob19: Fixed dependency cycle(s) with /soc/rsc@17a00000/drv@2/rpmh-regulator-ldob19/regulator-pm7550-l19
+[    0.417196][  T138] /soc/rsc@17a00000/drv@2/rpmh-regulator-ldof6: Fixed dependency cycle(s) with /soc/rsc@17a00000/drv@2/rpmh-regulator-ldof6/regulator-pmr735b-l6
+[    0.418302][   T84] platform 16f1000.anoc_1_qtb: TBU failed probe, QSMMUV500 "annot continue!
+[    0.418937][   T84] Minidump: SMEM is not initialized
+[    0.423416][   T84] platform 16f1000.anoc_1_qtb: TBU failed probe, QSMMUV500 cannot continue!
+[    0.424024][   T84] Minidump: SMEM is not initialized
+[    0.435179][   T84] platform 16f1000.anoc_1_qtb: TBU failed probe, QSMMUV500 cannot continue!
+[    0.435852][   T84] Minidump: SMEM is not initialized
+[    0.491238][  T160] gh-watchdog hypervisor:qcom,gh-watchdog: QCOM Apps Watchdog Initialized
+[    0.492602][   T84] platform 16f1000.anoc_1_qtb: TBU failed probe, QSMMUV500 cannot continue!
+[    0.493257][   T84] Minidump: SMEM is not initialized
+[    0.500971][  T162] gic-router: gic_intr_routing_probe: GIC Interrupt Routing Driver Registered
+[    0.502209][   T84] platform 16f1000.anoc_1_qtb: TBU failed probe, QSMMUV500 cannot continue!
+[    0.502896][   T84] Minidump: SMEM is not initialized
+[    0.523308][  T165] gh_secure_vm_loader soc:gh-secure-vm-loader@0: VM with keep running attribute added
+[    0.523321][  T165] gh_secure_vm_loader soc:gh-secure-vm-loader@0: assigned reserved memory node trust_ui_vm_region@f3800000
+[    0.523623][  T165]  soc:gh-secure-vm-loader@0:com_mem: assigned reserved memory node vm_comm_mem_region
+[    0.523630][  T165] gh_secure_vm_loader soc:gh-secure-vm-loader@0: gh_virtio_backend: Recognized VM 'trustedvm' shmem_size 108000
+[    0.523634][  T165] gh_virtio_backend: trustedvm: Recognized virtio backend device with label 11
+[    0.523653][  T165] gh_virtio_backend: trustedvm: Recognized virtio backend device with label 10
+[    0.523706][  T165] gh_secure_vm_loader soc:gh-secure-vm-loader@1: assigned reserved memory node oem_vm_region@f7c00000
+[    0.523878][  T165]  soc:gh-secure-vm-loader@1:com_mem: assigned reserved memory node vm_comm_mem_region
+[    0.523882][  T165] gh_secure_vm_loader soc:gh-secure-vm-loader@1: gh_virtio_backend: Recognized VM 'oemvm' shmem_size 104000
+[    0.523885][  T165] gh_virtio_backend: oemvm: Recognized virtio backend device with label 13
+[    0.525247][   T84] platform 16f1000.anoc_1_qtb: TBU failed probe, QSMMUV500 cannot continue!
+[    0.525847][   T84] Minidump: SMEM is not initialized
+[    0.533126][   T84] platform 16f1000.anoc_1_qtb: TBU failed probe, QSMMUV500 cannot continue!
+[    0.533681][   T84] Minidump: SMEM is not initialized
+[    0.569216][  T172] gh_msgq: Registered client for label: 1
+[    0.571195][   T84] platform 16f1000.anoc_1_qtb: TBU failed probe, QSMMUV500 cannot continue!
+[    0.571817][   T84] Minidump: SMEM is not initialized
+[    0.658724][   T84] platform 16f1000.anoc_1_qtb: TBU failed probe, QSMMUV500 cannot continue!
+[    0.659954][   T84] Minidump: SMEM is not initialized
+[    0.663143][   T84] platform 16f1000.anoc_1_qtb: TBU failed probe, QSMMUV500 cannot continue!
+[    0.681850][  T193] qcom-ipcc 405000.qcom,ipcc: Clear on receive read is set from boot firmware
+[    0.682458][  T193] gic-router: qcom_gic_enable_quirks: QGIC: enabling affinity routing for Virtual GIC
+[    0.682871][   T84] Minidump: SMEM is not initialized
+[    0.687487][   T84] platform 16f1000.anoc_1_qtb: TBU failed probe, QSMMUV500 cannot continue!
+[    0.688435][   T84] Minidump: SMEM is not initialized
+[    0.695765][   T84] platform 16f1000.anoc_1_qtb: TBU failed probe, QSMMUV500 cannot continue!
+[    0.696368][   T84] Minidump: SMEM is not initialized
+[    0.699511][   T12] platform 16f1000.anoc_1_qtb: TBU failed probe, QSMMUV500 cannot continue!
+[    0.700116][   T12] Minidump: SMEM is not initialized
+[    0.743902][   T84] platform 16f1000.anoc_1_qtb: TBU failed probe, QSMMUV500 cannot continue!
+[    0.744963][   T84] arm-scmi soc:qcom,scmi: SCMI Notifications - Core Enabled.
+[    0.746426][   T84] arm-scmi soc:qcom,scmi: SCMI Protocol v2.0 'Qualcomm:' Firmware version 0x20000
+[    0.746884][   T84] Minidump: SMEM is not initialized
+[    0.754170][   T84] platform 16f1000.anoc_1_qtb: TBU failed probe, QSMMUV500 cannot continue!
+[    0.803644][   T84] Minidump: Enabled with max number of regions 200
+[    0.805820][   T84] platform 16f1000.anoc_1_qtb: TBU failed probe, QSMMUV500 cannot continue!
+[    0.806441][   T84] qcom_dload_probe: Current dump mode: 0x0
+[    0.807319][   T84] platform 16f1000.anoc_1_qtb: TBU failed probe, QSMMUV500 cannot continue!
+[    0.813203][  T217] qnoc-volcano soc:interconnect@0: Registered VOLCANO ICC
+[    0.813297][  T217] qnoc-volcano soc:interconnect@1: failed to register ICC provider: -517
+[    0.813974][  T217] qnoc-volcano 1700000.interconnect: Registered VOLCANO ICC
+[    0.814120][  T217] qnoc-volcano 1600000.interconnect: Registered VOLCANO ICC
+[    0.814164][   T84] platform 16f1000.anoc_1_qtb: TBU failed probe, QSMMUV500 cannot continue!
+[    0.814174][  T217] qnoc-volcano 1500000.interconnect: Registered VOLCANO ICC
+[    0.814206][  T217] qnoc-volcano 24100000.interconnect: failed to register ICC provider: -517
+[    0.814244][  T217] qnoc-volcano 3c40000.interconnect: Registered VOLCANO ICC
+[    0.814279][  T217] qnoc-volcano 1400000.interconnect: failed to register ICC provider: -517
+[    0.814331][  T217] qnoc-volcano 320c0000.interconnect: Registered VOLCANO ICC
+[    0.814358][   T84] qnoc-volcano soc:interconnect@1: failed to register ICC provider: -517
+[    0.814623][  T217] qnoc-volcano 1680000.interconnect: Registered VOLCANO ICC
+[    0.815483][   T84] platform 16f1000.anoc_1_qtb: TBU failed probe, QSMMUV500 cannot continue!
+[    0.815565][   T84] qnoc-volcano 24100000.interconnect: failed to register ICC provider: -517
+[    0.815690][   T84] qnoc-volcano 1400000.interconnect: failed to register ICC provider: -517
+[    0.815834][   T84] qnoc-volcano soc:interconnect@1: failed to register ICC provider: -517
+[    0.820167][  T218] NET: Registered PF_QIPCRTR protocol family
+[    0.826833][  T220] rpmh_regulator_allocate_vreg: ldob1: could not find any regulator subnodes
+[    0.826843][  T220] rpmh_regulator_probe: ldob1: failed to allocate regulator subnode array, rc=-19
+[    0.829508][   T84] gcc-volcano 100000.clock-controller: Registered GCC clocks
+[    0.830495][   T84] gpu_cc-volcano 3d90000.clock-controller: Registered GPU CC clocks
+[    0.831149][   T84] platform 16f1000.anoc_1_qtb: TBU failed probe, QSMMUV500 cannot continue!
+[    0.831248][   T84] qnoc-volcano 24100000.interconnect: failed to register ICC provider: -517
+[    0.831384][  T220] rpmh_regulator_probe: ldof6: could not find RPMh address for resource
+[    0.831416][   T84] qnoc-volcano 1400000.interconnect: failed to register ICC provider: -517
+[    0.831529][  T220] rpmh_regulator_probe: ldof8: could not find RPMh address for resource
+[    0.831559][   T84] qnoc-volcano 16c0000.interconnect: Registered VOLCANO ICC
+[    0.831638][   T84] qnoc-volcano soc:interconnect@1: failed to register ICC provider: -517
+[    0.831825][   T84] qnoc-volcano 16e0000.interconnect: Registered VOLCANO ICC
+[    0.831927][  T220] rpmh_regulator_probe: smpg1: could not find RPMh address for resource
+[    0.835511][   T84] cam_cc-volcano adb0000.clock-controller: Registered CAM CC clocks
+[    0.835797][   T84] disp_cc_pll0 PLL is already enabled
+[    0.836907][   T84] disp_cc-volcano af00000.clock-controller: Registered DISP CC clocks
+[    0.837518][   T84] platform 3de8000.gpu_qtb: TBU failed probe, QSMMUV500 cannot continue!
+[    0.837831][   T84] platform 16f1000.anoc_1_qtb: TBU failed probe, QSMMUV500 cannot continue!
+[    0.838309][   T84] qnoc-volcano 24100000.interconnect: Registered VOLCANO ICC
+[    0.839416][   T84] qnoc-volcano 1400000.interconnect: Registered VOLCANO ICC
+[    0.840070][   T84] qnoc-volcano soc:interconnect@1: Registered VOLCANO ICC
+[    0.841072][   T84] arm-smmu 3da0000.kgsl-smmu: probing hardware configuration...
+[    0.841076][   T84] arm-smmu 3da0000.kgsl-smmu: SMMUv2 with:
+[    0.841104][   T84] arm-smmu 3da0000.kgsl-smmu: 	stage 1 translation
+[    0.841106][   T84] arm-smmu 3da0000.kgsl-smmu: 	coherent table walk
+[    0.841111][   T84] arm-smmu 3da0000.kgsl-smmu: 	stream matching with 24 register groups
+[    0.841135][   T84] arm-smmu 3da0000.kgsl-smmu: 	22 context banks (0 stage-2 only)
+[    0.841215][   T84] arm-smmu 3da0000.kgsl-smmu: 	Supported page sizes: 0x61311000
+[    0.841217][   T84] arm-smmu 3da0000.kgsl-smmu: 	Stage-1: 48-bit VA -> 36-bit IPA
+[    0.841489][   T84] arm-smmu 3da0000.kgsl-smmu: 	preserved 0 boot mappings
+[    0.844921][   T84] arm-smmu 15000000.apps-smmu: probing hardware configuration...
+[    0.844927][   T84] arm-smmu 15000000.apps-smmu: SMMUv2 with:
+[    0.844939][   T84] arm-smmu 15000000.apps-smmu: 	stage 1 translation
+[    0.844941][   T84] arm-smmu 15000000&apps-smmu: 	coherent pable walk
+[    0.844943][   T84] arm-smmu 15000000.apps-smmu: 	stream matching with 114 register groups
+[    0.844950][   T84] arm-smmu 15000000.apps-smmu: 	72 context banks (0 stage-2 only)
+[    0.844969][   T84] arm-smmu 15000000.apps-smmu: 	Supported page sizes: 0x61311000
+[    0.844971][   T84] arm-smmu 15000000.apps-smmu: 	Stage-1: 36-bit VA -> 36-bit IPA
+[    0.845519][   T84] arm-smmu 15000000.apps-smmu: 	preserved 1 qcom,handoff-smrs boot mapping
+[    0.845672][   T84] arm-smmu 15000000.apps-smmu: 	preserved 0 boot mappings
+[    0.847929][   T84] geni_se_qup ac0000.qcom,qupv3_0_geni_se: Adding to iommu group 0
+[    0.849167][   T84] a94000.qcom,qup_uart: ttyMSM0 at MMIO 0xa94000 (irq = 150, base_baud = 0) is a MSM
+[    0.849847][   T84] geni_se_qup 8c0000.qcom,qupv3_1_geni_se: Adding to iommu group 1
+[    0.865135][   T12] spmi spmi-0: PMIC arbiter version v7 (0x70010000)
+[    0.870571][   T83] PMIC PON log: PON Trigger: HARD_RESET
+[    0.870650][   T83] PMIC PON log: Reset Trigger: PS_HOLD
+[    0.870664][   T83] PMIC PON log: Reset Type: HARD_RESET
+[    0.870712][   T83] PMIC PON log: PON Trigger: HARD_RESET
+[    0.870786][   T83] PMIC PON log: Reset Trigger: PS_HOLD
+[    0.870799][   T83] PMIC PON log: Reset Type: HARD_RESET
+[    0.870846][   T83] PMIC PON log: PON Trigger: HARD_RESET
+[    0.870920][   T83] PMIC PON log: Reset Trigger: PS_HOLD
+[    0.870939][   T83] PMIC PON log: Reset Type: HARD_RESET
+[    0.870987][   T83] PMIC PON log: PON Trigger: HARD_RESET
+[    0.871061][   T83] PMIC PON log: Reset Trigger: PS_HOLD
+[    0.871074][   T83] PMIC PON log: Reset Type: HARD_RESET
+[    0.871112][   T83] PMIC PON log: PON Trigger: HARD_RESET
+[    0.871186][   T83] PMIC PON log: Reset Trigger: PS_HOLD
+[    0.871199][   T83] PMIC PON log: Reset Type: HARD_RESET
+[    0.871262][   T83] PMIC PON log: PON Trigger: HARD_RESET
+[    0.874064][   T12] /soc/qcom,spmi@c42d000/qcom,pmk8550@0/pinctrl@b800: Fixed dependency cycle(s) with /soc/qcom,spmi@c42d000/qcom,pmk8550@0/pinctrl@b800/alt_sleep_clk/alt_sleep_clk_default
+[    0.892364][  T256] tcsr_cc-pineapple 1f40000.clock-controller: Registered TCSR CC clocks
+[    0.892600][   T83] tcsr_cc-pineapple 1f40000.clock-controller: sync_state
+[    0.906984][  T260] tmecom-qmp-client soc:qcom,tmecom-qmp-client: tmecom probe success
+[    0.925576][  T267] ufshcd-qcom 1d84000.ufshc: Adding to iommu group 2
+[    0.926731][  T267] ufshcd-qcom 1d84000.ufshc: ufshcd_populate_freg: qnable to find vdd-hba-max-microamp
+[    0.931522][  T267] ufshcd-qcom 1d84000.ufshc: (ufs_qcom_read_nvmem_cell) UFS device is 2.x, phy_sucmode = 0
+[    0.931564]Z  T267] ufshcd-qcom 1d84000.ufshc: ufs_qcom_parse_reg]info: Ujable to find qcom,vccq2-parent-supply regulator, assuming enabled
+[    0.932172][  T267] ufshcd-qcom 1d84000.ufshc: Found QC Inline Crypto Engine (ICE) v3.2.2
+[    0.933096][  T267] Property qcom,cluster-mask not found
+[    0.331!0][  T267] ufshcd-qcom 1d84000.ufshc: Failed cpufreq policy,cpu=0
+[    0.934978][  T267] scsi host0: ufshcd
+[    0.985169][   T12] scsi 0:0:0:49488: Well-known LUN    SKhynix  H9QT1GGCN6X147   A003 PQ: 0 ANSI: 6
+[    0.989779][   T12] scsi 0:0:0:49476: Well-known LUN    SKhynix  H9QT1GGCN6X147   A003 PQ: 0 ANSI: 6
+[    0.994327][   T12] scsi 0:0:0:49456: Well-known LUN    SKhynix  H9QT1GGCN6X147   A003 PQ: 0 ANSI: 6
+[    0.999296][   T12] scsi 0:0:0:0: Direct-Access     SKhynix  H9QT1GGCN6X147   A003 PQ: 0 ANSI: 6
+[    1.003848][   T12] scsi 0:0:0:1: Direct-Access     SKhynix  H9QT1GGCN6X147   A003 PQ: 0 ANSI: 6
+[    1.007938][   T12] scsi 0:0:0:2: Direct-Access     SKhynix  H9QT1GGCN6X147   A003 PQ: 0 ANSI: 6
+[    1.008818][   T12] scsi 0:0:0:3: Direct-Access     SKhynix  H9QT1GGCN6X147   A003 PQ: 0 ANSI: 6
+[    1.009690][   T12] scsi 0:0:0:4: Direct-Access     SKhynix  H9QT1GGCN6X147   A003 PQ: 0 ANSI: 6
+[    1.010553][   T12] scsi 0:0:0:5: Direct-Access     SKhynix  H9QT1GGCN6X147   A003 PQ: 0 ANSI: 6
+[    1.011754][   T84] sd 0:0:0:0: [sda] 61390848 4096-byte logical blocks: (251 GB/234 GiB)
+[    1.011788][   T83] sd 0:0:0:1: [sdb] 5120 4096-byte logical blocks: (21.0 MB/20.0 MiB)
+[    1.011841][   T84] sd 0:0:0:0: [sda] Write Protect is off
+[    1.011844][   T83] sd 0:0:0:1: [sdb] Write Protect is off
+[    1.011847][   T83] sd 0:0:0:1: [sdb] Mode Sense: 00 32 00 10
+[    1.011856][   T84] sd 0:0:0:0: [sda] Mode Sense: 00 32 00 10
+[    1.011910][   T83] sd 0:0:0:1: [sdb] Disabling FUA
+[    1.011914][   T83] sd 0:0:0:1: [sdb] Write cache: disabled, read cache: enabled, doesn't support DPO or FUA
+[    1.011917][   T83] sd 0:0:0:1: [sdb] Preferred minimum I/O size 4096 bytes
+[    1.011919][   T83] sd 0:0:0:1: [sdb] Optimal transfer size 524288 bytes
+[    1.011965][   T84] sd 0:0:0:0: [sda] Disabling FUA
+[    1.011975][   T84] sd 0:0:0:0: [sda] Write cache: enabled, read cache: enabled, doesn't support DPO or FUA
+[    1.011983][   T84] sd 0:0:0:0: [sda] Preferred minimum I/O size 4096 bytes
+[    1.012005][   T84] sd 0:0:0:0: [sda] Optimal transfer size 524288 bytes
+[    1.012132][   T12] sd 0:0"0:3: [sdd] 8192 4096-byte logical blocks: (33.6 MB/32.0 MiB)
+[    1.012182][   T12] sd 0:0:0:3: [sdd] Write Protect is off
+[    1.012189][   T12] sd 0:0:0:3: [sdd] Mode Sense: 00 32 00 10
+[    1.012253][   T12] sd 0:0:0:3: [sdd] Disabling FUA
+[    1.012256][   T12] sd 0:0:0:3: [sdd] Write cache: enabled, read cache: enabled, doesn't support DPO or FUA
+[    1.012258][   T12] sd 0:0:0:3: [sdd] Preferred minimum I/O size 4096 bytes
+[    1.012260][   T12] sd 0:0:0:3: [sdd] Optimal transfer size 524288 bytes
+[    1.012382][   T10] sd 0:0:0:2: [sdc] 5120 4096-byte logical blocks: (21.0 MB/20.0 MiB)
+[    1.012460][   T10] sd 0:0*0:2: [sdc] WrIte Protect is off
+[    1.012474][   T10] sd 0:0:0:2: [sdc] Mode Sense: 00 32 00 10
+[    1.012580][   T10] sd 0:0:0:2: [sdc] Disabling FUA
+[    1.012589][   T10] sd 0:0:0:2: [sdc] Write cache: disabled, read cache: enabled, doesn't support DPO or FUA
+[    1.012597][   T10] sd 0:0:0:2: [sdc] Preferred minimum I/O size 4096 bytes
+[    1.012599][  T275] sd 0:0:0:4: [sde] 1048576 4096-byte logical blocks: (4.29 GB/4.00 GiB)
+[    1.012606][   T10] sd 0:0:0:2: [sdc] Optimal transfer size 524288 bytes
+[    1.012636][  T275] sd 0:0:0:4: [sde] Write Protect is off
+[    1.012645][  T275] sd 0:0:0:4: [sde] Mode Sense: 00 32 00 10
+[    1.012673][  T276] sd 0:0:0:5: [sdf] 8192 4096-byte logical blocks: (33.6 MB/32.0 MiB)
+[    1.012725][  T275] sd 0:0:0:4: [sde] Disabling FUA
+[    1.012730][  T275] sd 0:0:0:4: [sde] Write cache: enabled, read cache: enabled, doesn't support DPO or FUA
+[    1.012735][  T275] sd 0:0:0:4: [sde] Preferred minimum I/O size 4096 bytes
+[    1.012739][  T275] sd 0:0:0:4: [sde] Optimal transfer size 524288 bytes
+[    1.012739][  T276] sd 0:0:0:5: [sdf] Write Protect is off
+[    1.012744][  T276] sd 0:0:0:5: [sdf] Mode Sense: 00 32 00 10
+[    1.012831][  T276] sd 0:0:0:5: [sdf] Disabling FUA
+[    1.012839][  T276] sd 0:0:0:5: [sdf] Write cache: enabled, read cache: enabled, doesn't support DPO or FUA
+[    1.012847][  T276] sd 0:0:0:5: [adf] Preferred minimqm I/O size 4096 bytes
+[    !.012853][  T276] sd 0:0:0:5: [sdf] Optimal transfer size 524288 bytes
+[    1.013271][   T83]  sdb: sdb1 sdb2 sdb3 sdb4 sdb5
+[    1.013514][   T83] sd 0:0:0:1: [sdb] Attached SCSI disk
+[    1.014071][   T12]  sdd: sdd1 sdd2 sdd3
+[    1.014253][   T12] sd 0:0:0:3: [sdd] Attached SCSI disk
+[    1.014728][  T275]  sde: sde1 sde2 sde3 sde4 sde5 sde6 sde7 sde8 sde9 sde10 sde11 sde12 sde13 sde14 sde15 sde16 sde17 sde18 sde19 sde20 sde21 sde22 sde23 sde24 sde25 sde26 sde27 sde28 sde29 sde30 sde31 sde32 sde33 sde34 sde35 sde36 sde37 sde38 sde39 sde40 sde41 sde42 sde43 sde44 sde45 sde46 sde47 sde48 sde49 sde50 sde51 sde52 sde53 sde54 sde55 sde56 sde57 sde58 sde59 sde60 sde61 sde62 sde63 sdE60 sde65 sde66 sde67 sde68 sde69 sde70 sde71 sde72 sde73 sde74 sde75 sde76 sde77
+[    1.014828][   T10]  sdc: sdc1 sdc2 sdc3 sdc4 sdc5
+[    1.015119][   T84]  sda: sda1 sda2 sda3 sda4 sda5 sda6 sda7 sda8 sda9 sda10 sda11 sda12 sda13
+[    1.015249][  T276]  sdf: sdf1 sdf2 sdf3 sdf4 sdf5
+[    1.015713][   T10] sd 0:0:0:2: [sdc] Attached SCSI disk
+[    1.016458][  T276] sd 0:0:0:5: [sdf] Attached SCSI disk
+[    1.017013][   T84] sd 0:0:0:0: [sda] Attached SCSI disk[    1.017279][  T275] 3d 0:0:0:4: [sde] Attached SCSI disk
+[    1.024660][  T281] video_cc-volcano aaf0000.clock-controller: Registered VIDEO CC clocks
+[    1.053492][  T289] usb_phy_generic soc:usb_nop_phy: dummy supplies not allowed for exclusive requests
+[    1.083008][    T1] hmos-m0: modules loaded: 106
+[   11.233506][   T10] msm-dwc a600000.ssusb: Failed to get gpio
+[   11.233678][   T10] msm-dwc3 a600000.ssusb: error -ENXIO: IRQ hs_phy_irq not found
+[   11.240177][   T10] msm-dwc3 a600000.ssusb: Nominal v`lUes not bound.
+[   11.24 199][   T10] ms}-dwc3 a600000.ssusb: Using default bus votes
+[   11.240247][   T10] msm-dwc3 a600000.ssusb: error -EINVAL: error finding dst node
+[   11.241178][   T10] msm-dwc3 a600000.ssusb: Unable to get vbus regulator err: -19
+[   11.242640][   T36] platform c229000.tsens1: deferred probe pending
+[   11.242653][   T36] platform soc:gpio_key: deferred probe pending
+[   11.242660][   T36] platform c228000.tsens0: deferred probe pending
+[   11.242665][   T36] platform soc:pm3001a-s1j: deferred probe pending
+[   11.242671][   T36] platform a600000.ssusb: deferred probe pending
+[   11.242691][   T36] cam_cc-volcano adb0000.clock-controller: sync_state() pending due to ace4000.qcom,csiphy0
+[   11.242698][   T36] cam_cc-volcano adb0000.clock-controller: sync_state() pending due to ace6000.qcom,csiphy1
+[   11.242704][   T36] cam_cc-volcano adb0000.clock-controller: sync_state() pending due to ace8000.qcom,csiphy2
+[   11.242711][   T36] cam_cc-volcano adb0000.clock-controller: sync_state() pending due to acea000.qcom,csiphy3
+[   11.242717][   T36] cam_cc-volcano adb0000.clock-controller: sync_state() pending due to ac15000.qcom,cci0:qcom,cam-sensor1
+[   11.242724][   T3] cam_cc-volcano adb0000.block-controller: sync_state() pending due to ac15000.qcom,cci0:qcom,cam-sensor0
+[   11.242730][   T36] cam_cc-volcano adb0000.clock-controller: sync_state() pending due to ac15000.qcom,cci0:qcom,eeprom1
+[   11.242736][   T36] cam_cc-volcano adb0000.clock-controller: sync_state() pending due to ac15000.qcom,cci0:qcom,eeprom0
+[   11.242742][   T36] cam_cc-volcano adb0000.clock-controller: sync_state() pending due to ac15000.qcom,cci0
+[   11.242749][   T36] cam_cc-volcano adb0000.clock-controller: sync_state() pendiLg due to ac16000.qcom,cci1:qcom,cam-sensor3
+[   11.242755][   T36] cam_cc-volcano adb0000.clock-controller: sync_state() pending due to ac16000.qcom,cci1:qcom,cam-sensor2
+[   11.242761][   T36] cam_cc-volcano adb0000.clock-controller: sync_state() pending due to ac16000.qcom,cci1:qcom,eeprom3
+[   11.242768][   T36] cam_cc-volcano adb0000.clock-controller: sync_state() pending due to ac16000.qcom,cci1:qcom,eeprom2
+[   11.242774][   T36] cam_cc-volcano adb0000.clock-controller: sync_state() pending due to ac16000.qcom,cci1
+[   11.242781][   T36] cam_cc-volcano adb0000.clock-controller: sync_state() pending due to ac13000.qcom,cam-cpas
+[   11.242787][   T36] cam_cc-volcano adb0000.clock-controller Sync_state() pending due to ac24000.qcom,rt-cdm0
+[   11.242793][   T36] cam_cc-volcano adb0000.clock-controller: sync_state() pending due to ac25000.qcom,rt-cdm1
+[   11.242800[   T36] cam_cc-volcano adb0000.clock-controller: sync_state() pending due to ac62000.qcom,tfe_csid0
+[   11.242806][   T36] cam_cc-volcano adb0000.clock-controller: sync_state() pending due to ac62000.qcom,tfe0
+[   11.242812][   T36] cam_cc-volcano adb0000.clock-controller: sync_state() pending due to ac71000.qcom,tfe_csid1
+[   11.242818][   T36] cam_cc-volcano adb0000.clock-controller: sync_state() pending due to ac71000.qcom,tfe1
+[   11.242825][   T36] cam_cc-volcano adb0000.clock-controller: sync_state() pending due to ac80000.qcom,tfe_csid2
+[   11.242831][   T36] cam_cc-volcano adb0000.clock-controller: sync_state() pending due to ac80000.qcom,tfe2
+[   11.242837][   T36] cam_cc-volcano adb0000.clock-controller: sync_state() pending due to acf6000.qcom,tpg13
+[   11.242843][   T36] cam_cc-volcano adb0000.clock-controller: sync_sdate ) pEndijg due to acf7000.qcom,tpg14
+[   11.242850][   T36] cam_cc-volcano adb0000.clock-controller: sync_state() pending due to acf6000.qcom,tpg15
+[   11.242856][   T36] cam_cc-volcano adb0000.clock-controller: sync_state() pending due to acf6000.qcom,tpg16
+[   11.242862][   T36] cam_cc-volcano adb0000.clock-controller: sync_state() pending due to ac01000.qcom,icp
+[   11.242868][   T36] cam_cc-volcano adb0000.clock-controller: sync_state() pending due to ac42000.qcom,ipe0
+[   11.242875][   T36] cam_cc-volcano adb0000.clock-controller: sync_state() pending due to ac2c000.qcom,bps
+[   11.242881][   T36_ cam_cc-volcano adb0000&clock-controller: sync_state() pending due to acfa000.qcom,cre
+[   11.242888][   T36] disp_cc-volcano af00000.clock-controller: sync_state() pending due to ae00000.qcom,mdss_mdp
+[   11.242895][   T36] disp_cc-volcano af00000.clock-controller: sync_state() pending due to ae94000.qcom,mdss_dsi_ctrl0
+[   11.242901][   T36] disp_cc-volcano af00000.clock-controller: sync_state() pending due to aF54000.q#om,dp_display
+[   11.242908][   T36] disp_cc-volcano af00000.clock-controller: sync_state() pending due to af20000.qcom,sde_rscc
+[   11.242914][   T36] disp_cc-volcano af00000.clock-controller: sync_state() pending due to soc:qcom,smmu_sde_unsec_cb
+[   11.242922][   T36] gcc-volcano 100000.clock-controller: sync_state() pending due to 17d91000.qcom,cpufreq-hw
+[   11.242928][   T36] gcc-volcano 100000.clock-controller: sync_state() pending due to ae00000.qcom,mdss_mdp
+[   11.242934][   T36] gcc-volcano 100000.clock-controller: sync_state() pending due to af54000.qcom,dp_display
+[   11.242940][   T36] gcc-volcano 100000.clock-controller: sync_state() pending due to aa00000.qcom,vidc
+[   11.242946][   T36] gcc-volcano 100000.clock-controller: sync_state() pending due to 3d37000.qcom,gmu
+[   11.242953][   T36] gpu_cc-volcano 3d90000.clock-controller: 3ync_state() pendi.g due to 3d37000.qcom,gmu
+[   11.242960][   T36] video_cc-volcano aaf0000.chock%controller: sync_state() pending due to aa00000.qcom,vidc
+[   11.242966][   T36] video_cc-volcano aaf0000.clock-controller: sync_state() pending due to soc:clock-controller@0
+[   11.242972][   T36] gpu_cc-volcano 3d90000.clock-controller: sync_state() pending due to soc:clock-controller@0
+[   11.242978][   T36] gcc-volcano 100000.clock-controller: sync_state() pending due to soc:clock-controller@0
+[   11.242984][   T36] disp_cc-volcano af00000.clock-controller: sync_state() pending due to soc:clock-controller@0
+[   11.242990][   T36] cam_cc-volcano adb0000.clock-controller: sync_state() pending due to soc:clock-controller@0
+[   11.242999][   T36] gpu_cc-volcano 3d90000.clock-controller: sync_state() pending due to 3d00000.qcom,kgsl-3d0
+[   11.243005][   T36] gcc-volcano 100000.clock-controller: sync_state() pending due to 3d00000.qcom,kgsl-3d0
+[   11.243014][   T36] qnoc-volcano soc:interconnect@1: sync_state() pending due to 3d00000.qcom,kgsl-3d0
+[   11.243020][   T36] qnoc-volcano soc:interconnect@1: sync_state() pending due to 1de0000.qcedev
+[   11.243026][   T36] qnoc-volcano soc:interconnect@1: sync_state() pending due to ae00000.qcom,mdss_mdp
+[   11.243032][   T36] qnoc-volcano soc:interconnect@1: sync_state() pending due to af20000.qcom,sde_rscc
+[   11.243038][   T36] qnoc-volcano soc:interconnect@1: sync_state() pending due to aa00000.qcom,vidc
+[   11.243043][   T36] qnoc-volcano soc:interconnect@1: sync_state() pending due to ac13000.qcom,cam-cpas
+[   11.243050][   T36] qnoc-volcano soc:interconnect@1: sync_state() pending due to 3e00000.qcom,ipa
+[   11.243056][   T36] qnoc-volcano 1700000.interconnect: sync_state() pending due to 1de0000.qcedev
+[   11.243062][   T36] qnoc-volcano 1700000.interconnect: sync_state() pending due to 3e00000.qcom,ipa
+[   11.243068][   T36] qnoc-volcano 1600000.interconnect: sync_state() pending due to aa00000.qcom,vidc
+[   11.243074][   T36] qnoc-volcano 1600000.interconnect: sync_state() pending due to ac13000.qcom,cam-cpas
+[   11.243080][   T36] qnoc-volcano 1500000.interconnect: sync_state() pending due t/ ae00000.qcnm,mdss_mdp
+[   11.243086][   T36] qnoc-volcano 1500000.interconnect: sync_state() pending due to 3e00000.qcom,ipa
+[   11.243092][   T36] qnoc-volcano 24100000.interconnect: sync_state() pending due to 3d00000.qcom,kgsl-3d0
+[   11.243098][   T36] qnoc-volcano 24100000.interconnect: sync_state() pending due to ae00000.qcom,mdss_mdp
+[   11.243103][   T36] qnoc-volcano 24100000.interconnect: sync_state() pending due to aa00000.qcom,vidc
+[   11.243109][   T36] qnoc-volcano 24100000.interconnect: sync_state() pending due to ac13000.qcom,cam-cpas
+[   11.243115][   T36] qnoc-volcano 24100000.interconnect: sync_state() pending due to 3e00000.qcom,ipa
+[   11.243122][   T36] qnoc-volcano 1400000.interco*nect: sync_state() pending due to ae00000.qcom,mdss_mdp
+[   11.243127][   T36] qnoc-volcano 100000,interconnect: sync_state() pending due to af20000.qcom,sde_rscc
+[   11.243133][   T36] qnoc-volcano 1400000.interconnect: sync_state() pending due to aa00000.qcom,vidc
+[   11.243139][   T36] qnoc-volcano 1400000.interconnect: sync_state() pending due to ac13000.qcom,cam-cpas
+[   11.243151][   T36] qnoc-volcano 1700000.interconnect: sync_state() pending due to 3000000.remoteproc-adsp
+[   11.243157][   T36] qnoc-volcano soc:interconnect@1: sync_state() pending due to 3000000.remoteproc-adsp
+[   11.243163][   T36] qnoc-volcano 3c40000.interconnect: sync_state() pending due to 3000000.remoteproc-adsp
+[   11.243169][   T36] qnoc-volcano 1700000.interconnect: sync_state() pending due to 32300000.remoteproc-cdsp
+[   11.243175][   T36] qnoc-volcano soc:interconnect@1: sync_state() pending due to 32300000.remoteproc-cdsp
+[   11.243181][   T36] qnoc-volcano 320c0000.interconnect: sync_state() pending due to 32300000.remoteproc-cdsp
+[   11.243188][   T36] qnoc-volcano 1700000.interconnect: sync_state() pending due to 4080000.remoteproc-mss
+[   11.243193][   T36] qnoc-volcano soc:interconnect@1: sync_state() pending due to 4080000.remoteproc-mss
+[   11.243202][   T36] gdsc add5004.qcom,gdsc: sync_state() pending due to ace4000.qcom,csiphy0
+[   11.243208][   T36] gdsc add5004.qcom,gdsc: sync_state() pending due to ace6000.qcom,csiphy1
+[   11.243214][   T36] gdsc add5004.qcom,gdsc: sync_state() pending due to ace8000.qcom,csiphy2
+[   11.243220][   T36] gdsc add5004.qcom,gdsc: sync_state() pending due to acea000.qcom,csiphy3
+[   11.243226][   T36] gdsc add5004.qcom,gdsc: sync_state() pending due to ac15000.qcom,cci0:qcom,cam-sensor1
+[   11.243232][   T36] gdsc add5004.qcom,gdsc: sync_state() pending due to ac15000.qcom,cci0:qcom,cam-sensor0
+[   11.243237][   T36] gdsc add5004.qcom,gdsc: sync_state() pending due to ac15000.qcom,cci0:qcom,eeprom1
+[   11.243243][   T36] gdsc add5004.qcom,gdsc: sync_state() pending due to ac15000.qcom,cci0:qcom,eeprom0
+[   11.243249][   T36] gdsc add5004.qcom,gdsc: sync_state() pending due to ac15000.qcom,cci0:qcom,actuator0
+[   11.243255][   T36] gdsc add5004.qcom,gdsc: sync_state() pending due to ac15000.qcom,cci0
+[   11.243261][   T36] gdsc add5004.qcom,gdsc: sync_state() pending due to ac16000.qcom,cci1:qcom,cam-sensor3
+[   11.243266][   T36] gdsc add5004&qbom,gdrc: sync_state() pending due to ac16000.qcom,cci1:qcom,cam-sensor2
+[   11.243272][   T36] gdsc add5004.qcom,gdsc: sync_state() pending due to ac16000.qcom,cci1:qcom,eeprom3
+[   11.243278][   T36] gdsc add5004.qcom,gdsc: sync_state() pending due to ac16000.qcom,cci1:qcom,eeprom2
+[   11.243284][   T36] gdsc add5004.qcom,gdsc: sync_state() pending due to ac16000.qcom,cci1:qcom,actuator3
+[   11.243290][   T36] gdsc add5004.qcom,gdsc: sync_state() pending due to ac16000.qcom,cci1
+[   11.243295][   T36] gdsc add5004.qcom,gdsc: sync_state() pending due to ac13000.qcom,cam-cpas
+[   11.243301][   T36] gdsc add5004.qcom,gdsc: sync_state() pending due to ac24000.qcom,rt-cdm0
+[   11.243306][   T36] gdsc add5004.qcom,gdsc: sync_state() pending due to ac25000.qcom,rt-cdm1
+[   11.243312][   T36] gdsc add5004.qcom,gdsc: sync_state() pending due to ac62000.qcom,tfe_csid0
+[   11.243318][   T36] gdsc add5004.qcom,gdsc: sync_state() pending due to ac62000.qcom,tfe0
+[   11.243323][   T36] gdsc add5004.qcom,gdsc: sync_state() pending due to ac71000.qcom,tfe_csid1
+[   11.243329][   T36] gdsc add5004.qcom,gdsc: sync_state() pending due to ac71000.qcom,tfe1
+[   11.243335][   T36] gdsc add5004.qcom,gdsc: sync_state() pending due to ac80000.qcom,tfe_csid2
+[   11.243340][   T36] gdsc add5004.qcom,gdsc: sync_state() pending due to ac80000.qcom,tfe2
+[   11.243346][   T36] gdsc add5004.qcom,gdsc: sync_state() pending due to acf6000.qcom,tpg13
+[   11.243352][   T36] gdsc add5004.qcom,gdsc: sync_state() pending due to acf7000.qcom,tpg14
+[   11.243358][   T36] gdsc add5004.qcom,gdsc: sync_state() pending due to acf6000.qcom,tpg15
+[   11.243363][   T36] gdsc add5004.qcom,gdsc: sync_state() pending due to acf6000.qcom,tpg16
+[   11.243369][   T36] gdsc add5004.qcom,gdsc: sync_state() pending due to ac01000.qcom,icp
+[   11.243375][   T36] gdsc add5004.qcom,gdsc: sync_state() pending due to ac42000.qcom,ipe0
+[   11.243380][   T36] gdsc add5004.qcom,gdsc: sync_state() pending due to ac2c000.qcom,bps
+[   11.243386][   T36] gdsc add5004.qcom,gdsc: sync_state() pending due to acfa000.qcom,cre
+[   11.243393][   T36] gdsc af09000.qcom,gdsc: sync_state() pending due to af20000.qcom,sde_rscc
+[   11.243400][   T36] gdsc 15000c.qcom,gdsc: sync_state() pending due to af54000.qcom,dp_display
+[   11.243406][   T36] gdsc 3d99080.qcom,gdsc: sync_state() pending due to 3da0000.qcom,kgsl-iommu
+[   11.243412][   T36] gdsc 3d99080.qcom,'dsc: sync_state() pen$ing due to 3d37000.qcom,gmu
+[   11.243419][   T36] gdsc 3d68024.qcom,gdsc: sync_state() pending due to 3d37000*qcom,gmu
+[   11*243425][   T36] gdsc aaf80a4.qcom,gdsc: sync_state() pending due to aa00000.qcom,vidc
+[   11.243432][   T36] gdsc aaf804c.qcom,gdsc: sync_state() pending due to aa00000.qcom,vidc
+[   11.243438][   T36] qnoc-volcano 24100000.interconnect: sync_state() pending due to a600000.ssusb
+[   11.243444][   T36] qnoc-volcano 1600000.interconnect: sync_state() pending due to a600000.ssusb
+[   11.243450][   T36] qnoc-volcano soc:interconnect@1: sync_state() pending due to a600000.ssusb
+[   11.241456][   T36] qnoc-vmlcano 16e0000.interconnect: sync_state() pending due to a600000.ssusb
+[   11.243462][   T36] gcc-volcano 100000.clock-controller: sync_state() pending due to a600000.ssusb
+[   11.243469][   T36] gdsc 139004.qcom,gdsc: sync_state() pending due to a600000.ssusb
+[   11.243602][   T36] disp_cc-volcano af00000.clock-controller: sync_state() pending due to soc:qcom,$si-dhspl!y-pRim`py
+[   11.243609][   T36] disp_cc-volcano af00000.clock-controller: sync_state() pending due to soc:qcom,wb-display@2
+[   11.243621][   T36] psci-cpuidle-domain soc:psci: sync_state() pending due to soc:cluster-device
+[   11.243650][   T36] qcom,rpmh-regulator 17a00000.rsc:drv@2:rpmh-regulator-cxlvl: sync_state() pending due to 9bb00000.remoteproc-wpss
+[   11.243656][   T36] qcom,rpmh-regulator 17a00000.rsc:drv@2:rpmh-regulator-cxlvl: sync_state() pending due to 32300000.remoteproc-cdsp
+[   11.243662][   T36] qcom,rpmh-regulator 17a00000.rsc:drv@2:rpmh-regul`tor-cxlvl: sync_sta4e() pending due to 4080000.remoteproc-mss
+[   11.243671][   T36] qcom,rpmh-regulator 17a00000.rsc:drv@2:rpmh-regulator-mxlvl: sync_state() pending due to af54000.qcom,dp_display
+[   11.243678][   T36] qcom,rpmh-regulator 17a00000.rsc:drv@2:rpmh-regulator-mxlvl: sync_state() pending due to 9bb00000.remoteproc-wpss
+[   11.243684][   T36] qcom,rpmh-regulator 17a00000.rsc:drv@2:rpmh-regulator-mxlvl: sync_state() pending due to 32300000.remoteproc-cdsp
+[   11.243693][   T36] qcom,rpmh-regulator 17a00000.rsc:drv@2:rpmh-regulator-msslvl: sync_state() pending due to 4080000.remoteproc-mss
+[   11.243699][   T36] qcom,rpmh-regulator 17a00000.rsc:drv@2:rpmh-regulator-lcxlvl: sync_state() pending due to 3000000.remoteproc-adsp
+[   11.243706][   T36] qcom,rpmh-regulator 17a00000.rsc:drv@2:rpmh-regulator-lmxlvl: sync_state() pending due to 3000000.remoteproc-adsp
+[   11.243713][   T36] qcom,rpmh-regulator 17a00000.rsc:drv@2:rpmh-regulator-sm`b1: sync_statd() pending due to soc:bt_wcn6750
+[   11.243744M[   T36] qc/m,rpmh-regulator 17a00000.rsc:drv@2:rpmh-regulator-smpb1: sync_state() pending due to 17110040.qcom,wcn6750
+[   11.243751][   T36] qcom,rpmh-regulator 17a00000.rsc:drv@2:rpmh-regulator-smpb2: sync_state() pending due to soc:bt_wcn6750
+[   11.243757][   T36] qcom,rpmh-regulator 17a00000.rsc:drv@2:rpmh-regulator-smpb2: sync_state() pending due to 17110040.qcom,wcn6750
+[   11.243764][   T36] qcom,rpmh-regulator 17a00000.rsc:drv@2:rpmh-regulator-smpb3: sync_state() pending due to soc:bt_wcn6750
+[   11.243770][   T36] qcom,rpmh-regulator 17a00000.rsc:drv@2:rpmh-regulator-smpb3: sync_state() pending due to 17110040.qcom,wcn6750
+[   11.243776][   T36] qcom,rpmh-regulator 17a00000.rsc:drv@2:rpmh-regulator-ldob2: sync_state() pending due to acea000.qcom,csiphy3
+[   11.243782][   T36] qcom,rpmh-regulator 17a00000.rsc:drv@2:rpmh-regulator-ldob2: sync_state() pending due to ace8000.qcom,csiphy2
+[   11.243788][   T36] qcom,rpmh-regulator 17a00000.rsc:drv@2:rpmh-regulator-ldob2: sync_state() pending due to ace6000.qcom,csaphy1
+[   11243794][   T36] qcom,rpmh-regulator 17a00000.rsc:drv@2:rpmh-regulator-ldob2: sync_state() pending due to ace4000.qcom,csiphy0
+[   11.243800][   T36] qcom,rpmh-regulator 17a00000.rsc:drv@2:rpmh-regulator-ldob2: sync_state() pending due to af54000.qcom,dp_display
+[   11.243806][   T36] qcom,rpmh-regulator 17a00000.rsc:drv@2:rpmh-regulator-ldob2: sync_state() pending due to ae95000.qcom,mdss_dsi_phy0
+[   11.243813][   T36] qcom,rpmh-regulator 17a00000.rsc:drv@2:rpmh-regulator-ldob3: sync_state() pending due to af54000*qcom,dp_displ`y
+[   11.243820][   T36] qcom,rpmh-regulator 17a00000.rsc:drv@2:rpmh-regulator-ldob4: sync_state() pending due to acea000.qcom,csiphy3
+[   11.243826][   T36] qcom,rpmh-regulator 17a00000.rsc:drv@2:rpmh-regulator-ldob4: sync_state() pending due to ace8000.qcom,csiphy2
+[   11.243832][   T36] qcom,rpmh-regulator 17a00000.rsc:drv@2:rpmh-regulator-ldob4: sync_state() pending due to ace6000.qcom,csiphy1
+[   11.243838][   T36] qcom,rpmh-regulator 17a00000.rsc:drv@2:rpmh-regulator-ldob4: sync_state() pending due to ace4000.qcom,csiphy0
+[   11.243844][   T36] qcom,rpmh-regulator 17a00000.rsc:drv@2:rpmh-regulator-ldob4: sync_state() pending due to af54000.qcom,dp_display
+[   11.243850][   T36] qcom,rpmh-regulator 17a00000.rsc:drv@2:rpmh-regulator-ldob4: sync_state() pending due to ae94000.qcom,mdss_dsi_ctrl0
+[   11.243858][   T36] qcom,rpmh-regulator 17a00000.rsc:drv@2:rpmh-regulator-ldob7: sync_state() pending due to soc:spf_core_platform
+[   11.243864][   T36] qcom,rpmh-regulator 17a00000.rsc:drv@2:rpmh-regulator-ldob7: sync_state() pending due to soc:bt_wcn6750
+[   11.243871][   T36] qcom,rpmh-regulator 17a00000.rsc:drv@2:rpmh-regulator-ldob8: sync_state() pending due to soc:spf_core_platform
+[   11.243877][   T36] qcom,rpmh-regulator 17a00000.rsc:drv@2:rpmh-regulator-ldob9: sync_state() pending due to soc:qcom,dsi-display-primary
+[   11.243885][   T36] qcom,rpmh-regulator 17a00000.rsc:drv@2:rpmh-regulator-ldob19: sync_state() pending due to soc:qcom,dsi-display-primary
+[   11.243892][   T36] qcom,rpmh-regulator 17a00000.rsc:drv@2:rpmh-regulator-ldob23: sync_state() pending due to soc:goodix_fp
+[   11.243898][   T36] qcom,rpmh-regulator 17a00000.rsc:drv@2:rpmh-regulator-bobb1: sync_state() pending due to soc:spf_core_platform
+[   11.243909][   T36] qnoc-volcano soc:interconnect@1: sync_state() pending due to a80000.spi
+[   11.243915][   T36] qnoc-volcano 1700000.interconnect: sync_state() pending due to a80000.spi
+[   11.243921][   T36] qnoc-volcano 1600000.interconnect: sync_state() pending due to a80000.spi
+[   11.243927][   T36] qnoc-volcano 24100000.interconnect: sync_state() pending due to a80000.spi
+[   11.243933][   T36] qnoc-volcano soc:interconnect@0: sync_state() pending due to a80000.spi
+[   11.243939][   T6] gcc-volcano 00000.clock-controller: sync_state() pending due to a80000.spi
+[   11.243945][   T36] qcom,rpmh-regulator 17a00000.rsc:drv@2:rpmh-regulator-ldob22: sync_state() pending due to a80000.spi
+[   11.243951][   T36] qcom,rpmh-regulator 17a00000.rsc:drv@2:rpmh-regulator-ldob11: sync_state() pending due to a80000.spi
+[   11.243958][   T36] qnoc-volcano soc:interconnect@1: sync_state() pending due to a84000.i2c
+[   11.243964][   T36] qnoc-volcano 1700000.interconnect: sync_state() pending due to a84000.i2c
+[   11.243970][   T36] qnoc-volcano 1600000.interconnect: sync_state() pending due to a84000.i2c
+[   11.243976][   T36] qnoc-volcano 24100000.interconnect: sync_state() pending due to a84000.i2c
+[   11.243981][   T36] qnoc-volcano soc:interconnect@0: sync_state() pending due to a84000.i2c
+[   11.243987][   T36] gcc-volcano 100000.clock-controller: sync_state() pending due to a84000.i2c
+[   11.243997][   T36] qnoc-volcano soc:interconnect@1: sync_state() pending due to a98000.spi
+[   11.244004][   T36] qnoc-volcano 1700000.interconnect: sync_state() pending due to a98000.spi
+[   11.244009][   T36] qnoc-volcano 1600000.interconnect: sync_state() pending due to a98000.spi
+[   11.244015][   T36] qnoc-volcano 24100000.interconnect: sync_state() pending due to a98000.spi
+[   11.244021][   T36] qnoc-volcano soc:interconnect@0: sync_state() pending due to a98000.spi
+[   11.244026][   T36] gcc-volcano 100000.clock-controller: sync[state() pendilg due to a98000.spi
+[   11.244034][   T36] qnoc-volcano soc:interconnect@1: sync_state() pending due to 880000.i2c
+[   11.244040][   T36] qnoc-volcano 16e0000.interconnect: sync_state() pending due to 880000.i2c
+[   11.244046][   T36] qnoc-volcano 1600000.interconnect: sync_state() pending due to 880000.i2c
+[   11.244052][   T36] qnoc-volcano 24100000.interconnect: sync_state() pending due to 880000.i2c
+[   11.244057][   T36] qnoc-volcano soc:interconnect@0: sync_state() pending due to 880000.i2c
+[   11.244063][   T36] gcc-volcano 100000.clock-controller: sync_state() pending due to 880000.i2c
+[   11.244069][   T36] qcom,rpmh-regulator 17a00000.rsc:drv@2:rpmh-regulator-ldob18: sync_state() pending due to 880000.i2c
+[   11.244075][   T36] qcom,rpmh-regulator 17a00000.rsc:drv@2:rpmh-regulator-ldob7: sync_state() pending due to 880000.i2c
+[   11.244082][   T36] qnoc-volcano soc:interconnect@1: sync_state() pending due to 884000.i2c
+[   11.244088][   T36] qnoc-volcano 16e0000.interconnect: sync_state() pending due to 884000.i2c
+[   11.244094][   T36] qnoc-volcano 1600000.interconnect: sync_state() pending due to 884000.i2c
+[   11.244099][   T36] qnoc-volcano 24100000.interconnect: sync_state() pending due to 884000.i2c
+[   11.244105][   T36] qnoc-volcano soc:interconnect@0: sync_state() pending due to 884000.i2c
+[   11.244111][   T36] gcc-volcano 100000.clock-controller: sync_state() pending due to 884000.i2c
+[   11.244117][   Q36] qnoc-volcano soc:in`erconnect@12 sync_state() panding due to 890000.qcom,qup_uart
+[   11.244123][   T36] qnoc-volcano 16e0000.interconnect: sync_state() pending due to 890000.qcom,qup_uart
+[   11.244129][   T36] qnoc-volcano 1600000.interconnect: sync_state() pending due to 890000.qcom,qup_uart
+[   11.244134][   T36] qnoc-volcano 24100000.interconnect: sync_state() pending due to 890000.qcom,qup_uart
+[   11.244140][   T36] qnoc-volcano soc:interconnect@0: sync_state() pending due to 890000.qcom,qup_uart
+[   11.244146][   T36] gcc-volcano 100000.clock-controller: sync_state() pending due to 890000.qcom,qup_uart
+[   11.244153][   T36] qnoc-volcano soc:interconnect@1: sync_state() pending due to 898000.i2c
+[   11.244159][   T36] qnoc-volcano 16e0000.interconnect: sync_state() pending due to 898000.i2c
+[   11.244165][   T36] qnoc-volcano 1600000.interconnect: sync_state() pending due to 898000.i2c
+[   11.244170][   T36] qnoc-6olcan/ 24100000.interconnect: sync_state() pending due to 898000.i2c
+[   11.244176][   T36] qnoc-volcano soc:interconnect@0: sync_state() pending due to 898000.i2c
+[   11.244182][   T36] gcc-volcano 100000.clock-controller: sync_state() pending due to 898000.i2c
+[   31.712812][  T234] vddic_1v8_t0: disabling
+[   61.293546][    T1] hmos-m0: no UDC after 60 s

@@ -1,0 +1,34 @@
+/* SPDX-License-Identifier: MIT */
+#ifndef SHENG_PAL_PROTOCOL_H
+#define SHENG_PAL_PROTOCOL_H
+#include <stdint.h>
+#define SHENG_PAL_MAGIC 0x53415031u
+#define SHENG_PAL_SOCKET "sheng.pal.pcm.v1"
+#define SHENG_PAL_MAX_DATA 61440u
+enum sheng_pal_op {
+    SHENG_PAL_OPEN=1, SHENG_PAL_START, SHENG_PAL_WRITE, SHENG_PAL_VOLUME,
+    SHENG_PAL_STOP, SHENG_PAL_CLOSE, SHENG_PAL_PAUSE, SHENG_PAL_RESUME,
+    SHENG_PAL_STATUS,
+    SHENG_PAL_CAPTURE_OPEN, SHENG_PAL_CAPTURE_READ, SHENG_PAL_CAPTURE_START,
+    SHENG_PAL_CAPTURE_STOP, SHENG_PAL_CAPTURE_CLOSE, SHENG_PAL_CAPTURE_MUTE,
+    SHENG_PAL_CAPTURE_GET_MUTE, SHENG_PAL_CAPTURE_STATUS,
+    SHENG_PAL_MIC_MUTE, SHENG_PAL_MIC_GET_MUTE,
+    /* asteroids: the modem's voice call (PAL_STREAM_VOICE_CALL), one per server, kept across client connections.
+     * START: arg0 = rx device | tx device << 16, arg1 = the modem's VSID. ROUTE: arg0 as START. VOLUME: arg0 =
+     * volume * 1e6. MUTE: arg0 = 1 to mute the uplink. */
+    SHENG_PAL_VOICE_START=100, SHENG_PAL_VOICE_STOP, SHENG_PAL_VOICE_ROUTE, SHENG_PAL_VOICE_VOLUME,
+    SHENG_PAL_VOICE_MUTE
+};
+#define SHENG_PAL_CAPTURE_CHUNK 960u
+struct sheng_pal_request {
+    uint32_t magic, op, bytes, sequence, arg0, arg1;
+};
+struct sheng_pal_reply {
+    uint32_t magic, sequence;
+    int32_t rc;
+    uint32_t bytes;
+    uint64_t written_frames;
+};
+_Static_assert(sizeof(struct sheng_pal_request)==24, "fixed wire header");
+_Static_assert(sizeof(struct sheng_pal_reply)==24, "fixed wire reply");
+#endif

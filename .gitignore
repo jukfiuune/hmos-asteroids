@@ -1,0 +1,26 @@
+# Built or flashed images and bundles (rebuilt from the scripts; the stock and M1 images live outside git).
+*.img
+*.simg
+*.tar.gz
+images/
+history/m0/images/
+out/
+device/asteroids/efs-backup/
+donor/pura70proplus-7.0.0.107/bootpic/bootpic.zip
+donor/pura70proplus-7.0.0.107/bootpic/cust_bootvideo.mp4
+donor/pura70proplus-7.0.0.107/bootpic/frames/
+# Source trees synced from the build PC (NullDebris kernel, devicetrees, modules, out), each its own checkout.
+src/
+# Third-party tools and sheng's port (its own git checkout; the commit used is noted in docs/history.md).
+tools/
+ref/
+__pycache__/
+recordings/
+
+# The keyboard app's sources (src/ above is for the big checked-out source trees)
+!common/keyboard/entry/src/
+
+# Local settings and stray screenshots
+port.conf
+/*.png
+device/asteroids/vibrator/firmware/

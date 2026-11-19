@@ -1,0 +1,1 @@
+/hmosdata/m1/blackbox.sh: line 16: ps: Permission denied

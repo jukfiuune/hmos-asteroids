@@ -1,0 +1,93 @@
+#!/bin/busybox sh
+# M0 init for asteroids: load the modules the device's recovery loads, bring the USB controller up in peripheral mode
+# the way init.qcom.recovery.rc does, then serve a shell on a USB ACM gadget (the host sees a ttyACM / usbmodem port).
+# Lives in init_boot; the modules come from vendor_boot's ramdisk. Everything is logged to the kernel log, which
+# survives a warm reset in pstore. It must never exit, or the kernel panics.
+
+/bin/busybox --install -s /bin
+export PATH=/bin
+R=$(uname -r)
+
+mkdir -p /proc /sys /dev /tmp /run
+mount -t proc proc /proc
+mount -t sysfs sysfs /sys
+mount -t tmpfs -o mode=0755 dev /dev
+mkdir -p /dev/pts && mount -t devpts devpts /dev/pts
+mount -t tmpfs tmp /tmp
+mount -t configfs configfs /sys/kernel/config
+mount -t debugfs debugfs /sys/kernel/debug
+mkdir -p /sys/fs/pstore && mount -t pstore pstore /sys/fs/pstore
+echo /bin/mdev > /proc/sys/kernel/hotplug
+mdev -s
+
+log() {
+    echo "hmos-m0: $*" > /dev/kmsg
+    [ -c /dev/pmsg0 ] && echo "hmos-m0: $*" > /dev/pmsg0
+}
+log "init started, kernel $R"
+SLOT=$(sed -n 's/^androidboot.slot_suffix = "\(.*\)"/\1/p' /proc/bootconfig)
+log "slot ${SLOT:-unknown}"
+
+# First-stage modules in the order vendor_boot loads them, then everything the device's recovery loads.
+for m in $(cat /lib/modules/modules.load.vendor_boot /lib/modules/modules.load.recovery); do
+    grep -q "^$(echo ${m%.ko} | tr - _) " /proc/modules && continue
+    modprobe "${m%.ko}" 2>/tmp/err || log "modprobe ${m%.ko} failed: $(cat /tmp/err)"
+done
+log "modules loaded: $(wc -l < /proc/modules)"
+mdev -s
+
+# Firmware: the modem partition (vfat) holds the ADSP/CDSP images the kernel looks for under
+# /vendor/firmware_mnt/image (firmware_class.path). Then boot the ADSP as recovery does.
+part() {
+    for u in /sys/class/block/*/uevent; do
+        grep -q "^PARTNAME=$1\$" $u && { basename $(dirname $u); return; }
+    done
+}
+mkdir -p /vendor/firmware_mnt /firmware
+M=$(part modem$SLOT)
+if [ -n "$M" ] && mount -t vfat -o ro,shortname=lower /dev/$M /vendor/firmware_mnt; then
+    log "modem$SLOT ($M) mounted"
+    ln -s /vendor/firmware_mnt/image /firmware/image
+    [ -e /sys/kernel/boot_adsp/boot ] && echo 1 > /sys/kernel/boot_adsp/boot && log "adsp boot requested"
+else
+    log "modem$SLOT not mounted (block device: ${M:-none})"
+fi
+
+# USB controller in peripheral mode, as init.qcom.recovery.rc does.
+DWC=/sys/bus/platform/devices/a600000.ssusb
+i=0
+while [ ! -e $DWC/mode ] && [ $i -lt 30 ]; do sleep 1; i=$((i + 1)); done
+if [ -e $DWC/mode ]; then
+    echo peripheral > $DWC/mode && log "dwc3 mode peripheral"
+else
+    log "no $DWC/mode after 30 s; deferred: $(tr '\n' ';' < /sys/kernel/debug/devices_deferred)"
+fi
+
+# USB ACM gadget on the first UDC that appears (a600000.dwc3 on this board).
+G=/sys/kernel/config/usb_gadget/m0
+mkdir -p $G/strings/0x409 $G/functions/acm.usb0 $G/configs/c.1/strings/0x409
+echo 0x1d6b > $G/idVendor
+echo 0x0104 > $G/idProduct
+echo asteroids-m0 > $G/strings/0x409/serialnumber
+echo HarmonyPort > $G/strings/0x409/manufacturer
+echo "asteroids M0 shell" > $G/strings/0x409/product
+echo acm > $G/configs/c.1/strings/0x409/configuration
+ln -s $G/functions/acm.usb0 $G/configs/c.1/
+i=0
+while [ -z "$(ls /sys/class/udc 2>/dev/null)" ] && [ $i -lt 30 ]; do sleep 1; i=$((i + 1)); done
+UDC=$(ls /sys/class/udc 2>/dev/null | head -1)
+if [ -n "$UDC" ]; then
+    echo "$UDC" > $G/UDC && log "gadget bound to $UDC" || log "binding $UDC failed"
+else
+    log "no UDC; deferred: $(tr '\n' ';' < /sys/kernel/debug/devices_deferred)"
+fi
+mdev -s
+
+while true; do
+    if [ -c /dev/ttyGS0 ]; then
+        setsid sh -c 'exec sh -l </dev/ttyGS0 >/dev/ttyGS0 2>&1'
+    else
+        mdev -s
+        sleep 2
+    fi
+done

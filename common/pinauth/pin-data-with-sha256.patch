@@ -1,0 +1,48 @@
+--- a/service/src/all_in_one_impl.cpp
++++ b/service/src/all_in_one_impl.cpp
+@@ -35,6 +35,15 @@
+ constexpr uint32_t AUTH_PIN = 1;
+ 
+ constexpr size_t MAX_SCHEDULE_SIZE = 50;
++// asteroids: Huawei's PIN input library (libpinauth_framework) sends the 64-byte scrypt result followed by the PIN's
++// SHA-256 (OpenHarmony's InputerDataImpl::GetSha256, appended at the end), at least when authenticating; the PIN
++// database works on the scrypt result, so a 96-byte buffer is taken for its first 64 bytes.
++constexpr size_t PIN_DATA_WITH_SHA256_LEN = CONST_PIN_DATA_LEN + 32;
++
++bool IsPinDataLen(size_t len)
++{
++    return len == CONST_PIN_DATA_LEN || len == PIN_DATA_WITH_SHA256_LEN;
++}
+ }
+ 
+ AllInOneImpl::AllInOneImpl(std::shared_ptr<OHOS::UserIam::PinAuth::PinAuth> pinHdi)
+@@ -264,8 +273,8 @@
+     }
+     pinEnrollParam.subType = subType;
+     pinEnrollParam.pinLength = pinLength;
+-    if (salt.size() != CONST_SALT_LEN || pinData.size() != CONST_PIN_DATA_LEN) {
+-        LOG_ERROR("get bad params!");
++    if (salt.size() != CONST_SALT_LEN || !IsPinDataLen(pinData.size())) {
++        LOG_ERROR("get bad params! pinData len %{public}zu", pinData.size());
+         return pinHdi_->PinResultToCoAuthResult(RESULT_BAD_PARAM);
+     }
+     if (memcpy_s(&(pinEnrollParam.salt[0]), CONST_SALT_LEN, salt.data(),
+@@ -288,15 +297,15 @@
+         IAM_LOGE("pinHdi_ is nullptr");
+         return pinHdi_->PinResultToCoAuthResult(RESULT_GENERAL_ERROR);
+     }
+-    if (pinData.size() != CONST_PIN_DATA_LEN) {
+-        LOG_ERROR("bad pinData len!");
++    if (!IsPinDataLen(pinData.size())) {
++        LOG_ERROR("bad pinData len %{public}zu (pinLength %{public}u)!", pinData.size(), pinLength);
+         return pinHdi_->PinResultToCoAuthResult(RESULT_BAD_PARAM);
+     }
+ 
+     pinAuthParam.scheduleId = scheduleId;
+     pinAuthParam.templateId = templateId;
+     pinAuthParam.pinLength = pinLength;
+-    if (memcpy_s(&(pinAuthParam.pinData[0]), CONST_PIN_DATA_LEN, pinData.data(), pinData.size()) != EOK) {
++    if (memcpy_s(&(pinAuthParam.pinData[0]), CONST_PIN_DATA_LEN, pinData.data(), CONST_PIN_DATA_LEN) != EOK) {
+         LOG_ERROR("mem copy pinData to pinAuthParam fail!");
+         return pinHdi_->PinResultToCoAuthResult(RESULT_BAD_COPY);
+     }

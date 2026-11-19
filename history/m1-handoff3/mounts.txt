@@ -1,0 +1,1 @@
+/hmosdata/m1/blackbox.sh: line 18: cat: Permission denied

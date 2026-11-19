@@ -1,0 +1,224 @@
+#!/bin/busybox sh
+# M1 init for asteroids. Everything M0 does (modules, firmware, ADSP, USB ACM root shell), then it assembles a
+# HarmonyOS root and, once told to, hands PID 1 to HarmonyOS's second-stage init.
+#
+# Everything that boots is in super (slot b logical partitions, written by common/m1/super/write-super.sh, mapped read-only by
+# lpmap): the donor's system, vendor, sys_prod, chip_prod, cust and preload; asteroids (build/build-asteroids.sh: our
+# files, prep.sh, the service set and the scripts its init services run, a busybox that outlives this ramdisk); android (platform/qcom/android/build-android-helpers.sh: the
+# Android files the audio, sensor, Bluetooth and vibration helpers run from). userdata is HarmonyOS's /data and
+# nothing else; a blank one (as after fastboot erase) is formatted here, so a wipe is a factory reset.
+#
+# The handoff goes ahead by itself unless /data/asteroids/hold exists; then it waits until /tmp/m1-go exists (touch it
+# from the serial or network shell), so a root that HarmonyOS init chokes on can be inspected and fixed first. The
+# shells survive the handoff. Everything is logged to the kernel log, which survives a warm reset in pstore. Never
+# exits (PID 1).
+
+/bin/busybox --install -s /bin
+export PATH=/bin
+R=$(uname -r)
+
+mkdir -p /proc /sys /dev /tmp /run
+mount -t proc proc /proc
+mount -t sysfs sysfs /sys
+mount -t tmpfs -o mode=0755 dev /dev
+mkdir -p /dev/pts && mount -t devpts devpts /dev/pts
+mount -t tmpfs tmp /tmp
+mount -t configfs configfs /sys/kernel/config
+mount -t debugfs debugfs /sys/kernel/debug
+mkdir -p /sys/fs/pstore && mount -t pstore pstore /sys/fs/pstore
+echo /bin/mdev > /proc/sys/kernel/hotplug
+mdev -s
+
+log() {
+    echo "hmos-m1: $*" > /dev/kmsg
+    [ -c /dev/pmsg0 ] && echo "hmos-m1: $*" > /dev/pmsg0
+}
+log "init started, kernel $R"
+SLOT=$(sed -n 's/^androidboot.slot_suffix = "\(.*\)"/\1/p' /proc/bootconfig)
+log "slot ${SLOT:-unknown}"
+
+# Modules: first stage and recovery (USB), then vendor_dlkm, which completes tsens (thermal) and gpio-keys.
+for m in $(cat /lib/modules/modules.load.vendor_boot /lib/modules/modules.load.recovery \
+           /lib/modules/modules.load.vendor_dlkm); do
+    grep -q "^$(echo ${m%.ko} | tr - _) " /proc/modules && continue
+    modprobe "${m%.ko}" 2>/tmp/err || log "modprobe ${m%.ko} failed: $(cat /tmp/err)"
+done
+log "modules loaded: $(wc -l < /proc/modules)"
+mdev -s
+sleep 2
+log "deferred probes: $(tr '\n' ';' < /sys/kernel/debug/devices_deferred)"
+log "thermal zones: $(ls /sys/class/thermal | grep -c thermal_zone)"
+
+part() {
+    for u in /sys/class/block/*/uevent; do
+        grep -q "^PARTNAME=$1\$" $u && { basename $(dirname $u); return; }
+    done
+}
+
+# Firmware and ADSP, as recovery does.
+mkdir -p /vendor/firmware_mnt /firmware
+M=$(part modem$SLOT)
+if [ -n "$M" ] && mount -t vfat -o ro,shortname=lower /dev/$M /vendor/firmware_mnt; then
+    log "modem$SLOT ($M) mounted"
+    ln -s /vendor/firmware_mnt/image /firmware/image
+    [ -e /sys/kernel/boot_adsp/boot ] && echo 1 > /sys/kernel/boot_adsp/boot && log "adsp boot requested"
+else
+    log "modem$SLOT not mounted (block device: ${M:-none})"
+fi
+
+# USB controller in peripheral mode and the ACM gadget with a root shell, before anything HarmonyOS.
+DWC=/sys/bus/platform/devices/a600000.ssusb
+i=0
+while [ ! -e $DWC/mode ] && [ $i -lt 30 ]; do sleep 1; i=$((i + 1)); done
+[ -e $DWC/mode ] && echo peripheral > $DWC/mode && log "dwc3 mode peripheral"
+G=/sys/kernel/config/usb_gadget/m1
+mkdir -p $G/strings/0x409 $G/functions/acm.usb0 $G/configs/c.1/strings/0x409
+echo 0x1d6b > $G/idVendor
+echo 0x0104 > $G/idProduct
+echo asteroids-m1 > $G/strings/0x409/serialnumber
+echo HarmonyPort > $G/strings/0x409/manufacturer
+echo "asteroids M1 shell" > $G/strings/0x409/product
+echo acm+ncm > $G/configs/c.1/strings/0x409/configuration
+ln -s $G/functions/acm.usb0 $G/configs/c.1/
+# USB network (CDC NCM) next to the serial port, for bulk transfers and a second shell. Both ends get IPv6 link-local
+# addresses on their own; the phone's is fe80::a5:7eff:fe00:1 (from the fixed MAC). It is set up here, before the
+# gadget binds: rebinding a live gadget later hangs the serial shell.
+mkdir -p $G/functions/ncm.usb0
+echo 02:a5:7e:00:00:01 > $G/functions/ncm.usb0/dev_addr
+echo 02:a5:7e:00:00:02 > $G/functions/ncm.usb0/host_addr
+ln -s $G/functions/ncm.usb0 $G/configs/c.1/
+i=0
+while [ -z "$(ls /sys/class/udc 2>/dev/null)" ] && [ $i -lt 30 ]; do sleep 1; i=$((i + 1)); done
+UDC=$(ls /sys/class/udc 2>/dev/null | head -1)
+[ -n "$UDC" ] && echo "$UDC" > $G/UDC && log "gadget bound to $UDC"
+mdev -s
+i=0
+while [ ! -c /dev/ttyGS0 ] && [ $i -lt 10 ]; do sleep 1; mdev -s; i=$((i + 1)); done
+setsid sh -c 'while true; do sh -l </dev/ttyGS0 >/dev/ttyGS0 2>&1; sleep 1; done' &
+log "serial shell on ttyGS0"
+# The shell listens on the link-local address only, so it can't be reached over Wi-Fi. The address exists once the
+# host is attached (and isn't usable while tentative), so nc is retried until it binds.
+# The link is renamed from usb0: HarmonyOS's Ethernet manager adopts every (eth|usb)<digit> interface, runs DHCP on it
+# and takes it down when no address comes.
+ip link set usb0 name m1link
+ip link set m1link up
+setsid sh -c 'while true; do nc -lk -s fe80::a5:7eff:fe00:1%m1link -p 2323 -e sh; sleep 1; done' </dev/null >/dev/null 2>&1 &
+log "network shell on [fe80::a5:7eff:fe00:1%m1link]:2323"
+
+# HarmonyOS root.
+hold() {
+    log "HOLD: $*"
+    while true; do sleep 3600; done
+}
+# The donor images, asteroids and android from super.
+S=$(part super)
+[ -n "$S" ] || hold "no super partition"
+lpmap /dev/$S "$SLOT" system vendor sys_prod chip_prod cust preload asteroids android >/tmp/lpmap.log 2>&1 ||
+    log "super: $(tr '\n' ';' < /tmp/lpmap.log)"
+for p in system vendor sys_prod chip_prod cust; do
+    mkdir -p /hmos/$p
+    mount -t erofs -o ro /dev/mapper/$p$SLOT /hmos/$p || hold "$p$SLOT did not mount"
+done
+mkdir -p /asteroids
+mount -t erofs -o ro /dev/mapper/asteroids$SLOT /asteroids || hold "asteroids$SLOT did not mount"
+log "super mounted: $(grep -c '^/dev/mapper/.* erofs' /proc/mounts) partitions"
+
+# DHCP on the USB network, so the host's NetworkManager keeps the link up (it drops it when DHCP fails). M1's busybox
+# has no udhcpd; Alpine's busybox-extras in /asteroids/dhcp does.
+D=/asteroids/dhcp
+if [ -x $D/bin/busybox-extras ] && mount -t tmpfs -o size=1m dhcp $D/tmp; then
+    ip addr add 192.168.77.1/24 dev m1link
+    printf 'start 192.168.77.10\nend 192.168.77.20\ninterface m1link\nlease_file /tmp/udhcpd.leases\nopt subnet 255.255.255.0\n' \
+        > $D/tmp/udhcpd.conf
+    touch $D/tmp/udhcpd.leases
+    chroot $D /bin/busybox-extras udhcpd /tmp/udhcpd.conf && log "DHCP on m1link (phone 192.168.77.1)"
+fi
+
+# userdata: ext4 (or f2fs, if fastboot -w made one). Formatted only when blank: its first 8 KiB read back as zeros
+# and nothing is recognised on it; anything else that doesn't mount holds the boot rather than lose data.
+U=$(part userdata)
+[ -n "$U" ] || hold "no userdata partition"
+fs=$(blkid /dev/$U | sed -n 's/.* TYPE="\([^"]*\)".*/\1/p')
+if [ -z "$fs" ] && [ "$(dd if=/dev/$U bs=4096 count=2 2>/dev/null | wc -c)" -eq 8192 ] &&
+   [ "$(dd if=/dev/$U bs=4096 count=2 2>/dev/null | tr -d '\000' | wc -c)" -eq 0 ]; then
+    log "userdata ($U) is blank: formatting ext4"
+    mount --bind /dev /hmos/system/dev && mount -t proc proc /hmos/system/proc &&
+        chroot /hmos/system /system/bin/mke2fs -t ext4 -b 4096 -L userdata /dev/$U >/tmp/mke2fs.log 2>&1 ||
+        log "mke2fs failed: $(tail -3 /tmp/mke2fs.log | tr '\n' ';')"
+    umount /hmos/system/proc /hmos/system/dev
+    fs=ext4
+fi
+mkdir -p /data
+mount -t ${fs:-ext4} -o noatime /dev/$U /data || hold "userdata ($U, ${fs:-unknown}) did not mount"
+log "userdata ($U, $fs) mounted"
+# Before 2026-11-15 userdata held HarmonyOS's data in data/, beside the image files and the bundle.
+[ -d /data/data/service/el1 ] && [ -d /data/m1 ] && { /m1/migrate-userdata.sh 2>&1 | while read -r l; do log "$l"; done; }
+mkdir -p /data/asteroids
+
+ROOT=/hmos-root
+mkdir -p /hmos-ram $ROOT
+mount -t tmpfs -o mode=0755,size=1536m hmos-ram /hmos-ram
+mkdir -p /hmos-ram/upper /hmos-ram/work
+mount -t overlay -o lowerdir=/hmos/system,upperdir=/hmos-ram/upper,workdir=/hmos-ram/work overlay $ROOT ||
+    hold "system overlay failed"
+for p in vendor sys_prod chip_prod cust; do
+    mkdir -p $ROOT/$p && mount --bind /hmos/$p $ROOT/$p
+done
+
+mount --bind /data $ROOT/data
+for d in metadata log mnt storage tmp; do
+    mkdir -p $ROOT/$d && mount -t tmpfs -o mode=0755,size=64m hmos-$d $ROOT/$d
+done
+for d in dev/__parameters__ data/service/el0/startup/init data/service/el1/startup/parameters data/local/tmp \
+         data/service/el1/public data/app/el1 data/storage/el1 data/storage/el2 data/data; do
+    mkdir -p $ROOT/$d
+done
+
+for d in dev proc sys; do
+    mkdir -p $ROOT/$d && mount --rbind /$d $ROOT/$d
+done
+mkdir -p $ROOT/dev/binderfs
+# binderfs creates its nodes 0600 root; HarmonyOS services (samgr is uid 5555) need them world-accessible.
+mount -t binder binder $ROOT/dev/binderfs && for b in binder hwbinder vndbinder; do
+    [ -e $ROOT/dev/binderfs/$b ] && chmod 0666 $ROOT/dev/binderfs/$b && ln -sf binderfs/$b $ROOT/dev/$b
+done
+[ -c /dev/access_token_id ] || log "no /dev/access_token_id"
+mkdir -p $ROOT/sys/fs/selinux && mount -t selinuxfs selinuxfs $ROOT/sys/fs/selinux 2>/dev/null
+
+# Only the allowlisted services: hide the other service directories, then put the M1 set in place.
+for d in system/etc/init sys_prod/etc/init chip_prod/etc/init vendor/etc/init cust/etc/init; do
+    [ -d $ROOT/$d ] && mount -t tmpfs -o mode=0755,size=4m hmos-init $ROOT/$d
+done
+SVC=/m1/etc-init
+[ -d /asteroids/init ] && SVC=/asteroids/init
+cp $SVC/*.cfg $ROOT/system/etc/init/ && log "services from $SVC: $(ls $SVC | tr '\n' ' ')"
+
+# Kernel parameters HarmonyOS init reads: the hardware name (so no Kirin configs load) and permissive SELinux. The
+# policy loader (libload_policy) takes the mode from "enforcing=" here; without it, the policy loads enforcing and
+# every unlabeled M1 process and file is denied the moment it is live.
+EXTRA="ohos.boot.hardware=asteroids ohos.boot.selinux=permissive enforcing=0"
+echo "$(cat /proc/cmdline) $EXTRA" > /hmos-ram/cmdline
+mount --bind /hmos-ram/cmdline $ROOT/proc/cmdline
+{ cat /proc/bootconfig; echo 'ohos.boot.hardware = "asteroids"'; echo 'ohos.boot.selinux = "permissive"'; } \
+    > /hmos-ram/bootconfig
+mount --bind /hmos-ram/bootconfig $ROOT/proc/bootconfig
+if [ -f /asteroids/boot/prep.sh ]; then
+    sh /asteroids/boot/prep.sh $ROOT >/dev/kmsg 2>&1 && log "M2 prep done" || log "M2 prep failed"
+fi
+log "root ready at $ROOT"
+
+if [ -e /data/asteroids/hold ]; then
+    log "waiting for /tmp/m1-go (touch it from the serial shell)"
+    while [ ! -e /tmp/m1-go ]; do sleep 1; done
+fi
+[ -x $ROOT/system/bin/init ] || hold "no $ROOT/system/bin/init"
+# The blackbox (on when /data/asteroids/blackbox exists) keeps logging to userdata after the handoff; see m1/blackbox.sh.
+[ -e /data/asteroids/blackbox ] && setsid /asteroids/bin/busybox sh /asteroids/boot/blackbox.sh </dev/null >/dev/null 2>&1 &
+# The root also goes on top of "/": HarmonyOS init's sandbox code re-enters the mount namespace with setns, which
+# resets its root to the namespace's root. With only a chroot, that lands it back in this ramdisk, where no service
+# binary exists ("ServiceStart pathArgs invalid"). This ramdisk stays reachable for the serial shell.
+mount --rbind $ROOT / || hold "could not bind $ROOT onto /"
+log "handing PID 1 to HarmonyOS init"
+cd $ROOT
+exec chroot $ROOT /system/bin/init --second-stage
+hold "exec of HarmonyOS init failed"
